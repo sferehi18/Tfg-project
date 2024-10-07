@@ -1,42 +1,82 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body{
+  margin: 0;
+  padding: 0;
+ 
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.grid-container{
+  display: grid;
+  grid-template-areas: 
+    "header header header"
+    "sidebar content content"
+    "footer footer footer";
+  grid-template-rows: auto 1fr auto; /* Encabezado y pie de página automáticos, contenido flexible */
+  grid-template-columns: 300px 1fr 1fr; /* Sidebar con tamaño fijo, main y content ocupan el resto */
+  min-height: 100vh; /* Para asegurar que el cuerpo ocupe toda la altura de la ventana */
+  background-color: rgba(81, 81, 81, 0.979);
+  gap: 10px; /* Espacio entre áreas */
+  padding: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.image-container{
+  overflow: hidden;
+  border-radius: 9px;
+  background-color: aliceblue;
+  width: 70px;
+  height: 70px;
 }
 
-.card {
-  padding: 2em;
+.navigation-menu{
+  display: flex;
+  grid-area: header;
+  justify-content: space-around;
+  background-color: black;
+  align-items: center;
+
 }
 
-.read-the-docs {
-  color: #888;
+img{
+  width: 50px;
+  height: 50px;
+  color: aliceblue;
 }
+.search-bar{
+  outline: none;
+  border-radius: 20px;
+  justify-self: center;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.5;
+
+}
+
+
+
+.side-bar{
+  grid-area: sidebar;
+  display: flex;
+  overflow-y: hidden;
+  flex-direction: column;
+  
+  align-items:flex-start;
+ 
+  justify-content: space-evenly;
+  background-color: rgb(0, 0, 0);
+}
+.side-bar .image-container{
+  align-self: flex-start;
+  margin-left: 30px;
+}
+
+.side-bar .search-bar{
+  align-self: flex-start;
+  margin-left: 30px;
+
+}
+
+.main-container{
+  grid-area: content;
+  background-color: aliceblue;
+  opacity: 0.5;
+}
+
+
