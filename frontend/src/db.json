@@ -1,0 +1,105 @@
+{
+  "subjects": [
+    {
+      "id": "1",
+      "name": "Matemáticas"
+    },
+    {
+      "id": "fee",
+      "name": "Física"
+    },
+    {
+      "id": "fet",
+      "name": "Historia"
+    },
+    {
+      "id": "8554",
+      "name": "Quimica"
+    },
+    {
+      "id": "77c2",
+      "name": "Conocimiento del Medio"
+    },
+    {
+      "id": "11bf",
+      "name": "Salam"
+    },
+    {
+      "id": "ef4d",
+      "name": "saram"
+    },
+    {
+      "id": "904b",
+      "name": "mkk"
+    }
+ 
+  ],
+  "topics": [
+    {
+      "id": "1",
+      "name": "derivadas.txt",
+      "creationdate": "12/02/2024",
+      "subjectId": "1"
+    },
+    {
+      "id": "2",
+      "name": "ecuaciones.txt",
+      "creationdate": "15/02/2024",
+      "subjectId": "1"
+    },
+    {
+      "id": "3",
+      "name": "geometria_2.pdf",
+      "creationdate": "20/02/2024",
+      "subjectId": "1"
+    },
+    {
+      "id": "4",
+      "name": "mecanica_basica.docx",
+      "creationdate": "18/02/2024",
+      "subjectId": "2"
+    },
+    {
+      "id": "5",
+      "name": "termodinamica.pdf",
+      "creationdate": "19/02/2024",
+      "subjectId": "2"
+    },
+    {
+      "id": "6",
+      "name": "optica_teorica.txt",
+      "creationdate": "22/02/2024",
+      "subjectId": "2"
+    },
+    {
+      "id": "7",
+      "name": "edad_media_historia.txt",
+      "creationdate": "25/02/2024",
+      "subjectId": "3"
+    }
+  ],
+  
+    "files": [
+      {
+        "id": 1,
+        "name": "documento.pdf",
+        "size": "2MB",
+        "type": "pdf",
+        "createdAt": "2024-03-20T12:00:00Z"
+      },
+      {
+        "id": 2,
+        "name": "imagen.jpg",
+        "size": "500KB",
+        "type": "image",
+        "createdAt": "2024-03-19T15:30:00Z"
+      },
+      {
+        "id": 3,
+        "name": "codigo.zip",
+        "size": "10MB",
+        "type": "archive",
+        "createdAt": "2024-03-18T09:00:00Z"
+      }
+    ]
+  }

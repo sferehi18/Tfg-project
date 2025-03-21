@@ -1,0 +1,37 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./layout/layout";
+import MyCalendar from "./pages/Calendar"; 
+import Subjects from "./pages/Subjects";
+import './app.css'; 
+import Topics from "./pages/Topics";
+import Filetable from "./pages/FileTable";
+import Storage from "./pages/Storage";
+import { QueryClientProvider,QueryClient } from "@tanstack/react-query";
+import 'bootstrap/dist/css/bootstrap.min.css';
+const queryClient = new QueryClient();
+function App() {
+
+ 
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+       <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Subjects />} /> 
+          <Route path="calendar" element={<MyCalendar />} />
+          <Route path="topics/:subjectId" element={<Topics />} />
+          <Route path="topics/:subjectId/files/:topicId" element={<Filetable />} />  
+          <Route path="storage" element = {<Storage/>}/>
+        </Route>
+      </Routes>
+    </Router>
+    </QueryClientProvider>
+     
+    
+    
+  );
+}
+
+export default App;

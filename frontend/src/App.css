@@ -1,0 +1,90 @@
+.logo{
+    width: 50px;
+    height: 50px;
+}
+
+body{
+  overflow-y: hidden;
+}
+
+@media (max-width: 575px) {
+    .hide {
+      
+      display: none;
+    }
+  }
+
+  .rbc-event {
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+  }
+  
+  .rbc-toolbar button {
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 5px;
+  }
+ /* Estilos de boton sideBar*/
+ 
+  link{
+    text-decoration: none;
+  }
+  .btn-link{
+    text-decoration: none !important;
+    transition: all 0.5s ease !important;
+  }
+  .btn-link:hover{
+    background-color: #007bff !important;
+    color:white !important;
+  }
+
+  /*Para que los botones sean clickables solo en la zona que realmente se ven*/
+  .nav-item{
+    width: fit-content !important;
+  }
+  
+/* Estilos de boton SearchBar*/
+ 
+ 
+/* Estilos de la barra de búsqueda personalizada (input-group) */
+.custom-input-group {
+  border-radius: 30px; /* Bordes redondeados con un radio de 30px en todo el contenedor */
+  background-color: darkgray; /* Color de fondo gris oscuro para el contenedor */
+}
+
+/* Estilos para el icono de búsqueda dentro del grupo de entrada (input-group-text) */
+.custom-input-group .input-group-text {
+  color: rgb(0, 0, 0); /* Color negro para el icono de búsqueda */
+  border-radius: 30px; /* Bordes redondeados en el icono para que coincidan con el contenedor */
+  border-right: none; /* Elimina el borde derecho del icono de búsqueda, haciendo que se conecte con el campo de texto */
+  background-color: rgb(0, 0, 0, 0.10); /* Fondo negro con un 10% de opacidad, creando un efecto transparente */
+}
+
+/* Estilos para el campo de búsqueda (form-control) */
+.custom-input-group .form-control {
+  background-color: rgb(0, 0, 0, 0.10); /* Fondo transparente negro similar al icono */
+  border-left: none; /* Elimina el borde izquierdo del campo de texto para que se vea continuo con el icono */
+  border-radius: 30px; /* Bordes redondeados del campo de búsqueda para coincidir con el contenedor */
+}
+
+/* Estilos cuando el campo de búsqueda (form-control) está enfocado */
+.custom-input-group .form-control:focus {
+  box-shadow: none !important; /* Elimina cualquier sombra alrededor del campo cuando está enfocado */
+  border-color: #ffffff; /* Cambia el color del borde a blanco cuando se enfoca el campo */
+}
+
+/* Estilos aplicados al icono cuando el contenedor o el campo de búsqueda está enfocado (focus-within) */
+.custom-input-group:focus-within .input-group-text {
+  background-color: #ffffff; /* Cambia el fondo del icono a blanco cuando el campo de búsqueda está enfocado */
+  color: rgb(0, 0, 0); /* Cambia el color del icono a negro cuando el campo está enfocado */
+  border-color: #ffffff; /* Cambia el borde del icono a blanco cuando el campo está enfocado */
+}
+
+.custom-input-group{
+  border-color: #ffffff;
+}
+
+/*Estilos de tarjeta de Asignatura SubjectCard*/
