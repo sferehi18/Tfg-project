@@ -1,6 +1,8 @@
-import React from "react";
-import Buttonprimary from "./ButtonPrimary";
+import React, { useContext } from "react";
+import Buttonprimary from "./CreateButton";
+import CreationContext from "../context/ModalsMenusContext";
 function Eventmenu({ onAddEvent, onClose}) {
+  const {} = useContext(CreationContext);
   const menustyle = {
     position: "fixed",
     top: "50%",

@@ -9,19 +9,21 @@ import Filetable from "./pages/FileTable";
 import Storage from "./pages/Storage";
 import { QueryClientProvider,QueryClient } from "@tanstack/react-query";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { CreationProvider } from "./context/ModalsMenusContext";
 const queryClient = new QueryClient();
 function App() {
 
  
   
   return (
-    <QueryClientProvider client={queryClient}>
+     <CreationProvider>
+       <QueryClientProvider client={queryClient}>
        <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Subjects />} /> 
           <Route path="calendar" element={<MyCalendar />} />
-          <Route path="topics/:subjectId" element={<Topics />} />
+          <Route path="subject/:subjectId/topics/" element={<Topics />} />
           <Route path="topics/:subjectId/files/:topicId" element={<Filetable />} />  
           <Route path="storage" element = {<Storage/>}/>
         </Route>
@@ -29,6 +31,8 @@ function App() {
     </Router>
     </QueryClientProvider>
      
+     </CreationProvider>
+   
     
     
   );

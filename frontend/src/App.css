@@ -7,6 +7,8 @@ body{
   overflow-y: hidden;
 }
 
+
+
 @media (max-width: 575px) {
     .hide {
       
@@ -22,29 +24,73 @@ body{
     font-weight: bold;
   }
   
-  .rbc-toolbar button {
+  /*.rbc-toolbar button {
     background-color: #007bff !important;
     color: white !important;
     border-radius: 5px;
-  }
- /* Estilos de boton sideBar*/
+  } *//* Estilos de boton sideBar*/
  
   link{
     text-decoration: none;
   }
-  .btn-link{
-    text-decoration: none !important;
-    transition: all 0.5s ease !important;
+  .btn-custom{
+    
+    transition: all 0.5s ease;
+    background-color: rgba(0, 0, 0, 0.1)
+    !important;
+    
+    
   }
-  .btn-link:hover{
-    background-color: #007bff !important;
+  
+  .btn.active,.btn-custom:hover{
+    background-color: rgba(0, 123, 255)
+    !important;
+  
     color:white !important;
+    border: none !important;
   }
+  /*Con esta opción no salta ninguna animación de movimiento al hacer hover en los botones del sidebar*/
+   /*.btn-custom:hover,
+  .selected{
+    background-color: rgba(0, 123, 255)
+    !important;
+  
+    color:white !important;
+  }*/
+
+
+  /*Estilos sidebar*/
+  .sidebar{
+    width: fit-content;
+  }
+
+
+  /*Estilos Barra de búsqueda*/
+.search-input{
+  background-color: transparent !important;
+  border: none !important;
+ width: 80%;
+  
+  
+  }
+  .search-button{
+   color: black !important;
+  }
+  
+
+  .search-input:focus{
+    outline: none !important;
+  }
+ 
+
+
 
   /*Para que los botones sean clickables solo en la zona que realmente se ven*/
   .nav-item{
     width: fit-content !important;
   }
+
+
   
 /* Estilos de boton SearchBar*/
  
@@ -88,3 +134,27 @@ body{
 }
 
 /*Estilos de tarjeta de Asignatura SubjectCard*/
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resource {
+  animation: fadeIn 0.5s ease-in-out;
+  width: fit-content;
+
+}
+
+.contentContainer{
+  height: 70vh;
+}
+
+

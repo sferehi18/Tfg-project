@@ -1,23 +1,37 @@
 import React from "react";
+import { Button } from "react-bootstrap";
+import ThreeDots from "./threedots";
+import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import useSubjects from "../hooks/UseSubjects";
+function Subjectcard({subjectId,name}){
 
-function Subjectcard({id,name,onClick}){
   const cardstyle = {
         width: '16rem',
-        borderRadius: '10px',
+        
         boxShadow: '0 0 10px rgba(0,0,0,0.1)',
         margin: '10px',
         height: 'fit-content',
-        padding: '5px'
+      
   };
 
+
     return(
-    <div className="card" style={cardstyle} onClick={onClick}>
+    <div className="card rounded-3 p-1 resource" style={cardstyle}>
       
-      <img src="public\images\default_image.png" className="card-img-top" alt="..."></img>
-  <div className="card-body d-flex flex-column">
-  <p className="card-text align-self-end"> <i className="bi bi-three-dots-vertical"></i></p>
-    <h5 className="card-title">{name}</h5>
-    <p className="card-text">Id de asignatura: {id}</p>
+      <img src="src\assets\defaultBlue.jpg" style={{height:'10rem'}} className="card-img-top" alt="..."></img>
+  <div className="card-body  ">
+   <div className="d-flex justify-content-between mb-1">
+   <Link to={`/subject/${subjectId}/topics`}   className="text-decoration-none ">
+  <Button>Ver temas</Button>
+  </Link>
+
+  <ThreeDots className="" resourceId={subjectId} resourceType={"subjects"}></ThreeDots>
+   </div>
+  
+    
+   <h5 className="card-title">{name}</h5>
+    <p className="card-text">Id de asignatura: {subjectId}</p>
     
     
   </div>

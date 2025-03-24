@@ -21,18 +21,13 @@
       "name": "Conocimiento del Medio"
     },
     {
-      "id": "11bf",
-      "name": "Salam"
+      "id": "48d5",
+      "name": "loo"
     },
     {
-      "id": "ef4d",
-      "name": "saram"
-    },
-    {
-      "id": "904b",
-      "name": "mkk"
+      "id": "20db",
+      "name": "li"
     }
- 
   ],
   "topics": [
     {
@@ -78,28 +73,27 @@
       "subjectId": "3"
     }
   ],
-  
-    "files": [
-      {
-        "id": 1,
-        "name": "documento.pdf",
-        "size": "2MB",
-        "type": "pdf",
-        "createdAt": "2024-03-20T12:00:00Z"
-      },
-      {
-        "id": 2,
-        "name": "imagen.jpg",
-        "size": "500KB",
-        "type": "image",
-        "createdAt": "2024-03-19T15:30:00Z"
-      },
-      {
-        "id": 3,
-        "name": "codigo.zip",
-        "size": "10MB",
-        "type": "archive",
-        "createdAt": "2024-03-18T09:00:00Z"
-      }
-    ]
-  }
+  "files": [
+    {
+      "id": "1",
+      "name": "documento.pdf",
+      "size": "2MB",
+      "type": "pdf",
+      "createdAt": "2024-03-20T12:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "imagen.jpg",
+      "size": "500KB",
+      "type": "image",
+      "createdAt": "2024-03-19T15:30:00Z"
+    },
+    {
+      "id": "3",
+      "name": "codigo.zip",
+      "size": "10MB",
+      "type": "archive",
+      "createdAt": "2024-03-18T09:00:00Z"
+    }
+  ]
+}

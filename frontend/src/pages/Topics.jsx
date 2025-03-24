@@ -29,13 +29,13 @@ const Topics = () => {
   if (error) return <div>Error: {error.message}</div>;
   
   return (
-    <div className="bg-white">
-      <h2 className="p-1">Temas de la Asignatura</h2>
-      <div className="bg-white d-flex overflow-auto flex-column flex-wrap">
+    <div className="bg-white rounded-4">
+      <h2 className="p-3">Temas de la Asignatura</h2>
+      <div className="bg-white d-flex overflow-auto flex-column flex-wrap contentContainer">
         {filteredTopics.map(topic => (
-          <Link key={topic.id} to={`/topics/${subjectId}/files/${topic.id}`} className="text-decoration-none">
-            <TopicCard name={topic.name} description={topic.description} />
-          </Link>
+          
+      <TopicCard key={topic.id} name={topic.name} description={topic.description} subjectId={subjectId} topicId={topic.id} />
+         
         ))}
       </div>
     </div>

@@ -3,17 +3,12 @@ import SubjectCard from "../components/SubjectCard";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-
+import { Spinner } from "react-bootstrap";
+import useSubjects from "../hooks/UseSubjects";
+import ThreeDots from "../components/threedots";
 const Subjects = () => {
 
-  const getSubjects = () => {
-    return axios.get("http://localhost:3000/subjects")
-      .then(response => {
-        return response.data;
-      })
-     
-  };
+ const {getSubjects} = useSubjects();
   
 
 const {isLoading, isError , data, error} = useQuery({
@@ -23,32 +18,33 @@ const {isLoading, isError , data, error} = useQuery({
 
 
 
-  const contentstyle = {
-    height: '75vh'
-  };
 
     // Verificación de los estados de carga y error
     if (isLoading) {
-      return <div className="">Cargando...</div>;
+      
+      return <div className="bg-white d-flex justify-content-center align-items-center w-100 "><Spinner animation="border" variant="primary" className=""></Spinner></div> ;
     }
   
     if (isError) {
       return <div>Error: {error.message}</div>;
     }
+
   return (
     
-    <div className="bg-white rounded-2">
-      <div>
-        <h2 className="p-3">Asignaturas</h2>
-      </div>
+    <div className="bg-white rounded-4">
+       <h2 className="p-3 ">Asignaturas</h2>
 
-      <div style={contentstyle} className="bg-white d-flex overflow-auto gap-2 flex-wrap">
+      <div className="bg-white d-flex overflow-auto gap-2 flex-wrap text-align-start contentContainer">
+   
+     
 
         { !isLoading && !isError && data.map((subject) => (
-          <Link to={`/topics/${subject.id}`} key={subject.id}  className="text-decoration-none">
-            <SubjectCard id={subject.id} name={subject.name} />
-          </Link>
+         
+            <SubjectCard key={subject.id} subjectId={subject.id} name={subject.name} />
+      
         ))}
+       
+        
       </div>
     </div>
   );

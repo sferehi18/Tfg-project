@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "moment/locale/es"; // Importa el idioma español
-
+import { useContext } from "react";
 moment.locale("es"); // Ahora debería funcionar
 
 import "react-big-calendar/lib/css/react-big-calendar.css";

@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Spinner } from "react-bootstrap";
 const getFiles = async () =>{
   const response = await axios.get("http://localhost:3000/files");
   return response.data; 
@@ -16,11 +17,10 @@ function Filetable() {
   const { subjectId, topicId } = useParams(); // Extraer subjectId y topicId de la URL
 
   
-  // Filtrar archivos por subjectId y topicId obtenidos de la URL
 
 
   return (
-    <div className="w-100">
+    <div className="w-100 ">
       <h2 className="p-2">Archivos del Tema {topicId}</h2>
       
       <table className="table bg-primary">
