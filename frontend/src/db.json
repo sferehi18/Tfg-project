@@ -1,52 +1,47 @@
 {
   "subjects": [
     {
-      "id": "1",
-      "name": "Matemáticas"
+      "name": "Lengua y literatura",
+      "id": "ppr"
     },
     {
-      "id": "fee",
-      "name": "Física"
+      "id": "deo",
+      "name": "Biología"
     },
     {
-      "id": "fet",
-      "name": "Historia"
+      "id": "ww",
+      "name": "Geografía"
     },
     {
-      "id": "8554",
-      "name": "Quimica"
+      "id": "dd",
+      "name": "Arte"
     },
     {
-      "id": "77c2",
-      "name": "Conocimiento del Medio"
+      "name": "nn",
+      "id": "qq"
     },
     {
-      "id": "48d5",
-      "name": "loo"
-    },
-    {
-      "id": "20db",
-      "name": "li"
+      "id": "7434",
+      "name": "w"
     }
   ],
   "topics": [
     {
+      "name": "Matematicas2.txt",
       "id": "1",
-      "name": "derivadas.txt",
-      "creationdate": "12/02/2024",
-      "subjectId": "1"
+      "subjectId": "ppr"
     },
     {
       "id": "2",
       "name": "ecuaciones.txt",
       "creationdate": "15/02/2024",
-      "subjectId": "1"
+      "subjectId": null
     },
     {
       "id": "3",
       "name": "geometria_2.pdf",
       "creationdate": "20/02/2024",
-      "subjectId": "1"
+      "subjectId": null
     },
     {
       "id": "4",
@@ -71,6 +66,14 @@
       "name": "edad_media_historia.txt",
       "creationdate": "25/02/2024",
       "subjectId": "3"
+    },
+    {
+      "id": "c868",
+      "name": "Derivadas"
+    },
+    {
+      "id": "a147",
+      "name": "w"
     }
   ],
   "files": [
@@ -94,6 +97,68 @@
       "size": "10MB",
       "type": "archive",
       "createdAt": "2024-03-18T09:00:00Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "b9ce",
+      "title": "popo",
+      "start": "2025-03-01T23:00:00.000Z",
+      "end": "2025-03-02T23:00:00.000Z"
+    },
+    {
+      "id": "a240",
+      "title": "lili",
+      "start": "2025-03-02T23:00:00.000Z",
+      "end": "2025-03-03T23:00:00.000Z"
+    },
+    {
+      "id": "8f1f",
+      "title": "loihu",
+      "start": "2025-03-03T23:00:00.000Z",
+      "end": "2025-03-04T23:00:00.000Z"
+    },
+    {
+      "id": "900b",
+      "title": "po",
+      "start": "2025-03-04T23:00:00.000Z",
+      "end": "2025-03-05T23:00:00.000Z"
+    },
+    {
+      "id": "374a",
+      "title": "pop",
+      "start": "2025-03-05T23:00:00.000Z",
+      "end": "2025-03-06T23:00:00.000Z"
+    },
+    {
+      "id": "a3b6",
+      "title": "no",
+      "start": "2025-03-05T23:00:00.000Z",
+      "end": "2025-03-06T23:00:00.000Z"
+    },
+    {
+      "id": "71c0",
+      "title": "no",
+      "start": "2025-03-05T23:00:00.000Z",
+      "end": "2025-03-06T23:00:00.000Z"
+    },
+    {
+      "id": "4900",
+      "title": "ljhp",
+      "start": "2025-03-26T23:00:00.000Z",
+      "end": "2025-03-27T23:00:00.000Z"
+    },
+    {
+      "id": "3a6f",
+      "title": "m",
+      "start": "2025-03-06T23:00:00.000Z",
+      "end": "2025-03-07T23:00:00.000Z"
+    },
+    {
+      "id": "f49f",
+      "title": "Examen",
+      "start": "2025-03-31T22:00:00.000Z",
+      "end": "2025-04-01T22:00:00.000Z"
     }
   ]
 }

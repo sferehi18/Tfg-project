@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+{/*Barra de uso del almacenamiento */}
 function Storagebar() {
   const [usedStorage, setUsedStorage] = useState(25); // GB usados
   const totalStorage = 100; // GB totales

@@ -2,44 +2,57 @@ import React from "react";
 import { useContext } from "react";
 import CreationContext from "../context/ModalsMenusContext";
 import OptionsList from "./OptionsList";
-import AddMenu from "./AddMenu";
-import { DropdownButton } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import useSubjects from "../hooks/UseSubjects";
-import { useMutation } from "@tanstack/react-query";
-function CreateButton({ text, icon}) {
-const {openMenu,closeMenu,closeModal} = useContext(CreationContext);
+import { useTopics,useSubjects } from "../hooks/UseResources";
 
-const menuId = "creationMenu";
-  const queryClient = useQueryClient();
- 
+/** 
+  Componente CreateButton:
+  - Renderiza un botón principal para la creación de recursos.
+  - Al hacer clic, abre un menú con opciones de creación.
+  Props:
+ @param {string} text Texto del botón
+ @param {string} icon Determina el icono del botón Ejemplo(bi bi-plus) 
+*/
 
-  const {handleAddSubject} = useSubjects();
+function CreateButton({ text, icon }) {
+  // Usamos el contexto CreationContext para manejar la apertura y cierre de menús y modales
+  const { openMenu, closeMenu, closeModal,isMenuOpen} = useContext(CreationContext);
   
+  // Definimos un identificador único para el menú de opciones que abrirá este botón
+  const menuId = "creationMenu";
+
+  // Obtenemos la función para añadir asignaturas desde el hook useSubjects
+  const { handleAddSubject } = useSubjects();
+  // Obtenemos la función para añadir asignaturas desde el hook useTopics
+  const {handleAddTopic} = useTopics();
+
+  // Definimos la opción de creación de asignatura con su acción y campos requeridos
   const subject = {
-     label: "Crear Asignatura", 
-     action: handleAddSubject , 
-    fields:["name"]
-     
-
-     
+    label: "Crear Asignatura", // Texto que se mostrará en la opción del menú
+    action: handleAddSubject, // Función que se ejecutará al seleccionar la opción
+    fields: ["name"], // Campos requeridos para crear una asignatura
   };
-  return(
-  
- <div >
+
+  const topic = {
+    label: "Crear Tema", // Texto que se mostrará en la opción del menú
+    action: handleAddTopic, // Función que se ejecutará al seleccionar la opción
+    fields: ["name"], // Campos requeridos para crear una asignatura
+  };
+
+  return (
+    <div  >
+      {/* Botón de creación que al hacer clic abre el menú de opciones */}
       <button
         className="btn btn-primary d-flex align-items-center p-3 mt-3"
-        onClick={ () => openMenu(menuId)}
-        
-        // Si necesitas alguna acción adicional cuando se haga clic en el botón
->
-        <i className={icon}></i> <span className="ms-2 hide">{text}</span>
+        onClick={() => openMenu(menuId)}
+      >
+        <i className={icon}></i> {/* Ícono del botón */}
+        <span className="ms-2 hide">{text}</span> {/* Texto del botón */}
       </button>
-      <OptionsList optionsArray={[subject]} menuId={menuId} ></OptionsList>
-     
+
+      {/* Menú de opciones que se mostrará cuando se haga clic en el botón */}
+       <OptionsList   optionsArray={[subject,topic]} menuId={menuId} />
     </div>
-   
-   
   );
 }
 

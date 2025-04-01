@@ -20,17 +20,16 @@ function Filetable() {
 
 
   return (
-    <div className="w-100 ">
-      <h2 className="p-2">Archivos del Tema {topicId}</h2>
+ 
       
       <table className="table bg-primary">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Tipo</th>
-            <th scope="col">Tamaño</th>
-            <th scope="col">Fecha de Creación</th>
+            <th >ID</th>
+            <th >Nombre</th>
+            <th >Tipo</th>
+            <th >Tamaño</th>
+            <th >Fecha de Creación</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +45,7 @@ function Filetable() {
           ))}
         </tbody>
       </table>
-    </div>
+
   );
 }
 

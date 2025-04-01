@@ -18,11 +18,11 @@ export function CreationProvider({ children }) {
      }
 
      const openModal = (modalId) => {
-        setIsModalOpen(modalId);
+        setIsModalOpen(modalId); // Asegúrate de que el estado se actualice correctamente
         console.log("Modal opened" + modalId);
       }
        const closeModal = () => {
-        setIsModalOpen(false);
+        setIsModalOpen(null);
         console.log("Modal closed");
       }
 
