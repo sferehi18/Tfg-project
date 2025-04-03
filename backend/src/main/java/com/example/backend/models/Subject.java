@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -28,6 +29,8 @@ public class Subject {
    private long id;
     @lombok.NonNull
     private String name;
+    @NonNull
+    private Boolean isFav;
     
 @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
 private List<Topic> topics;

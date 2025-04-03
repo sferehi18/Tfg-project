@@ -14,28 +14,27 @@ const Topics = () => {
   // Usa useQuery para obtener los temas desde el backend
   const { isLoading, data, error } = useQuery({
     queryKey: ["topics"], // Clave única para caché y revalidación de datos
-    queryFn: getTopics, // Función que obtiene los temas desde el backend
+    queryFn:() => getTopics(subjectId), // Función que obtiene los temas desde el backend
   });
 
-  // Filtra los temas para mostrar solo los que pertenecen a la asignatura actual
-  const filteredTopics = data ? data.filter(topic => topic.subjectId === subjectId) : [];
+ 
 
   // Si los datos están cargando, muestra una pantalla de carga
   if (isLoading) return <LoadingPage></LoadingPage>;
 
   // Si no hay temas para esta asignatura, muestra un mensaje informativo
-  if (filteredTopics.length === 0) return <div>Todavía no hay temas para esta asignatura</div>;
+ 
 
   // Si ocurre un error en la consulta, muestra el mensaje de error
   if (error) return <div>Error: {error.message}</div>;
-
+  if (!data) return <div>Todavía no hay temas para esta asignatura</div>;
   return (
     <div className="bg-white rounded-4"> {/* Contenedor principal con estilos */}
       <h2 className="p-3">Temas de la Asignatura</h2> {/* Título de la sección */}
 
       {/* Contenedor para los temas */}
       <div className="bg-white d-flex overflow-auto flex-column flex-wrap contentContainer">
-        {filteredTopics.map(topic => (
+        {data.map(topic => (
           // Renderiza una tarjeta para cada tema
           <TopicCard  
             key={topic.id} 

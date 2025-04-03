@@ -11,19 +11,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.DTOs.TopicDTO;
 import com.example.backend.Services.TopicService;
 @RestController
-@RequestMapping("subjects/{subject_id}/topics")
+
 public class TopicController {
       @Autowired
     private TopicService topicService;
     
 
-   @GetMapping("/")
+   @GetMapping("subjects/{subject_id}/topics/")
 public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subject_id) {
     List<TopicDTO> topics = topicService.getTopicsBySubject(subject_id);
     if (topics.isEmpty()) {
@@ -33,7 +32,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
 }
 
 
-    @PostMapping("/create")
+    @PostMapping("subjects/{subject_id}/topics/create")
     public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long subject_id) throws Exception{
         TopicDTO Topic = topicService.createTopic(newTopic.getName(),subject_id);
        return ResponseEntity.status(HttpStatus.CREATED).body(Topic);
@@ -41,13 +40,13 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TopicDTO> editAllTopic(@PathVariable Long id,@RequestBody TopicDTO newTopic){
+    @PutMapping("topics/{id}/edit")
+    public ResponseEntity<TopicDTO> editAllTopic(@PathVariable(required = true) Long id,@RequestBody TopicDTO newTopic){
       TopicDTO topic = topicService.editAllTopic( newTopic.getName(),id);
       return ResponseEntity.ok(topic);
     }
 
-    @DeleteMapping("/{id}") 
+    @DeleteMapping("topics/{id}/delete") 
     public ResponseEntity<TopicDTO> deleteTopic(@PathVariable(required = true) Long id){
       TopicDTO Topic = topicService.deleteTopic(id);
             return ResponseEntity.ok(Topic);

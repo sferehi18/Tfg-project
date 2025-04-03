@@ -35,10 +35,10 @@ const Subjects = () => {
 
       {/* Lista de asignaturas obtenidas del backend */}
       <div className="bg-white d-flex overflow-auto gap-2 flex-wrap text-align-start contentContainer">
-        {data.map((subject) => (
+        {data && data.map((subject) => (
           // Se genera una SubjectCard por cada asignatura
           // La key es necesaria para que React optimice los cambios en la lista
-          <SubjectCard key={subject.id} subjectId={subject.id} name={subject.name} />
+          <SubjectCard key={subject.id} isFav={subject.isFav == 0 ? false : true } id={subject.id} name={subject.name} />
         ))}
       </div>
     </div>

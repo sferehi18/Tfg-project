@@ -77,14 +77,18 @@ function Sidebar() {
         </li>
 
         {/* Botón de favoritos (sin enlace) */}
+       
         <li className="nav-item mb-1 p-2">
-          <Navbutton
+        <Link to="/favourites">
+        <Navbutton
             text="Favoritos"
             icon="bi bi-heart"
             id="fav"
             isSelected={isSelected}
             setSelected={handleButtonSelect}
           />
+        </Link>
+          
         </li>
 
         {/* Botón de almacenamiento */}

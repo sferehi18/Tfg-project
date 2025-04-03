@@ -12,10 +12,13 @@ function ModalTemplate({ title, fields, action, modalOptionId,message,actionText
     
     action({ id: resourceId, newValues: data }); // Pasa un solo objeto
     closeModal();
-  }) : ((data) =>{
-    action(data);
+  }) : (!fields) ? (() =>{
+    action();
     closeModal();
 
+  }) : ((data) => {
+    action(data); 
+    closeModal();
   });
 
   let modalbody=null;

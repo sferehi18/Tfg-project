@@ -11,6 +11,7 @@ import { QueryClientProvider,QueryClient } from "@tanstack/react-query";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CreationProvider } from "./context/ModalsMenusContext";
 import Files from "./pages/Files";
+import Favourites from "./pages/Favourites";
 const queryClient = new QueryClient();
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="subject/:subjectId/topics/" element={<Topics />} />
           <Route path="topics/:subjectId/files/:topicId" element={<Files />} />  
           <Route path="storage" element = {<Storage/>}/>
+          <Route path="favourites" element={<Favourites />} />
         </Route>
       </Routes>
     </Router>

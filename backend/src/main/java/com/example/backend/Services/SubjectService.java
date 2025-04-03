@@ -17,7 +17,7 @@ public class SubjectService {
 
     // Método para convertir un Subject a SubjectDTO
     public SubjectDTO toSubjectDTO(Subject subject) {
-        return new SubjectDTO(subject.getName(),subject.getId());
+        return new SubjectDTO(subject.getName(),subject.getId(),subject.getIsFav());
     }
 
     // Método auxiliar para obtener una asignatura por ID
@@ -28,7 +28,7 @@ public class SubjectService {
 
     // CREATE METHODS
     public SubjectDTO createSubject(String name) throws Exception {
-        Subject subject = new Subject(name);
+        Subject subject = new Subject(name,false);
         subjectRepository.save(subject);
         return toSubjectDTO(subject);
     }
@@ -52,6 +52,15 @@ public class SubjectService {
         subjectRepository.save(subject);
         return toSubjectDTO(subject);
     }
+
+    public SubjectDTO markSubjectAsFav(Long id, Boolean fav) throws SubjectNotFoundException {
+        Subject subject = findSubjectById(id); // Usamos el método auxiliar
+        subject.setIsFav(fav);
+        subjectRepository.save(subject);
+        return toSubjectDTO(subject);
+    }
+
+
 
     // DELETE METHODS
     public SubjectDTO deleteSubject(Long id) throws SubjectNotFoundException {

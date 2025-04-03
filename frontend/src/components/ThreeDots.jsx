@@ -3,9 +3,12 @@ import { Button, DropdownButton } from "react-bootstrap";
 import CreationContext from "../context/ModalsMenusContext";
 import OptionsList from "./OptionsList";
 import {useSubjects, useTopics} from "../hooks/UseResources";
+import { useParams } from "react-router-dom";
+import SimpleIconButton from "./SimpleIconButton";
 
 function ThreeDots({resourceId,resourceType}){
    const {openMenu,closeMenu} = useContext(CreationContext);
+   const {subjectId} = useParams();
 const {handleDeleteSubject,handleEditSubject} = useSubjects();
 const {handleDeleteTopic,handleEditTopic} = useTopics();
     const menuId = "threedootsMenu" + resourceId;
@@ -34,16 +37,16 @@ const {handleDeleteTopic,handleEditTopic} = useTopics();
     const topic = {
       deleteOption:{
          label: "Borrar", 
-         action:handleDeleteTopic , 
+         action:() => handleDeleteTopic(resourceId), 
          message: "¿Seguro que quieres borrar este Recurso y su asociados?",
          actionButtonStyle:"danger",
-         resourceId: resourceId
+         
          
       },
 
       editOption: {
          label: "Editar", 
-         action:handleEditTopic , 
+         action: handleEditTopic, 
          fields:["name"],
          actionButtonStyle:"warning",
          resourceId: resourceId
@@ -59,11 +62,11 @@ const {handleDeleteTopic,handleEditTopic} = useTopics();
 
     return (
       <div   >
-         <Button  style={{zIndex:'10'}} className="card-text btn-sm " onClick={() => openMenu(menuId)}>
-         <i className="bi bi-three-dots-vertical"></i>
+         <SimpleIconButton  style={{zIndex:'10'}} icon={"bi bi-three-dots-vertical"} className="card-text btn-sm " onClick={() => openMenu(menuId)}/>
+        
     
      
-      </Button>
+
            <OptionsList  style={{zIndex:1000}} optionsArray={options}  menuId={menuId} modalId={modalId} ></OptionsList>
       </div>
     

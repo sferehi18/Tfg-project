@@ -18,7 +18,7 @@ import { Button } from "react-bootstrap"; // Importamos el componente Button de 
  * @param {string} modalId - Identificador único del modal.
  * @param {string} resourceId - ID del recurso que se usará en la acción.
  */
-function ConfirmActionModal({ action, title, warningMessage, confirmButtonText, confirmButtonType, modalId, resourceId }) {
+function ConfirmActionModal({ action, title, message, confirmButtonText, confirmButtonType, modalId, resourceId }) {
     // Accedemos al estado del contexto para manejar la visibilidad del modal
     const { isModalOpen, closeModal } = useContext(CreationContext);
 
@@ -33,7 +33,7 @@ function ConfirmActionModal({ action, title, warningMessage, confirmButtonText, 
 
             {/* Cuerpo del modal con el mensaje de advertencia */}
             <Modal.Body>
-                <p>{warningMessage}</p>
+                <p>{message}</p>
             </Modal.Body>
 
             {/* Pie del modal con botones de acción */}

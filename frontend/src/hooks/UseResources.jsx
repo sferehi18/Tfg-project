@@ -10,7 +10,7 @@ export function useSubjects() {
 
 //Obtener Asignaturas
   const getSubjects = () => {
-    return axios.get("http://localhost:3000/subjects")
+    return axios.get("http://localhost:8080/subjects/")
       .then(response => {
         return response.data;
       })
@@ -21,7 +21,7 @@ export function useSubjects() {
   //Crear Asignaturas
   const addSubject = async (subject) => {
 
-    const response = await axios.post("http://localhost:3000/subjects", subject);
+    const response = await axios.post("http://localhost:8080/subjects/create", subject);
     return response.data;
   
 };
@@ -52,7 +52,7 @@ const handleAddSubject = (newSubject) => {
 
 const deleteSubject = async (id) => {
  
-    const response = await axios.delete(`http://localhost:3000/subjects/${id}`);
+    const response = await axios.delete(`http://localhost:8080/subjects/${id}`);
     
     return response;
   
@@ -77,7 +77,7 @@ const handleDeleteSubject = (id) => {
 //Editar Asignatura
 const editSubject = async ({ id, newValues }) =>{
   console.log("Editando asignatura con ID:", id, "y nuevos valores:", newValues);
-  const response = await axios.put(`http://localhost:3000/subjects/${id}`,newValues);
+  const response = await axios.put(`http://localhost:8080/subjects/${id}`,newValues);
   return response.data;
 
 };
@@ -99,21 +99,49 @@ const handleEditSubject = ({ id, newValues }) => {
   console.log("Editando asignatura con ID:", id);
   subjectEdit.mutate({ id, newValues });
 };
+
+const markasfavorite = async ({ id, isFavorite }) => {
+  const response = await axios.patch(`http://localhost:8080/subjects/${id}/favorite`, isFavorite, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
+
+const subjectMarkAsFavorite = useMutation({
+  mutationFn: markasfavorite,
+  onSuccess: () => {
+    console.log("Asignatura marcada como favorita");
+    queryClient.invalidateQueries("subjects");
+  },
+  onError: () => {
+    console.log("Error al marcar asignatura como favorita");
+  }
+})
+
+const handleMarkAsFavorite = (id, isFavorite) => {
+  console.log(`Marcando asignatura ${id} como favorita: ${isFavorite}`);
+  subjectMarkAsFavorite.mutate({ id, isFavorite });
+};
+
   
-   return {handleAddSubject,getSubjects,handleDeleteSubject,handleEditSubject};
+   return {handleAddSubject,getSubjects,handleDeleteSubject,handleEditSubject,handleMarkAsFavorite};
    
 }
 
 export const useTopics = () =>{
   const queryClient = useQueryClient(); 
-  const getTopics = async () => {
+  const BASE_URL = "http://localhost:8080/subjects/";
+  const getTopics = async (subjectId) => {
 
-    const response = await axios.get("http://localhost:3000/topics");
+    const response = await axios.get(`${BASE_URL}${subjectId}/topics/`);
     return response.data;
   };
 
-  const addTopic = async (newTopic) =>{
-   const response = await axios.post("http://localhost:3000/topics",newTopic)
+  const addTopic = async (subjectId,newTopic) =>{
+   const response = await axios.post(`${BASE_URL}${subjectId}/topics/`,newTopic)
    return response.data;
   }
 
@@ -136,7 +164,7 @@ export const useTopics = () =>{
 
 
   const deleteTopic = async (id) => {
-    const response = await axios.delete(`http://localhost:3000/topics/${id}`);
+    const response = await axios.delete(`http://localhost:8080/topics/${id}/delete`);
     return response;
   }
 
@@ -155,13 +183,14 @@ export const useTopics = () =>{
  
 
  const handleDeleteTopic = (id) =>{
-  topicDelete.mutate(id)
+  topicDelete.mutate(id);
+  console.log("Borrando tema con ID:", id);
  }
 
 
  const editTopic = async ({ id, newValues }) =>{
   console.log("Editando tema con ID:", id, "y nuevos valores:", newValues);
-  const response = await axios.put(`http://localhost:3000/topics/${id}`,newValues);
+  const response = await axios.put(`http://localhost:8080/topics/${id}/edit`,newValues);
   return response.data;
 
 };

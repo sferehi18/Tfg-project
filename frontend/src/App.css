@@ -58,6 +58,13 @@ body{
     color:white !important;
   }
 
+  /*Estilo botones icono*/	
+  .btn-icon{
+    background-color: transparent !important;
+    border: none !important;
+    
+    transition: all 0.5s ease;
+  }
 
   /*Estilos sidebar*/
   .sidebar{

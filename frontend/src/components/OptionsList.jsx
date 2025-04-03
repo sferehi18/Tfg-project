@@ -4,7 +4,7 @@ import CreationContext from "../context/ModalsMenusContext";
 import ModalTemplate from "./ModalTemplate";
 import ConfirmActionModal from "./ConfirmActionModal";
 
-function OptionsList({ optionsArray, menuId,modalId }) {
+function OptionsList({ optionsArray, menuId }) {
   const { isMenuOpen, openModal, closeMenu } = useContext(CreationContext);
 
   const handleOpenModal = (modalId) => {
@@ -42,7 +42,7 @@ function OptionsList({ optionsArray, menuId,modalId }) {
               ) : (
                 <ConfirmActionModal
                   title={option.label}
-                  warningMessage={option.message}
+                  message={option.message}
                   confirmButtonType={option.actionButtonStyle} // Use the correct style
                   confirmButtonText={option.label} // Use the correct text
                   action={option.action}
