@@ -1,6 +1,6 @@
 import React from "react";
 import Filetable from "../pages/FileTable";
-import Storagebar from "../components/storageBar";
+import Storagebar from "../components/StorageBar";
 // Página de Almacenamiento
 const Storage = () => {
    

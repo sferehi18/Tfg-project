@@ -5,53 +5,23 @@ import OptionsList from "./OptionsList";
 import {useSubjects, useTopics} from "../hooks/UseResources";
 import { useParams } from "react-router-dom";
 import SimpleIconButton from "./SimpleIconButton";
+import { useCrudOptions } from "../hooks/UseCrudOptions";
 
 function ThreeDots({resourceId,resourceType}){
    const {openMenu,closeMenu} = useContext(CreationContext);
    const {subjectId} = useParams();
 const {handleDeleteSubject,handleEditSubject} = useSubjects();
 const {handleDeleteTopic,handleEditTopic} = useTopics();
+const {subject,topic} = useCrudOptions();
     const menuId = "threedootsMenu" + resourceId;
     const modalId = "deleteResource" + resourceId;
 
-    const subject = {
-      deleteOption:{
-         label: "Borrar", 
-         action:handleDeleteSubject , 
-         message: "¿Seguro que quieres borrar este Recurso y su asociados?",
-         actionButtonStyle:"danger",
-         resourceId: resourceId
-         
-      },
+   subject.deleteOption.resourceId = resourceId;
+   subject.editOption.resourceId = resourceId;
+   topic.editOption.resourceId = resourceId;
+   topic.deleteOption.resourceId = resourceId;
+   
 
-      editOption: {
-         label: "Editar", 
-         action:handleEditSubject , 
-         fields:["name"],
-         actionButtonStyle:"warning",
-         resourceId: resourceId
-      }
-    }
-
-
-    const topic = {
-      deleteOption:{
-         label: "Borrar", 
-         action:() => handleDeleteTopic(resourceId), 
-         message: "¿Seguro que quieres borrar este Recurso y su asociados?",
-         actionButtonStyle:"danger",
-         
-         
-      },
-
-      editOption: {
-         label: "Editar", 
-         action: handleEditTopic, 
-         fields:["name"],
-         actionButtonStyle:"warning",
-         resourceId: resourceId
-      }
-    }
 
    
 

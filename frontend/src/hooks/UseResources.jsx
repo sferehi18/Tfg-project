@@ -140,8 +140,9 @@ export const useTopics = () =>{
     return response.data;
   };
 
-  const addTopic = async (subjectId,newTopic) =>{
-   const response = await axios.post(`${BASE_URL}${subjectId}/topics/`,newTopic)
+  const addTopic = async ({id,newValues}) =>{
+    console.log("Añadiendo nuevo tema:", newValues, "a la asignatura con ID:", id);
+   const response = await axios.post(`${BASE_URL}${id}/topics/create`,newValues)
    return response.data;
   }
 
@@ -158,8 +159,9 @@ export const useTopics = () =>{
    
   });
 
-  const handleAddTopic = (newTopic) =>{
-    createTopic.mutate(newTopic);
+  const handleAddTopic = ({id,newValues}) =>{
+ 
+    createTopic.mutate({id,newValues});
   }
 
 
@@ -223,7 +225,7 @@ export const useEvents = () =>{
   const queryClient = useQueryClient();
 
   const getEvents =  () => {
-    return axios.get("http://localhost:3000/events")
+    return axios.get("http://localhost:8080/events/")
     .then(response => {
       return response.data;}
     );
@@ -235,8 +237,28 @@ export const useEvents = () =>{
 
 
   const addEvent = async (newEvent) =>{
-   const response = await axios.post("http://localhost:3000/events",newEvent);
+   const response = await axios.post("http://localhost:8080/events/create",newEvent);
     return response;
+  }
+
+  const deleteEvent = async (id) => {
+    const response = await axios.delete(`http://localhost:8080/events/${id}`);
+    return response;
+  }
+
+  const eventDelete = useMutation({
+    mutationFn:deleteEvent,
+    onSuccess: () =>{
+      queryClient.invalidateQueries("events");
+      console.log("Evento borrado correctamente");
+    },
+    onError: () =>{
+      console.log("Error al borrar evento");
+    }
+  })
+
+  const handleDeleteEvent = (id) =>{
+    eventDelete.mutate(id);
   }
 
 
@@ -257,5 +279,5 @@ export const useEvents = () =>{
     eventAdd.mutate(newEvent);
   }
 
-  return {handleAddEvent,getEvents}
+  return {handleAddEvent,getEvents,handleDeleteEvent}
 }

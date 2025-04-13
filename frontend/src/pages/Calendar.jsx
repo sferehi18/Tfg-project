@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
-import "moment/locale/es"; // Importa el idioma español
+import { Calendar, momentLocalizer , dayjsLocalizer} from "react-big-calendar";
+import dayjs from "dayjs";
 import { useContext } from "react";
 
 import { useQuery } from "@tanstack/react-query";
@@ -10,39 +9,68 @@ import ModalTemplate from "../components/ModalTemplate";
 import CreationContext from "../context/ModalsMenusContext";
 import { useEvents } from "../hooks/UseResources";
 
-const localizer = momentLocalizer(moment);
-
+import "dayjs/locale/es"; // Importa el idioma español para dayjs
+import { useCrudOptions } from "../hooks/UseCrudOptions";
+import ConfirmActionModal from "../components/ConfirmActionModal";
+dayjs.locale("es"); // Establece el idioma español para dayjs
+const localizer = dayjsLocalizer(dayjs); // Configura el localizador para usar dayjs
+ // Establece el idioma español para moment.js
 function MyCalendar() {
+  
 
   const { openModal } = useContext(CreationContext);
-  const [events, setEvents] = useState([]);
+  const [selectedOption,setSelectedOption] = useState({}); // Guarda la opción seleccionada
+  const {event} = useCrudOptions();
   const [selectedSlot, setSelectedSlot] = useState(null); // Guarda la fecha seleccionada
-  const {handleAddEvent,getEvents} = useEvents();
+  const {getEvents} = useEvents();
   const modalId = "EventMenu";
   const handleSelectSlot = ({ start, end }) => {
+    console.log("Slot seleccionado:", start, end); // Muestra el slot seleccionado en la consola
     setSelectedSlot({ start, end }); // Guarda el slot seleccionado
+    setSelectedOption(event.createOption);
     openModal(modalId);
+     // Establece la opción seleccionada
   };
+
+  const handleSelectEvent = (eventSelected) => {
+    console.log("Evento seleccionado:", eventSelected);
+    event.deleteOption.resourceId = eventSelected.id; // Muestra el evento seleccionado en la consola
+    setSelectedOption(event.deleteOption); // Establece la opción seleccionada
+    openModal(modalId);
+  }
+
+
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["events"],
-    queryFn: getEvents,
+    queryFn: async () => {
+      const events = await getEvents();
+      return events.map(event => ({
+        ...event,
+        start: new Date(event.start), // <-- 🔥 convertir a Date
+        end: new Date(event.end),
+      }));
+    },
   });
- 
-  const newEvent = (event) => {
-    if (event.title) {
+  
+  const handleAddEvent = (newevent) => {
+    if (selectedOption.fields) {
       
      
 
-      handleAddEvent({title: event.title,
+      selectedOption.action({
+        title: newevent.title,
         start: selectedSlot.start,
-        end: selectedSlot.end});
-    }
-  };
+        end: selectedSlot.end,
+      });
+      
+  }
+    setSelectedOption({}); // Cierra el modal después de crear el evento
+};
 
   const messages = {
     allDay: "Todo el día",
-    previous: "Anterior",
-    next: "Siguiente",
+    previous: "<",
+    next: ">",
     today: "Hoy",
     month: "Mes",
     week: "Semana",
@@ -58,27 +86,40 @@ function MyCalendar() {
     <div className="contentContainer rounded-4">
       <h2 className="p-2">Calendario</h2>
       <Calendar
-    
+      popup
         localizer={localizer}
         events={data}
         selectable={true}
         onSelectSlot={handleSelectSlot}
         startAccessor="start"
         endAccessor="end"
-        views={["month"]}
+       step={15}
+       onSelectEvent={handleSelectEvent}
+        defaultView="week"
+        views={['month', 'week', 'day', 'agenda']} 
         style={{ height: 500 }}
         messages={messages}
       />
 
-      {
-        <ModalTemplate
-          title={"Añadir Evento"}
-          fields={["title"]}
+      {   (selectedOption != null ) &&  selectedOption.fields != undefined ? (<ModalTemplate
+          title={selectedOption.label}
+          fields={selectedOption.fields}
           actionButtonStyle={"primary"}
-          actionText={"Añadir"}
-          action={newEvent}
+          actionText={selectedOption.label}
+          action={handleAddEvent}
           modalOptionId={modalId}
-        ></ModalTemplate>
+        ></ModalTemplate>):  <ConfirmActionModal
+        title={selectedOption.label}
+        message={selectedOption.message}
+        confirmButtonType={selectedOption.actionButtonStyle} // Use the correct style
+        confirmButtonText={selectedOption.label} // Use the correct text
+        action={selectedOption.action}
+        resourceId={selectedOption.resourceId} // Ensure it matches the state
+        modalId={modalId} // Ensure it matches the state
+        // resurceId={resourceId} // Asegúrate de que coincida con el estado
+       
+      />
+       
       }
     </div>
   );

@@ -5,7 +5,7 @@ function Content() {
 
 
   return (
-    <div >
+    <div className="bg-white rounded-4 ">
       
       {/* Aquí renderizamos el contenido dinámicamente usando Outlet */}
       <Outlet 

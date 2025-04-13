@@ -4,6 +4,7 @@ import CreationContext from "../context/ModalsMenusContext";
 import OptionsList from "./OptionsList";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTopics,useSubjects } from "../hooks/UseResources";
+import { useCrudOptions } from "../hooks/UseCrudOptions";
 
 /** 
   Componente CreateButton:
@@ -17,21 +18,12 @@ import { useTopics,useSubjects } from "../hooks/UseResources";
 function CreateButton({ text, icon }) {
   // Usamos el contexto CreationContext para manejar la apertura y cierre de menús y modales
   const { openMenu, closeMenu, closeModal,isMenuOpen} = useContext(CreationContext);
+  const {subject} = useCrudOptions();
   
   // Definimos un identificador único para el menú de opciones que abrirá este botón
   const menuId = "creationMenu";
-
-  // Obtenemos la función para añadir asignaturas desde el hook useSubjects
-  const { handleAddSubject } = useSubjects();
   // Obtenemos la función para añadir asignaturas desde el hook useTopics
   const {handleAddTopic} = useTopics();
-
-  // Definimos la opción de creación de asignatura con su acción y campos requeridos
-  const subject = {
-    label: "Crear Asignatura", // Texto que se mostrará en la opción del menú
-    action: handleAddSubject, // Función que se ejecutará al seleccionar la opción
-    fields: ["name"], // Campos requeridos para crear una asignatura
-  };
 
   const topic = {
     label: "Crear Tema", // Texto que se mostrará en la opción del menú
@@ -51,7 +43,7 @@ function CreateButton({ text, icon }) {
       </button>
 
       {/* Menú de opciones que se mostrará cuando se haga clic en el botón */}
-       <OptionsList   optionsArray={[subject,topic]} menuId={menuId} />
+       <OptionsList   optionsArray={[subject.createOption,topic]} menuId={menuId} />
     </div>
   );
 }

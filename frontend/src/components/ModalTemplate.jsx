@@ -8,15 +8,15 @@ function ModalTemplate({ title, fields, action, modalOptionId,message,actionText
   const { isModalOpen, closeModal } = useContext(CreationContext);
     const {handleSubmit,register} = useForm();
 
-  const handleonSubmit = resourceId ? ((data) => {
+  const handleonSubmit = resourceId && fields ? ((data) => {
     
     action({ id: resourceId, newValues: data }); // Pasa un solo objeto
     closeModal();
-  }) : (!fields) ? (() =>{
-    action();
+  }) : (resourceId && !fields) ? (() =>{
+    action(resourceId);
     closeModal();
 
-  }) : ((data) => {
+  }) :  ((data) => {
     action(data); 
     closeModal();
   });

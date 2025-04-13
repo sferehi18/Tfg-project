@@ -46,9 +46,10 @@ function Subjectcard({ id, name, isFav }) {
           </Link>
           {/*Botón que abre un menu con opciones de eliminación o edición de un recurso concreto*/}
           <div className="d-flex flex-nowrap align-items-center">
-          <SimpleIconButton color={"red"}
+          <SimpleIconButton animationClass={isFavorite ? "pulse" : ""} color={"red"}
             icon={isFavorite ? "bi bi-heart-fill" : "bi bi-heart"}
             onClick={() => toggleIsFavorite(id, !isFavorite)}
+            
           />
           <ThreeDots
             className=""
@@ -64,7 +65,6 @@ function Subjectcard({ id, name, isFav }) {
         <h5 className="card-title">{name}</h5>
         <p className="card-text">
           Marcar como favorito:
-         
         </p>
       </div>
     </div>

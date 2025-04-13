@@ -32,9 +32,9 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
 }
 
 
-    @PostMapping("subjects/{subject_id}/topics/create")
-    public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long subject_id) throws Exception{
-        TopicDTO Topic = topicService.createTopic(newTopic.getName(),subject_id);
+    @PostMapping("subjects/{id}/topics/create")
+    public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long id) throws Exception{
+        TopicDTO Topic = topicService.createTopic(newTopic.getName(),id);
        return ResponseEntity.status(HttpStatus.CREATED).body(Topic);
     
     }
