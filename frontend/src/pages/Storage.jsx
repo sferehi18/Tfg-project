@@ -1,20 +1,27 @@
 import React from "react";
 import Filetable from "../pages/FileTable";
 import Storagebar from "../components/StorageBar";
+import { useQuery } from "@tanstack/react-query";
+import { useFiles } from "../hooks/UseResources";
 // Página de Almacenamiento
 const Storage = () => {
-   
+ 
+  const {getAllFiles} = useFiles(); // Hook para manejar archivos
+   const {isLoading,error,data} = useQuery({
+     queryKey:  ["files"],
+     queryFn:getAllFiles,
+   });
    return(
       // Contenedor principal de la página de almacenamiento
     <div className="bg-white d-flex overflow-auto flex-column flex-wrap rounded-4 contentContainer">
         <h2 className="p-3"><i className="bi bi-cloud p-1"></i>Almacenamiento</h2>
         <div>
       {/*Usamos el componente Storagebar que muestra la barra cargada segun el almacenamiento usado*/ }
-        <Storagebar></Storagebar>
+        <Storagebar files= {data} ></Storagebar>
         </div>
         <div>
           {/*Usamos el componente Filetable que muestra una lista de archivos*/ }
-        <Filetable></Filetable>
+        <Filetable files={data}></Filetable>
         </div>
         
         </div>

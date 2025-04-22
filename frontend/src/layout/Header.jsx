@@ -4,13 +4,19 @@ function Header() {
   return (
     <div className="row align-items-center p-1 mt-1 ">
       {/* Logo y texto */}
-      <div className="ml-4  col-md-2 col-sm-5 col-5 d-flex align-items-center ">
+      <div className="ml-4  col-md-2 col-sm-4 col-5 d-flex align-items-center ">
         <img src="/images/LOGO 1.png" alt="Logo" className="logo" />
         <h3 className="ms-2 fs-4 fw-bold">edu-vault</h3>
       </div>
 
       {/* Barra de búsqueda */}
-      <SearchBar></SearchBar>
+      
+      <div
+        className="col-md-6 col-sm-5 col-4"
+        
+      >
+        <SearchBar />
+      </div>
      {/* <div className="col-md-6  col-4 d-flex justify-content-center align-items-center ">
   <div className="input-group ">
     <span className="input-group-text ">

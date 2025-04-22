@@ -20,6 +20,6 @@ public class TopicDTO {
  private Long id;
  @NonNull
 private Long subject_id;
-private List<FileDTO> files;
+
     
 }

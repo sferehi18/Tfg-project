@@ -20,12 +20,12 @@ public class Topic {
 
     @NonNull
     private String name;
-
+ 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileUpload> files;
-
-    @ManyToOne
     @NonNull
+    @ManyToOne
+    
     @JoinColumn(name = "subject_id", nullable = false) // Evita temas sin asignatura
     @JsonIgnore
     private Subject subject;

@@ -24,7 +24,7 @@ function TopicCard({description,name,subjectId,topicId}){
     </div>
     <div className="d-flex gap-2">
       {/*Cada tema tendra un boton de enlace a sus archivos  */}
-    <Link  to={`/topics/${subjectId}/files/${topicId}`} className="text-decoration-none ">
+    <Link  to={`${topicId}/files`} className="text-decoration-none ">
     <Button>Ver archivos</Button>
     </Link>
     {/*Cada tema tendra un boton de edición al que se le pasara como prop el nombre e id del mismo para asi asociarlo correctamente

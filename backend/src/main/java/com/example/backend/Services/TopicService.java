@@ -1,5 +1,6 @@
 package com.example.backend.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import com.example.backend.Repositories.SubjectRepository;
 import com.example.backend.exceptions.TopicNotFoundException;
 import com.example.backend.exceptions.SubjectNotFoundException;
 import com.example.backend.models.Topic;
+import com.example.backend.models.FileUpload;
 import com.example.backend.models.Subject;
 
 @Service
@@ -47,6 +49,7 @@ public class TopicService {
 
     // 🔹 Crear un tema asociado a un Subject
     public TopicDTO createTopic(String name, Long subjectId) {
+        // Inicializa la lista de archivos como null o vacía según tu lógica
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException("No se encontró la asignatura"));
         Topic topic = new Topic(name, subject);

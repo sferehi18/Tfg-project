@@ -98,6 +98,7 @@ body{
   /*Estilos sidebar*/
   .sidebar{
     width: fit-content;
+    height: 100vh;
   }
 
 

@@ -1,8 +1,5 @@
 package com.example.backend.models;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-
 
 import jakarta.persistence.*;
 

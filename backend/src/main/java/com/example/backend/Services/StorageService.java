@@ -36,11 +36,11 @@ public class StorageService {
             String filename = multipartFile.getOriginalFilename();
             Path targetLocation = Paths.get("src\\main\\resources\\uploads").resolve(filename);
             Files.copy(multipartFile.getInputStream(), targetLocation);
-
+            String realMimeType = Files.probeContentType(targetLocation);
             // Guardamos los detalles del archivo en la base de datos
             FileUpload file = new FileUpload();
             file.setName(filename);
-            file.setContentType(multipartFile.getContentType());
+            file.setContentType(realMimeType);
             file.setCreated_at(LocalDate.now());
             file.setSize(multipartFile.getSize());
 
@@ -60,4 +60,52 @@ public class StorageService {
     
         return files;
     }
+
+    public List<FileUpload> getAllFilesInfo(){
+        List<FileUpload> files = fileRepository.findAll();
+        return files;
+    }
+    public FileUpload getFileInfoById(Long id) {
+        return fileRepository.findById(id).orElse(null);
+    }
+
+    public Path getFilePath(Long id){
+        FileUpload file = fileRepository.findById(id).orElse(null);
+        if (file == null) {
+            return null; // O lanzar una excepción si prefieres
+        }
+        Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
+        return filePath;
+    }
+
+    public void deleteFile(Long id) {
+        FileUpload file = fileRepository.findById(id).orElse(null);
+        if (file != null) {
+            // Eliminar el archivo físico del sistema de archivos
+            Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
+            try {
+                Files.deleteIfExists(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException("Error al eliminar el archivo", e);
+            }
+            // Eliminar la entrada de la base de datos
+            fileRepository.delete(file);
+        }
+    }
+    public void deleteFileByTopicId(Long topic_id) {
+        List<FileUpload> files = fileRepository.findByTopicId(topic_id);
+        for (FileUpload file : files) {
+            // Eliminar el archivo físico del sistema de archivos
+            Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
+            try {
+                Files.deleteIfExists(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException("Error al eliminar el archivo", e);
+            }
+            // Eliminar la entrada de la base de datos
+            fileRepository.delete(file);
+        }
+}
+
+   
 }

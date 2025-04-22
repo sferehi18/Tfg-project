@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { CreationProvider } from "./context/ModalsMenusContext";
 import Files from "./pages/Files";
 import Favourites from "./pages/Favourites";
+import UserSettings from "./pages/UserSettings";
 const queryClient = new QueryClient();
 function App() {
 
@@ -26,8 +27,9 @@ function App() {
           <Route index element={<Subjects />} /> 
           <Route path="calendar" element={<MyCalendar />} />
           <Route path="subject/:subjectId/topics/" element={<Topics />} />
-          <Route path="topics/:subjectId/files/:topicId" element={<Files />} />  
+          <Route path="subject/:subjectId/topics/:topicId/files" element={<Files />} />  
           <Route path="storage" element = {<Storage/>}/>
+          <Route path="userSettings" element={<UserSettings />} />
           <Route path="favourites" element={<Favourites />} />
         </Route>
       </Routes>

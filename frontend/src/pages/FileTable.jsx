@@ -1,46 +1,47 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { Spinner } from "react-bootstrap";
-const getFiles = async () =>{
-  const response = await axios.get("http://localhost:3000/files");
-  return response.data; 
-}
+import SimpleIconButton from "../components/SimpleIconButton";
+import { useFiles } from "../hooks/UseResources";
 
-function Filetable() {
-  const {isLoading,error,data} = useQuery({
-    queryKey:  ["files"],
-    queryFn: getFiles,
-  });
 
-  const { subjectId, topicId } = useParams(); // Extraer subjectId y topicId de la URL
 
-  
+function Filetable({files}) {
+  const {handleDeleteFile} = useFiles(); // Hook para manejar archivos
+
+
+
+const handleOpenFile = (fileId) => {
+  window.open(`http://localhost:8080/files/${fileId}/open`, "_blank");
+} 
+
+
+ 
 
 
   return (
  
       
-      <table className="table bg-primary">
+      <table className="table table-striped table-hover  table-sm">
         <thead>
           <tr>
-            <th >ID</th>
+          
             <th >Nombre</th>
-            <th >Tipo</th>
+        
             <th >Tamaño</th>
             <th >Fecha de Creación</th>
           </tr>
         </thead>
         <tbody>
-          {!isLoading &&
-        data.map((file) => (
-            <tr key={file.id}>
-              <th>{file.id}</th>
+          {files &&
+        files.map((file) => (
+            <tr key={file.id} >
+           
               <td>{file.name}</td>
-              <td>{file.type}</td>
+             
               <td>{file.size}</td>
-              <td>{file.createdAt}</td>
+              <td>{file.created_at}</td>
+              <td><SimpleIconButton icon={"bi bi-file-earmark"} color={"black"} onClick={() => handleOpenFile(file.id)} /></td>
+              <td><SimpleIconButton icon={"bi bi-trash"} color={"red"} onClick={() => handleDeleteFile(file.id)} /></td>
+
             </tr>
           ))}
         </tbody>

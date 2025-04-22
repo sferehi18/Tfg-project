@@ -242,7 +242,7 @@ export const useEvents = () =>{
   }
 
   const deleteEvent = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/events/${id}`);
+    const response = await axios.delete(`http://localhost:8080/events/delete/${id}`);
     return response;
   }
 
@@ -280,4 +280,75 @@ export const useEvents = () =>{
   }
 
   return {handleAddEvent,getEvents,handleDeleteEvent}
+  
+
+}
+
+export const useFiles = () =>{
+  const queryClient = useQueryClient();
+const  getFiles = async (id) => {
+    const response = await axios.get(`http://localhost:8080/topics/${id}/files/`);
+    return response.data;
+  }
+
+  const  getAllFiles = async () => {
+    const response = await axios.get(`http://localhost:8080/files/`);
+    return response.data;
+  }
+
+  const addFiles = async ({ id, newFile }) => {
+    console.log("Añadiendo nuevo archivo:", newFile, "al tema con ID:", id);
+    
+    const formData = new FormData();
+    formData.append("file", newFile); // "file" debe coincidir con @RequestParam("file") en tu backend
+  
+    const response = await axios.post(
+      `http://localhost:8080/topics/${id}/files/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  
+    return response.data;
+  };
+
+  const fileAdd = useMutation({
+    mutationFn:addFiles,
+    onSuccess: () =>{
+      queryClient.invalidateQueries("files");
+      console.log("Archivo añadido correctamente");
+    },
+    onError: () =>{
+      console.error("Error al añadir archivo:", error?.response?.data || error.message);
+    }
+  })
+
+  const handleAddFile = ({id,newFile}) => {
+    fileAdd.mutate({id,newFile});
+  }
+
+
+  const deleteFile = async (id) => {
+    const response = await axios.delete(`http://localhost:8080/files/${id}/delete`);
+    return response.data;
+  }
+
+  const fileDelete = useMutation({
+    mutationFn:deleteFile,
+    onSuccess: () =>{
+      queryClient.invalidateQueries("files");
+      console.log("Archivo borrado correctamente");
+    },
+    onError: () =>{
+      console.log("Error al borrar archivo");
+    }
+  })
+
+  const handleDeleteFile = (id) =>{
+    fileDelete.mutate(id);
+  }
+  return {getFiles,getAllFiles,handleAddFile,handleDeleteFile};
 }

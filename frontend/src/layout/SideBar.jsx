@@ -31,7 +31,7 @@ function Sidebar() {
 
   return (
    
-    <div className="sidebar bg-light" style={{ height: "100vh", zIndex: 1000 }}>
+    <div className="sidebar bg-light" style={{ zIndex: 1000 }}>
       
       <ul className="nav align-items-left flex-column">
         {/* Botón para crear nuevos elementos */}
@@ -40,7 +40,7 @@ function Sidebar() {
         </li>
 
         {/* Botón de navegación a la página principal */}
-        <li className="nav-item p-2">
+        <li className="nav-item p-2 mb-3">
           <Link to="/" className="text-decoration-none">
             <Navbutton
               text="Página principal"
@@ -53,7 +53,7 @@ function Sidebar() {
         </li>
 
         {/* Botón de navegación al calendario */}
-        <li className="nav-item mb-1 p-2">
+        <li className="nav-item mb-1 p-2 mb-3">
           <Link to="/calendar" className="text-decoration-none">
             <Navbutton
               text="Calendario"
@@ -66,7 +66,8 @@ function Sidebar() {
         </li>
 
         {/* Botón de notificaciones (sin enlace) */}
-        <li className="nav-item mb-1 p-2">
+        <li className="nav-item mb-1 p-2 mb-3">
+          <Link to="/userSettings" className="text-decoration-none"> 
           <Navbutton
             text="Notificaciones"
             icon="bi bi-bell"
@@ -74,12 +75,15 @@ function Sidebar() {
             isSelected={isSelected}
             setSelected={handleButtonSelect}
           />
+          
+          </Link>
+        
         </li>
 
         {/* Botón de favoritos (sin enlace) */}
        
-        <li className="nav-item mb-1 p-2">
-        <Link to="/favourites">
+        <li className="nav-item mb-1 p-2 mb-3">
+        <Link to="/favourites" className="text-decoration-none">
         <Navbutton
             text="Favoritos"
             icon="bi bi-heart"
