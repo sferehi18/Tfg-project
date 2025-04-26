@@ -30,5 +30,10 @@ public class Topic {
     @JsonIgnore
     private Subject subject;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NonNull
+    private User user;
+
    
 }

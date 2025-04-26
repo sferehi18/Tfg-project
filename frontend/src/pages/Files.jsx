@@ -12,6 +12,8 @@ function Files(){
        queryKey:  ["files"],
        queryFn: () => getFiles(topicId),
      });
+     if (isLoading) return <div>Cargando...</div>;
+     if (error) return <div>Error: {error.message}</div>;
     return (
         <div className="contentContainer bg-white overflow-auto rounded-4">
             <div className="d-flex align-items-center">
@@ -25,7 +27,7 @@ function Files(){
             </div>
            
             
-            <Filetable files={data}></Filetable>
+            {data && <Filetable files={data}></Filetable>}
 
         </div>
     );

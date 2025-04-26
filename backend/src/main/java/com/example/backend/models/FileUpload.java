@@ -42,5 +42,12 @@ public class FileUpload{
     @JoinColumn(name = "topic_id",  nullable = false)
     @JsonIgnore
     Topic topic;
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    
+    User user;
+
 
 }

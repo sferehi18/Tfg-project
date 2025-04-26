@@ -3,14 +3,22 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import CreationContext from "../context/ModalsMenusContext";
+const authHeaders = { 
+  "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`
 
-export function useSubjects() {
+}
+export function useSubjects() { 
+  
   //Definimos queryClient para poder invalidar las queries, es decir, decir que unos datos ya no estan actualizados y forzar un refetch
   const queryClient = useQueryClient(); 
-
+  
 //Obtener Asignaturas
   const getSubjects = () => {
-    return axios.get("http://localhost:8080/subjects/")
+    console.log("Obteniendo asignaturas desde el backend... con token:", localStorage.getItem("token"));
+    return axios.get("http://localhost:8080/subjects/",{
+     headers:authHeaders
+    })
       .then(response => {
         return response.data;
       })
@@ -21,7 +29,9 @@ export function useSubjects() {
   //Crear Asignaturas
   const addSubject = async (subject) => {
 
-    const response = await axios.post("http://localhost:8080/subjects/create", subject);
+    const response = await axios.post("http://localhost:8080/subjects/create", subject,{
+      headers:authHeaders
+    });
     return response.data;
   
 };
@@ -52,7 +62,9 @@ const handleAddSubject = (newSubject) => {
 
 const deleteSubject = async (id) => {
  
-    const response = await axios.delete(`http://localhost:8080/subjects/${id}`);
+    const response = await axios.delete(`http://localhost:8080/subjects/${id}`,{
+      headers:authHeaders
+    });
     
     return response;
   
@@ -77,7 +89,9 @@ const handleDeleteSubject = (id) => {
 //Editar Asignatura
 const editSubject = async ({ id, newValues }) =>{
   console.log("Editando asignatura con ID:", id, "y nuevos valores:", newValues);
-  const response = await axios.put(`http://localhost:8080/subjects/${id}`,newValues);
+  const response = await axios.put(`http://localhost:8080/subjects/${id}`,newValues,{
+    headers:authHeaders
+  });
   return response.data;
 
 };
@@ -102,9 +116,7 @@ const handleEditSubject = ({ id, newValues }) => {
 
 const markasfavorite = async ({ id, isFavorite }) => {
   const response = await axios.patch(`http://localhost:8080/subjects/${id}/favorite`, isFavorite, {
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: authHeaders,
   });
   return response.data;
 };
@@ -136,13 +148,19 @@ export const useTopics = () =>{
   const BASE_URL = "http://localhost:8080/subjects/";
   const getTopics = async (subjectId) => {
 
-    const response = await axios.get(`${BASE_URL}${subjectId}/topics/`);
+    const response = await axios.get(`${BASE_URL}${subjectId}/topics/`,
+      {
+        headers:authHeaders
+      }
+    );
     return response.data;
   };
 
   const addTopic = async ({id,newValues}) =>{
     console.log("Añadiendo nuevo tema:", newValues, "a la asignatura con ID:", id);
-   const response = await axios.post(`${BASE_URL}${id}/topics/create`,newValues)
+   const response = await axios.post(`${BASE_URL}${id}/topics/create`,newValues,{
+    headers:authHeaders
+   })
    return response.data;
   }
 
@@ -166,7 +184,9 @@ export const useTopics = () =>{
 
 
   const deleteTopic = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/topics/${id}/delete`);
+    const response = await axios.delete(`http://localhost:8080/topics/${id}/delete`,{
+      headers:authHeaders
+    });
     return response;
   }
 
@@ -192,7 +212,9 @@ export const useTopics = () =>{
 
  const editTopic = async ({ id, newValues }) =>{
   console.log("Editando tema con ID:", id, "y nuevos valores:", newValues);
-  const response = await axios.put(`http://localhost:8080/topics/${id}/edit`,newValues);
+  const response = await axios.put(`http://localhost:8080/topics/${id}/edit`,newValues,{
+    headers:authHeaders
+  });
   return response.data;
 
 };
@@ -225,7 +247,9 @@ export const useEvents = () =>{
   const queryClient = useQueryClient();
 
   const getEvents =  () => {
-    return axios.get("http://localhost:8080/events/")
+    return axios.get("http://localhost:8080/events/",{
+      headers:authHeaders
+    })
     .then(response => {
       return response.data;}
     );
@@ -237,12 +261,16 @@ export const useEvents = () =>{
 
 
   const addEvent = async (newEvent) =>{
-   const response = await axios.post("http://localhost:8080/events/create",newEvent);
+   const response = await axios.post("http://localhost:8080/events/create",newEvent,{
+    headers:authHeaders
+   });
     return response;
   }
 
   const deleteEvent = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/events/delete/${id}`);
+    const response = await axios.delete(`http://localhost:8080/events/delete/${id}`,{
+      headers:authHeaders
+    });
     return response;
   }
 
@@ -287,12 +315,16 @@ export const useEvents = () =>{
 export const useFiles = () =>{
   const queryClient = useQueryClient();
 const  getFiles = async (id) => {
-    const response = await axios.get(`http://localhost:8080/topics/${id}/files/`);
+    const response = await axios.get(`http://localhost:8080/topics/${id}/files/`,{
+      headers:authHeaders
+    });
     return response.data;
   }
 
   const  getAllFiles = async () => {
-    const response = await axios.get(`http://localhost:8080/files/`);
+    const response = await axios.get(`http://localhost:8080/files/`,{
+      headers:authHeaders
+    });
     return response.data;
   }
 
@@ -308,6 +340,8 @@ const  getFiles = async (id) => {
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          
         },
       }
     );
@@ -332,7 +366,9 @@ const  getFiles = async (id) => {
 
 
   const deleteFile = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/files/${id}/delete`);
+    const response = await axios.delete(`http://localhost:8080/files/${id}/delete`,{
+      headers:authHeaders
+    });
     return response.data;
   }
 

@@ -1,0 +1,50 @@
+package com.example.backend.controllers;
+
+import com.example.backend.Services.JwtService;
+import com.example.backend.Services.UserService;
+import com.example.backend.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
+    
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+        );
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+       Long userid = userService.loadUserByUsername(userDetails.getUsername()).getId();
+        return jwtService.generateToken(userid, userDetails.getUsername());
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+         try {
+        User newUser = userService.saveUser(user);
+        return ResponseEntity.ok(newUser);
+    } catch (Exception e) {
+        e.printStackTrace(); // Imprime el error en consola
+        return ResponseEntity.status(500).body("Error: " + e.getMessage());
+    }
+          
+        
+    }
+}

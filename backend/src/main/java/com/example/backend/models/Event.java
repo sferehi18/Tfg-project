@@ -1,6 +1,8 @@
 package com.example.backend.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import jakarta.persistence.Id;
@@ -20,4 +22,9 @@ public class Event {
     private String title;
     private String start;
     private String end;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NonNull
+    @JsonIgnore
+    private User user;
 }

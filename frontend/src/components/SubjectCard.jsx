@@ -63,9 +63,7 @@ function Subjectcard({ id, name, isFav }) {
 
         {/*Datos de la asignatura*/}
         <h5 className="card-title">{name}</h5>
-        <p className="card-text">
-          Marcar como favorito:
-        </p>
+        
       </div>
     </div>
   );

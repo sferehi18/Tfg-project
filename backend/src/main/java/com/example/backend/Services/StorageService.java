@@ -8,8 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.models.FileUpload;
 import com.example.backend.models.Topic;
+import com.example.backend.models.User;
+import com.example.backend.utils.AuthMethods;
 import com.example.backend.Repositories.FileRepository;
 import com.example.backend.Repositories.TopicRepository;
+import com.example.backend.Repositories.UserRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class StorageService {
+public class StorageService extends AuthMethods{
 
    
     
@@ -29,40 +32,72 @@ public class StorageService {
     @Autowired 
     private TopicRepository topicRepository;
 
+    @Autowired UserRepository userRepository;
+
     @Transactional
-    public FileUpload uploadFile(MultipartFile multipartFile,Long topic_id) {
+    public FileUpload uploadFile(String username, MultipartFile multipartFile, Long topic_id) {
         try {
-            // Guardamos el archivo en el directorio configurado
+            Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+            // Crear el directorio si no existe
+            String uploadDir = "src/main/resources/uploads/" + userId;
+            Path userFolder = Paths.get(uploadDir);
+            if (!Files.exists(userFolder)) {
+                Files.createDirectories(userFolder);
+            }
+    
+            // Guardamos el archivo en el directorio del usuario
             String filename = multipartFile.getOriginalFilename();
-            Path targetLocation = Paths.get("src\\main\\resources\\uploads").resolve(filename);
+            Path targetLocation = userFolder.resolve(filename);
             Files.copy(multipartFile.getInputStream(), targetLocation);
+    
+            // Detectamos el tipo MIME real del archivo
             String realMimeType = Files.probeContentType(targetLocation);
+    
             // Guardamos los detalles del archivo en la base de datos
             FileUpload file = new FileUpload();
             file.setName(filename);
             file.setContentType(realMimeType);
             file.setCreated_at(LocalDate.now());
             file.setSize(multipartFile.getSize());
-
-            Topic topic =  topicRepository.findById(topic_id).get();
+    
+            Topic topic = topicRepository.findById(topic_id).orElseThrow(() ->
+                    new RuntimeException("Topic con ID " + topic_id + " no encontrado"));
+            User user = userRepository.findById(userId).orElseThrow(() ->
+                    new RuntimeException("User con ID " + userId + " no encontrado"));
             file.setTopic(topic);
-
-            return fileRepository.save(file); // Guardamos la información del archivo en la base de datos
-
+            file.setUser(user);
+            
+    
+            return fileRepository.save(file);
+    
         } catch (IOException e) {
             throw new RuntimeException("Error al subir el archivo", e);
         }
     }
 
+    public List<FileUpload> getFilesByTopicId(Long topic_id) {
+        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+        List<FileUpload> files = fileRepository.findByTopicIdAndUserId(topic_id,userId);
+        return files;
+    }
+
+    public List<FileUpload> getFileById(Long id) {
+        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+        List<FileUpload> files = fileRepository.findByTopicIdAndUserId(id,userId);
+        return files;
+    }
+    
+    
     public List<FileUpload> getAllFiles(Long topic_id){
      
-        List<FileUpload> files = fileRepository.findByTopicId(topic_id);
+        List<FileUpload> files = getFilesByTopicId(topic_id);
     
         return files;
     }
 
     public List<FileUpload> getAllFilesInfo(){
-        List<FileUpload> files = fileRepository.findAll();
+        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+        List<FileUpload> files = fileRepository.findByUserId(userId);
         return files;
     }
     public FileUpload getFileInfoById(Long id) {
@@ -70,11 +105,12 @@ public class StorageService {
     }
 
     public Path getFilePath(Long id){
-        FileUpload file = fileRepository.findById(id).orElse(null);
+        FileUpload file = getFileInfoById(id);
         if (file == null) {
             return null; // O lanzar una excepción si prefieres
         }
-        Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
+        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+        Path filePath = Paths.get("src\\main\\resources\\uploads\\"+userId).resolve(file.getName());
         return filePath;
     }
 
@@ -93,7 +129,7 @@ public class StorageService {
         }
     }
     public void deleteFileByTopicId(Long topic_id) {
-        List<FileUpload> files = fileRepository.findByTopicId(topic_id);
+        List<FileUpload> files =  getFilesByTopicId(topic_id);
         for (FileUpload file : files) {
             // Eliminar el archivo físico del sistema de archivos
             Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
