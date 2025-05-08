@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Dropdown } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function SearchList({ searchInput }) {
   const [show, setShow] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
   searchInput != null ?   setShow(true) : setShow(false);
   }, [searchInput]);
@@ -23,14 +24,17 @@ function SearchList({ searchInput }) {
   const filteredResources = filterResources(cachedSubjects).concat(filterResources(cachedTopics));
 
   if (!show || filterResources === 0) return null;
-
+const gotTopage = (id) =>{
+  navigate(`/subject/${id}/topics/`);
+  setShow(false);
+}
   return (
     <Dropdown.Menu show className="w-100 shadow bg-white rounded">
       {filteredResources.map((result) => (
         <Dropdown.Item
         key={result.id}
-        as={Link}
-        to={`/subject/${result.id}/topics/`}
+        as={Button}
+       onClick={() => gotTopage(result.id)}
       >
         {result.name}
       </Dropdown.Item>

@@ -7,14 +7,14 @@ import { useParams } from "react-router-dom";
 import SimpleIconButton from "./SimpleIconButton";
 import { useCrudOptions } from "../hooks/UseCrudOptions";
 
-function ThreeDots({resourceId,resourceType}){
+function ThreeDots({resourceId,resourceType,stylesClass}){
    const {openMenu,closeMenu} = useContext(CreationContext);
-   const {subjectId} = useParams();
+  
 const {handleDeleteSubject,handleEditSubject} = useSubjects();
 const {handleDeleteTopic,handleEditTopic} = useTopics();
 const {subject,topic} = useCrudOptions();
-    const menuId = "threedootsMenu" + resourceId;
-    const modalId = "deleteResource" + resourceId;
+    const menuId = "threedootsMenu" + resourceId + resourceType;
+    const modalId = "deleteResource" + resourceId + resourceType;
 
    subject.deleteOption.resourceId = resourceId;
    subject.editOption.resourceId = resourceId;
@@ -32,7 +32,7 @@ const {subject,topic} = useCrudOptions();
 
     return (
       <div   >
-         <SimpleIconButton  style={{zIndex:'10'}} icon={"bi bi-three-dots-vertical"} className="card-text btn-sm " onClick={() => openMenu(menuId)}/>
+         <SimpleIconButton hover={true} stylesClass={stylesClass} style={{zIndex:30000}} icon={"bi bi-three-dots-vertical"}   onClick={() => openMenu(menuId)}/>
         
     
      

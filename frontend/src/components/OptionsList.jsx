@@ -15,7 +15,7 @@ function OptionsList({ optionsArray, menuId }) {
   };
 
   return (
-    <Dropdown onMouseLeave={closeMenu} show={isMenuOpen === menuId} >
+    <Dropdown onMouseLeave={closeMenu}  show={isMenuOpen === menuId} >
       <Dropdown.Menu>
         {optionsArray.map((option) => {
           const uniqueModalId = `${menuId}-${option.label}`; // Id unico para cada modal

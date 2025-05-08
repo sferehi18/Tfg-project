@@ -10,6 +10,7 @@ export function useCrudOptions() {
             label: "Crear Asignatura", // Texto que se mostrará en la opción del menú
             action: handleAddSubject, // Función que se ejecutará al seleccionar la opción
             fields: ["name"], // Campos requeridos para crear una asignatura
+            actionButtonStyle:"success",
         },
 
         deleteOption:{

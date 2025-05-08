@@ -24,7 +24,7 @@ function Favourites() {
   }
   const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
   return (
-    <div className="bg-white rounded-4">
+    <div className="">
     <h2 className="p-3">Asignaturas</h2>
 
     {/* Lista de asignaturas obtenidas del backend */}

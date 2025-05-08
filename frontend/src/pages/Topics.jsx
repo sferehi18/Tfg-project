@@ -27,11 +27,11 @@ const Topics = () => {
  
 
   // Si ocurre un error en la consulta, muestra el mensaje de error
-  if (error) return <div className="contentContainer">Error: {error.message}</div>;
+  if (error) return <div className="">Error: {error.message}</div>;
   
   return (
     <>
-      <div className="d-flex align-items-center ">
+      <div className="d-flex align-items-center  ">
       <h2 className="p-3">Temas de la Asignatura</h2>
       <AddIconButton
         subjectId={subjectId} // ID de la asignatura para la que se están mostrando los temas
@@ -43,7 +43,7 @@ const Topics = () => {
         </div> {/* Título de la sección */}
 
       {/* Contenedor para los temas */}
-      <div className="bg-white d-flex overflow-auto flex-column flex-wrap contentContainer ">
+      <div className=" d-flex overflow-y-auto align-items-center  flex-column  rounded-3 " style={{ height: "100%"}} >
         { data && data.map(topic => (
           // Renderiza una tarjeta para cada tema
           <TopicCard  

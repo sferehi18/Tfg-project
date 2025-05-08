@@ -1,18 +1,17 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
+import SimpleIconButton from "../components/SimpleIconButton";
+import { Link } from "react-router-dom";
 function Header() {
   return (
-    <div className="row align-items-center p-1 mt-1 ">
+    <div className=" row d-flex align-items-center  flex-nowrap p-1 mt-1   ">
       {/* Logo y texto */}
-      <div className="ml-4  col-md-2 col-sm-4 col-5 d-flex align-items-center ">
-        <img src="/images/LOGO 1.png" alt="Logo" className="logo" />
-        <h3 className="ms-2 fs-4 fw-bold">edu-vault</h3>
-      </div>
+     
 
       {/* Barra de búsqueda */}
       
       <div
-        className="col-md-6 col-sm-5 col-4"
+        className="col-md-8 col-sm-9 col-9"
         
       >
         <SearchBar />
@@ -32,12 +31,13 @@ function Header() {
 
 
       {/* Iconos */}
-      <div className=" col-md-4  col-sm-3 col-3 d-flex justify-content-end align-items-center">
+      <div className=" col-md-4  col-sm-3 col-3 d-flex justify-content-end ">
        
       
       
-        
-        <i className="bi-person fs-4 "></i>
+      <Link to="/userSettings" className="text-decoration-none"> 
+        <SimpleIconButton icon={"bi bi-person fs-3"}></SimpleIconButton>
+        </Link>
       </div>
     </div>
   );

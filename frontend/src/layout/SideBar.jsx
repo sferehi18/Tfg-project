@@ -2,14 +2,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import CreateButton from "../components/CreateButton";
 import Navbutton from "../components/NavButton";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../hooks/useLogin";
+import logo2 from "../assets/logo2.png"; // Asegúrate de que la ruta sea correcta
 function Sidebar() {
   
   // Estado para controlar qué botón de navegación está seleccionado
   // Se podría manejar con un estado global (ej. Context API o Zustand) si es necesario en toda la app
 
   const [isSelected, setIsSelected] = useState(null);
-
+  const {logout} = useAuth();
   useEffect(() => {
     const selectedButton = localStorage.getItem("selectedButton");
     if (selectedButton) {
@@ -30,84 +31,44 @@ function Sidebar() {
 
 
   return (
-   
-    <div className="sidebar bg-light" style={{ zIndex: 1000 }}>
-      
-      <ul className="nav align-items-left flex-column">
-        {/* Botón para crear nuevos elementos */}
-        <li className="nav-item mb-4">
-          <CreateButton text="Crear" icon="bi bi-plus" />
-        </li>
-
-        {/* Botón de navegación a la página principal */}
-        <li className="nav-item p-2 mb-3">
-          <Link to="/" className="text-decoration-none">
-            <Navbutton
-              text="Página principal"
-              icon="bi bi-house-door"
-              id="Home"
-              isSelected={isSelected}
-              setSelected={handleButtonSelect}
-            />
-          </Link>
-        </li>
-
-        {/* Botón de navegación al calendario */}
-        <li className="nav-item mb-1 p-2 mb-3">
-          <Link to="/calendar" className="text-decoration-none">
-            <Navbutton
-              text="Calendario"
-              icon="bi bi-calendar"
-              id="calendar"
-              isSelected={isSelected}
-              setSelected={handleButtonSelect}
-            />
-          </Link>
-        </li>
-
-        {/* Botón de notificaciones (sin enlace) */}
-        <li className="nav-item mb-1 p-2 mb-3">
-          <Link to="/userSettings" className="text-decoration-none"> 
-          <Navbutton
-            text="Notificaciones"
-            icon="bi bi-bell"
-            id="notis"
-            isSelected={isSelected}
-            setSelected={handleButtonSelect}
-          />
-          
-          </Link>
+    <div className="sidebar d-flex rounded-end-5 flex-column justify-content-between align-items-start" style={{ zIndex: 200, height: '100vh' }}>
+      <div className="w-100">
+        <div className="d-flex align-items-center justify-content-start">
+          <img src={logo2} alt="Logo" className="logo" />
+          <h3 className="ms-2 fs-4 fw-bold text-white hide">edu-vault</h3>
+        </div>
         
-        </li>
-
-        {/* Botón de favoritos (sin enlace) */}
-       
-        <li className="nav-item mb-1 p-2 mb-3">
-        <Link to="/favourites" className="text-decoration-none">
-        <Navbutton
-            text="Favoritos"
-            icon="bi bi-heart"
-            id="fav"
-            isSelected={isSelected}
-            setSelected={handleButtonSelect}
-          />
+        <ul className="d-flex flex-column ms-3 align-items-start gap-4 p-0 w-100">
+          {/* Todos los botones excepto cerrar sesión */}
+          <li className="mt-5">
+            <Link to="/" className="text-decoration-none">
+              <Navbutton text="Página principal" icon="bi bi-house-door" id="Home" isSelected={isSelected} onClick={() => handleButtonSelect("Home")} />
+            </Link>
+          </li>
+          <li>
+            <Link to="/calendar" className="text-decoration-none">
+              <Navbutton text="Calendario" icon="bi bi-calendar" id="calendar" isSelected={isSelected} onClick={() => handleButtonSelect("calendar")} />
+            </Link>
+          </li>
+          <li>
+            <Link to="/favourites" className="text-decoration-none">
+              <Navbutton text="Favoritos" icon="bi bi-heart" id="fav" isSelected={isSelected} onClick={() => handleButtonSelect("fav")} />
+            </Link>
+          </li>
+          <li>
+            <Link to="/storage" className="text-decoration-none">
+              <Navbutton text="Almacenamiento" icon="bi bi-cloud" id="storage" isSelected={isSelected} onClick={() => handleButtonSelect("Storage")} />
+            </Link>
+          </li>
+        </ul>
+      </div>
+  
+      {/* Botón de logout en la parte inferior */}
+      <div className="mb-4 ">
+        <Link to="#" className="text-decoration-none">
+          <Navbutton text="Cerrar sesión" icon="bi bi-box-arrow-right" id="logout" isSelected={isSelected} onClick={() => logout} />
         </Link>
-          
-        </li>
-
-        {/* Botón de almacenamiento */}
-        <li className="nav-item mb-1 p-2">
-          <Link to="/storage" className="text-decoration-none">
-            <Navbutton
-              text="Almacenamiento"
-              icon="bi bi-cloud"
-              id="storage"
-              isSelected={isSelected}
-              setSelected={handleButtonSelect}
-            />
-          </Link>
-        </li>
-      </ul>
+      </div>
     </div>
   );
 }

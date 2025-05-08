@@ -15,7 +15,7 @@ function Files(){
      if (isLoading) return <div>Cargando...</div>;
      if (error) return <div>Error: {error.message}</div>;
     return (
-        <div className="contentContainer bg-white overflow-auto rounded-4">
+        <div  style={{ height: "82vh"}}>
             <div className="d-flex align-items-center">
             <h2 className="p-2">Archivos del Tema</h2>
             <AddIconButton

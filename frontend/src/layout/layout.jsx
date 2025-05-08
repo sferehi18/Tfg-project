@@ -7,22 +7,25 @@ function Layout() {
  
   return (
     //Contenedor definido con container-fluid de bootstrap para aplicar responsividad
-    <div  className="container-fluid">
-      {/*Cabecera del layout */}
-      <header >
-        <Header />
-      </header>
-      {/*Sidebar del layout */}
-      <div  className="row d-flex">
-        <aside className="col-2 col-md-3 col-xl-2 col-sm-4 mt-2">
+    <>
+      <div className="row">
+      <aside className="col-md-4 col-xl-2 col-lg-3 col-sm-2 col-3">
           <Sidebar />
         </aside>
-      {/*Sección en la que se renderizan los datos del backend*/}
-        <main className="col-10 col-md-9 col-xl-10 col-sm-8 mt-1">
+        <div className="col-9 col-md-8 col-xl-10 col-lg-9 col-sm-10 mt-1">
+        <header  >
+        <Header />
+      </header>
+      <main className="">
           <Content  /> {/* React Router renderizará aquí el contenido dinámico */}
         </main>
+        </div>
+       
       </div>
-    </div>
+      
+       
+    
+    </>
   );
 }
 

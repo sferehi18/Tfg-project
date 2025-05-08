@@ -31,27 +31,27 @@ const Subjects = () => {
 
   return (
     // Contenedor principal de la página de asignaturas
-    <>
+    <div  style={{ height: "82vh"}}>                                                      
       <div className="d-flex align-items-center ">
         <h2 className="p-3">Asignaturas</h2>
         <AddIconButton
         
         icon={"bi bi-plus-lg"} // Icono del botón
-        stylesClass={"addicon  d-flex justify-content-center align-items-center rounded-5"}
+        stylesClass={"addicon "}
         resourceType={"subject"} // Clase de estilos del botón
         />
         
         </div>
 
       {/* Lista de asignaturas obtenidas del backend */}
-      <div className="bg-white d-flex overflow-auto gap-2 flex-wrap text-align-start contentContainer">
+      <div className="d-flex rounded-4 flex-row flex-wrap align-items-start   " style={{ height: "100%", overflowY: "auto" }}>
         {data && data.map((subject) => (
           // Se genera una SubjectCard por cada asignatura
           // La key es necesaria para que React optimice los cambios en la lista
-          <SubjectCard key={subject.id} isFav={subject.isFav == 0 ? false : true } id={subject.id} name={subject.name} />
+          <SubjectCard  key={subject.id} isFav={subject.isFav == 0 ? false : true } id={subject.id} name={subject.name} />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

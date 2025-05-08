@@ -83,7 +83,7 @@ function MyCalendar() {
   };
 
   return (
-    <div className="contentContainer rounded-4">
+    <div className=" p-3 ">
       <h2 className="p-2">Calendario</h2>
       <Calendar
       popup

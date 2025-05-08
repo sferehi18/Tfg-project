@@ -2,44 +2,46 @@ import React from "react";
 import ThreeDots from "./threedots";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-function TopicCard({description,name,subjectId,topicId}){
-  
+import { FaBook, FaReact } from "react-icons/fa";
+function TopicCard({ description, name, subjectId, topicId }) {
   //Definición de estilos para la TopicCard
   const cardstyle = {
-        width: '16rem',
-        boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-        margin: '10px',
-        height: 'fit-content',
-        width: '80vw',
-        padding: '5px'
+    height: "100px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   };
- 
-    return(
-      //Estructura de la topicCard , todos los temas se mostrarán segun la misma en el componente Topic.jsx
-    <div className="card rounded-2 resource" style={cardstyle} >
-  <div className="card-body d-flex flex-row flex-nowrap align-items-center justify-content-between ">
-    <span> <h5 className="card-title align-self-start">{name}</h5></span>
-    <div> <p className="card-text">Descripcion:{description}</p>
-   
+
+  return (
+    //Estructura de la topicCard , todos los temas se mostrarán segun la misma en el componente Topic.jsx
+
+    <div
+      className="d-flex align-items-center justify-content-between rounded-2 resource bg-white m-4  w-75"
+      style={cardstyle}
+    >
+      <Link
+        to={`${topicId}/files`}
+        className="text-decoration-none text-black w-100 h-100  p-3"
+      >
+        <div className="d-flex flex-row flex-nowrap align-items-center justify-content-between">
+          <div className="d-flex align-items-center gap-3 justify-content-center">
+            <div className="bg-primar d-flex justify-content-center  rounded-5 p-2">
+              <FaBook size={"20px"} color="white" />
+            </div>
+            <div>
+              <h5 className="card-title align-self-start">{name}</h5>
+            </div>
+          </div>
+        </div>
+      </Link>
+
+      <>
+        <ThreeDots
+          resourceId={topicId}
+          stylesClass={"text-black"}
+          resourceType={"topic"}
+        ></ThreeDots>
+      </>
     </div>
-    <div className="d-flex gap-2">
-      {/*Cada tema tendra un boton de enlace a sus archivos  */}
-    <Link  to={`${topicId}/files`} className="text-decoration-none ">
-    <Button>Ver archivos</Button>
-    </Link>
-    {/*Cada tema tendra un boton de edición al que se le pasara como prop el nombre e id del mismo para asi asociarlo correctamente
-    a un recurso concreto */}
-    <ThreeDots resourceId={topicId} resourceType={"topic"}></ThreeDots>
-    </div>
-   
-  </div>
-</div>
-
-
-
-
-
-    );
+  );
 }
 
 export default TopicCard;

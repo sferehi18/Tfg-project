@@ -19,35 +19,34 @@ function Subjectcard({ id, name, isFav }) {
     handleMarkAsFavorite(id, newFavoriteState);
   };
   
-
+   const formattedName = name.length > 15 ? name.slice(0, 10) + "..." : name; // Formateo del nombre para que no exceda el tamaño
   //Estilos personalizados
   const cardstyle = {
-    width: "16rem",
-
-    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+   
+ 
     margin: "10px",
-    height: "fit-content",
+    
   };
 
   return (
-    //Contenedor de Asignaturas
-    <div className="card rounded-3 p-1 resource" style={cardstyle}>
-      <img
-        src="src\assets\defaultBlue.jpg"
-        style={{ height: "10rem" }}
-        className="card-img-top"
-        alt="..."
-      ></img>
-      <div className="card-body  ">
-        <div className="d-flex justify-content-between mb-1">
-          {/*Botón con link a sus temas */}
-          <Link to={`/subject/${id}/topics`} className="text-decoration-none ">
-            <Button>Ver temas</Button>
+    //Contenedor de Asignatura
+    <div className="subjectCard d-flex flex-column align-items-center justify-content-end gap-2  rounded-4  resource  " style={cardstyle}>
+      
+      <div className="mt-4 ms-2">
+    <Link to={`/subject/${id}/topics`} className="text-decoration-none  ">
+            <SimpleIconButton hover={true} icon={"bi bi-arrow-right"} stylesClass={"text-white fs-4"}></SimpleIconButton>
           </Link>
-          {/*Botón que abre un menu con opciones de eliminación o edición de un recurso concreto*/}
-          <div className="d-flex flex-nowrap align-items-center">
-          <SimpleIconButton animationClass={isFavorite ? "pulse" : ""} color={"red"}
-            icon={isFavorite ? "bi bi-heart-fill" : "bi bi-heart"}
+      
+        
+    </div>
+       
+         
+           
+            <div className="d-flex flex-nowrap align-items-center justify-content-between  w-100 ">
+            <h5 className="mt-4 ms-2 ">{formattedName}</h5>
+            <div className=" align-self-end  d-flex  flex-nowrap align-items-center gap-1">
+          <SimpleIconButton stylesClass={ isFavorite ? "color-gold" : "color-grey"} hover={true} animationClass={isFavorite ? "pulse" : ""} 
+            icon={isFavorite ? "bi bi-bookmark-fill" : "bi bi-bookmark"}
             onClick={() => toggleIsFavorite(id, !isFavorite)}
             
           />
@@ -58,14 +57,17 @@ function Subjectcard({ id, name, isFav }) {
           ></ThreeDots>
            
           </div>
-          
-        </div>
-
-        {/*Datos de la asignatura*/}
-        <h5 className="card-title">{name}</h5>
+            </div>
         
+         
+          {/*Botón que abre un menu con opciones de eliminación o edición de un recurso concreto*/}
+          
+          
+        
+    
+       
       </div>
-    </div>
+    
   );
 }
 

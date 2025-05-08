@@ -1,23 +1,55 @@
 .logo{
     width: 50px;
     height: 50px;
+    
+}
+:root{
+  --color-primary:  rgb(99, 21, 255)!important;
+  --color-secondary: #6c757d;
+  --bs-primary: rgb(99, 21, 255) ;
+}
+
+.color-gold{
+  color: #FFD700;
+}
+.color-grey{
+  color: #CCCCCC;
+}
+
+.logobg{
+  background-color: var(--color-primary);
 }
 
 body{
-  overflow-y: hidden;
+  
+  padding: 0;
+  background-color: rgb(253, 252, 252);
+  
+}
+#root{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #fafafa;
 }
 
+.bg-primar{
+  background-color: var(--color-primary);
+}
 
-
-@media (max-width: 575px) {
+@media (max-width: 767px) {
     .hide {
       
       display: none;
     }
+    /* .scale{
+      scale: 0.8;
+    } */
   }
 
+
   .rbc-event {
-    background-color: #007bff !important;
+    background-color:var(--color-primary) !important;
     color: white !important;
     border-radius: 5px;
     padding: 5px;
@@ -25,7 +57,7 @@ body{
   }
   
   .rbc-toolbar button {
-    background-color: #007bff !important;
+    background-color: var(--color-primary) !important;
     color: white !important;
     border-radius: 5px;
   } /* Estilos de boton sideBar*/
@@ -35,10 +67,11 @@ body{
   }
   .btn-custom{
     
-    transition: all 0.5s ease;
-    background-color: rgba(0, 0, 0, 0.1)
-    !important;
     
+    background-color: rgba(99, 21, 255, 0.1);
+    border-color: transparent !important;
+  
+    color: white;
     
   }
   
@@ -53,9 +86,20 @@ body{
 
    .btn-custom:hover,
   .selected{
-    background-color: rgba(0, 123, 255)
+    background-color: rgba(255, 255, 255, 0.1)
     !important;
+    transition: all 0.5s ease;
+    
+    color:white !important;
+  }
+
   
+
+  .selected{
+    background-color: rgba(255, 255, 255, 0.1)
+    !important;
+    
+    
     color:white !important;
   }
 
@@ -64,8 +108,30 @@ body{
     background-color: transparent !important;
     border: none !important;
 }
+
+.btn-icon2{
+  background-color: transparent !important;
+  border: none !important;
+}
+.btn-icon:hover{
+  background-color: rgba(255, 255, 255, 0.1)
+  !important;
+
+ 
+}
+.addicon{
+  background-color: rgba(0, 0, 0, 0.1)
+  !important;
+  width: 50px;
+  height: 50px;
+ 
+}
+  .addicon:focus{
+    outline: none !important;
+  }
+
   .addicon:hover{
-    background-color: rgba(0, 123, 255)
+    background-color:  var(--color-primary)
     !important;
     color: white !important;
   }
@@ -73,12 +139,6 @@ body{
     animation: pulse 0.5s !important;
   }
 
-  .addicon{
-    background-color: rgba(0, 0, 0, 0.1)
-    !important;
-    width: 50px;
-    height: 50px;
-  }
 
   @keyframes pulse {
     0% {
@@ -97,8 +157,12 @@ body{
 
   /*Estilos sidebar*/
   .sidebar{
-    width: fit-content;
+    
     height: 100vh;
+    
+    
+    background-color: var(--color-primary);
+    
   }
 
 
@@ -128,7 +192,18 @@ body{
   }
 
 
-  
+  /*Estilos de boton threedots*/
+  .three-dots{
+    background-color: transparent !important;
+   
+    
+  }
+
+  .three-dots:hover{
+   background-color: #bac0c6 !important;
+   
+    
+  }
 
 
 /*Estilos de tarjeta de Asignatura SubjectCard*/
@@ -145,6 +220,8 @@ body{
   }
 }
 
+
+
 @keyframes fadeInfromleft {
   from {
     opacity: 0;
@@ -160,16 +237,42 @@ body{
 
 .resource {
   animation: fadeInfromTop 0.5s linear;
-  width: fit-content;
+  /* width: fit-content; */
 
+}
+
+.resource:hover{
+  scale: 1.01;
+  transition: all 0.5s ease-out;
+  cursor: pointer;
 }
 
 
 
 .contentContainer{
-  height: 80vh;
-  
-  
+  height: 100vh;
+  width: 100%;
+  min-height: 100%;
+  overflow-y: hidden;
+
 }
 
 
+/*Estilos SubjecCard*/
+.subjectCard{
+  background-color: var(--color-primary);
+  
+  color :white;
+  width: 250px;
+  height: 150px;
+  padding: 5px;
+   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
+ 
+}
+
+
+ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

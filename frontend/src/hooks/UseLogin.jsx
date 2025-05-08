@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 export function useAuth() {
   const getToken = () => {
@@ -16,7 +17,15 @@ export function useAuth() {
         throw error; // Lanza el error para que puedas manejarlo en el componente donde se llama
       });
   };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.close();
+    // Navigate("auth/login") // Redirige a la página de inicio de sesión
+    
+    // Aquí puedes agregar cualquier otra lógica de cierre de sesión que necesites
+  };
   
 
-  return { getToken };
+  return { getToken ,logout};
 }
