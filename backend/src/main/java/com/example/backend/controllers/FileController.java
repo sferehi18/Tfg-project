@@ -2,16 +2,18 @@ package com.example.backend.controllers;
 
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +26,7 @@ import com.example.backend.Services.JwtService;
 import com.example.backend.Services.StorageService;
 import com.example.backend.models.FileUpload;
 
-
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,33 +56,34 @@ public class FileController {
     return ResponseEntity.ok(filesdata); // Si hay datos, devolver 200 OK con el cuerpo
 
     }
-    // TODO: PROBLEMA CON EL FilePath
-    @GetMapping("/files/{id}/open")
-    public ResponseEntity<Map<String, String>> openFile(@PathVariable Long id) {
-        Path filePath = storageService.getFilePath(id); // Obtiene la ruta del archivo por su ID
-        FileUpload file = storageService.getFileInfoById(id); // Obtiene el archivo por su ID
-    
-        try {
-            // Asegúrate de que el archivo existe y es accesible
-            Resource resource = new UrlResource(filePath.toUri());
-    
-            if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
-    
-            // Obtener la URL relativa del archivo (asegurándose de que empiece desde 'uploads')
-            String fileUrl = "/uploads/" + file.getName(); // Aquí asumimos que los archivos están accesibles desde /uploads en tu servidor
-            
-            Map<String, String> response = new HashMap<>();
-            response.put("fileUrl", fileUrl); // Regresamos la URL relativa del archivo
-    
-            return ResponseEntity.ok(response);
-    
-        } catch (MalformedURLException e) {
-            return ResponseEntity.internalServerError().build();
+@GetMapping("/files/{id}/open")
+public ResponseEntity<Resource> openFile(@PathVariable Long id) {
+    // Recuperar información del archivo desde la base de datos
+
+
+    try {
+        // Obtener la ruta del archivo desde el servicio de almacenamiento
+        Path filePath = storageService.getFilePath(id);
+        Resource resource = new UrlResource(filePath.toUri());
+        String contentType = Files.probeContentType(filePath);
+        MediaType mediaType = MediaType.parseMediaType(contentType);
+        String filename = resource.getFilename();
+        // Verificar si el archivo existe y es legible
+        if (!resource.exists() || !resource.isReadable()) {
+            return ResponseEntity.notFound().build();
         }
+
+        // Establecer la respuesta con el archivo y el tipo adecuado
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"") // Para abrirlo en el navegador
+                .contentType(mediaType)  // Cambia esto dependiendo del tipo de archivo
+                .body(resource);  // Aquí enviamos el archivo como cuerpo de la respuesta
+
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError().build();  // En caso de error
     }
-    
+}
+
 
 
 

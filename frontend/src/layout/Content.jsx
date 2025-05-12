@@ -9,7 +9,7 @@ function Content() {
   }, [location]);
   
   return (
-    <div key={location.pathname}  className="d-flex flex-column  justify-content-start "  style={{ height: "82vh"}} >
+    <div key={location.pathname}  className="d-flex flex-column   justify-content-start "  style={{ height: "82vh"}} >
       
       {/* Aquí renderizamos el contenido dinámicamente usando Outlet */}
       <Outlet 

@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.example.backend.exceptions.SubjectNotFoundException;
 import com.example.backend.DTOs.SubjectDTO;
@@ -31,10 +30,11 @@ public class SubjectService extends AuthMethods {
    
 
     // Método auxiliar para obtener una asignatura por ID
-    private Subject findSubjectById(Long id) throws SubjectNotFoundException {
+    private Subject findSubjectById(Long id) throws Exception {
        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
         return subjectRepository.findByIdAndUserId(id,userId)
-                .orElseThrow(() -> new SubjectNotFoundException("No se encuentra la asignatura con id " + id));
+                .orElseThrow(() -> new Exception("No ha sido posible determinar tu identidad "
+                        + "o no existe este registro"));
     }
 
     // CREATE METHODS
@@ -60,20 +60,20 @@ public class SubjectService extends AuthMethods {
        
     }
 
-    public SubjectDTO getSubjectById(Long id) throws SubjectNotFoundException {
+    public SubjectDTO getSubjectById(Long id) throws Exception {
         Subject subject = findSubjectById(id); // Usamos el método auxiliar
         return toSubjectDTO(subject);
     }
 
     // UPDATE METHODS
-    public SubjectDTO editSubject(Long id, String name) throws SubjectNotFoundException {
+    public SubjectDTO editSubject(Long id, String name) throws Exception {
         Subject subject = findSubjectById(id); // Usamos el método auxiliar
         subject.setName(name);
         subjectRepository.save(subject);
         return toSubjectDTO(subject);
     }
 
-    public SubjectDTO markSubjectAsFav(Long id, Boolean fav) throws SubjectNotFoundException {
+    public SubjectDTO markSubjectAsFav(Long id, Boolean fav) throws Exception {
         Subject subject = findSubjectById(id); // Usamos el método auxiliar
         subject.setIsFav(fav);
         subjectRepository.save(subject);
@@ -83,7 +83,7 @@ public class SubjectService extends AuthMethods {
 
 
     // DELETE METHODS
-    public SubjectDTO deleteSubject(Long id) throws SubjectNotFoundException {
+    public SubjectDTO deleteSubject(Long id) throws Exception {
 
         Subject subject = findSubjectById(id); // Usamos el método auxiliar
         subjectRepository.delete(subject);

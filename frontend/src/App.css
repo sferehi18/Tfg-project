@@ -6,7 +6,7 @@
 :root{
   --color-primary:  rgb(99, 21, 255)!important;
   --color-secondary: #6c757d;
-  --bs-primary: rgb(99, 21, 255) ;
+  --bs-primary: rgb(99, 21, 255);
 }
 
 .color-gold{
@@ -23,14 +23,14 @@
 body{
   
   padding: 0;
-  background-color: rgb(253, 252, 252);
+
   
 }
 #root{
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #fafafa;
+  
 }
 
 .bg-primar{

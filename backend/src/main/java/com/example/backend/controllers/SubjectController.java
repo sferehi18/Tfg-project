@@ -37,7 +37,12 @@ public class SubjectController {
     @GetMapping("/{id}")
     public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id){
     
-            SubjectDTO subject = subjectService.getSubjectById(id);
+            SubjectDTO subject;
+            try {
+              subject = subjectService.getSubjectById(id);
+            } catch (Exception e) {
+              return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
             return ResponseEntity.ok(subject);
      
             // Si la asignatura no se encuentra, retorna 404 Not Found
@@ -64,19 +69,36 @@ public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
     
     @PutMapping("/{id}")
     public ResponseEntity<SubjectDTO> editAllSubject(@PathVariable Long id,@RequestBody SubjectDTO newSubject){
-      SubjectDTO subject = subjectService.editSubject(id, newSubject.getName());
+      SubjectDTO subject;
+      try {
+        subject = subjectService.editSubject(id, newSubject.getName());
+      } catch (Exception e) {
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      }
       return ResponseEntity.ok(subject);
     }
 
     @PatchMapping("/{id}/favorite")
     public ResponseEntity<SubjectDTO> editIsFav(@PathVariable Long id,@RequestBody Boolean isFav){
-      SubjectDTO subject = subjectService.markSubjectAsFav(id, isFav);
+      SubjectDTO subject;
+      try {
+        subject = subjectService.markSubjectAsFav(id, isFav);
+      } catch (Exception e) {
+      
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      }
       return ResponseEntity.ok(subject);
     }
 
     @DeleteMapping("/{id}") 
     public ResponseEntity<SubjectDTO> deleteSubject(@PathVariable(required = true) Long id){
-      SubjectDTO subject = subjectService.deleteSubject(id);
+      SubjectDTO subject;
+      try {
+        subject = subjectService.deleteSubject(id);
+      } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      }
             return ResponseEntity.ok(subject);
 
     }

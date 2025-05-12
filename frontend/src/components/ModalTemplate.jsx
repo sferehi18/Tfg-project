@@ -53,10 +53,10 @@ function ModalTemplate({ title, fields, action, modalOptionId,message,actionText
           
         </Modal.Body>
         <Modal.Footer>
-          <Button variant={actionButtonStyle} type="submit">
+          <Button variant={actionButtonStyle} type="submit" >
            {actionText}
           </Button>
-          <Button variant="secondary" onClick={ closeModal}>
+          <Button variant="secondary" onClick={closeModal}>
             Cerrar
           </Button>
         </Modal.Footer>

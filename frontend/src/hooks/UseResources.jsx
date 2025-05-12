@@ -2,19 +2,25 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
+import TokenContext from "../context/AuthContext";
 import CreationContext from "../context/ModalsMenusContext";
-const authHeaders = { 
+import { use } from "react";
+
+
+
+export function useSubjects() { 
+  const {token} = useContext(TokenContext);
+
+  const authHeaders = { 
   "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("token")}`
+      "Authorization": `Bearer ${token}`
 
 }
-export function useSubjects() { 
-  
   //Definimos queryClient para poder invalidar las queries, es decir, decir que unos datos ya no estan actualizados y forzar un refetch
   const queryClient = useQueryClient(); 
   
 //Obtener Asignaturas
-  const getSubjects = () => {
+  const getSubjects = async () => {
     console.log("Obteniendo asignaturas desde el backend... con token:", localStorage.getItem("token"));
     return axios.get("http://localhost:8080/subjects/",{
      headers:authHeaders
@@ -144,11 +150,29 @@ const handleMarkAsFavorite = (id, isFavorite) => {
 }
 
 export const useTopics = () =>{
+
+  const {token} = useContext(TokenContext);
+  
+  const authHeaders = { 
+  "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+
+}
   const queryClient = useQueryClient(); 
   const BASE_URL = "http://localhost:8080/subjects/";
   const getTopics = async (subjectId) => {
 
     const response = await axios.get(`${BASE_URL}${subjectId}/topics/`,
+      {
+        headers:authHeaders
+      }
+    );
+    return response.data;
+  };
+
+  const getAllTopics = async () => {
+
+    const response = await axios.get(`/topics/All`,
       {
         headers:authHeaders
       }
@@ -238,15 +262,23 @@ const handleEditTopic = ({ id, newValues }) => {
 };
 
 
-  return {handleAddTopic,getTopics,handleDeleteTopic,handleEditTopic};
+  return {handleAddTopic,getTopics,getAllTopics,handleDeleteTopic,handleEditTopic};
 }
 
 
 export const useEvents = () =>{
 
   const queryClient = useQueryClient();
+  const { closeModal } = useContext(CreationContext);
+  const {token} = useContext(TokenContext);
+  
+  const authHeaders = { 
+  "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
 
-  const getEvents =  () => {
+}
+
+  const getEvents = async () => {
     return axios.get("http://localhost:8080/events/",{
       headers:authHeaders
     })
@@ -273,12 +305,13 @@ export const useEvents = () =>{
     });
     return response;
   }
-
+  
   const eventDelete = useMutation({
     mutationFn:deleteEvent,
     onSuccess: () =>{
       queryClient.invalidateQueries("events");
       console.log("Evento borrado correctamente");
+      closeModal();
     },
     onError: () =>{
       console.log("Error al borrar evento");
@@ -314,6 +347,13 @@ export const useEvents = () =>{
 
 export const useFiles = () =>{
   const queryClient = useQueryClient();
+  const {token} = useContext(TokenContext);
+  
+  const authHeaders = { 
+  "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+
+}
 const  getFiles = async (id) => {
     const response = await axios.get(`http://localhost:8080/topics/${id}/files/`,{
       headers:authHeaders

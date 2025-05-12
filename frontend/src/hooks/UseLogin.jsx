@@ -1,13 +1,13 @@
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+
 
 export function useAuth() {
-  const getToken = () => {
+  
+  const getToken = async (authUser) => {
     return axios
-      .post("http://localhost:8080/auth/login", {
-        username: "Santiago",
-        password: "123",
-      })
+      .post("http://localhost:8080/auth/login", 
+       authUser
+      )
       .then((response) => {
         // El token es directamente el `response.data`
         return response.data; // Aquí no necesitamos acceder a `response.data.token`
@@ -20,8 +20,8 @@ export function useAuth() {
 
   const logout = () => {
     localStorage.removeItem("token");
-    window.close();
-    // Navigate("auth/login") // Redirige a la página de inicio de sesión
+   
+     // Redirige a la página de inicio de sesión
     
     // Aquí puedes agregar cualquier otra lógica de cierre de sesión que necesites
   };

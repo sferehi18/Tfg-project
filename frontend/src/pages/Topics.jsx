@@ -37,10 +37,10 @@ const Topics = () => {
         subjectId={subjectId} // ID de la asignatura para la que se están mostrando los temas
         resourceType={"topic"} // Tipo de recurso (tema)
         icon={"bi bi-plus-lg"} // Icono del botón
-        stylesClass={"addicon  d-flex justify-content-center align-items-center rounded-5"} // Clase de estilos del botón
+        stylesClass={"addicon  d-flex justify-content-center align-items-center rounded-4"} // Clase de estilos del botón
         />
         
-        </div> {/* Título de la sección */}
+        </div>
 
       {/* Contenedor para los temas */}
       <div className=" d-flex overflow-y-auto align-items-center  flex-column  rounded-3 " style={{ height: "100%"}} >

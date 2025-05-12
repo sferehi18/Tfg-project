@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import CreateButton from "../components/CreateButton";
 import Navbutton from "../components/NavButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useLogin";
 import logo2 from "../assets/logo2.png"; // Asegúrate de que la ruta sea correcta
 function Sidebar() {
   
   // Estado para controlar qué botón de navegación está seleccionado
   // Se podría manejar con un estado global (ej. Context API o Zustand) si es necesario en toda la app
-
+  const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(null);
   const {logout} = useAuth();
   useEffect(() => {
@@ -18,6 +18,12 @@ function Sidebar() {
     }
   }, []);
 
+  const handleLogout = () => {
+    
+    logout();
+    navigate("/login"); // Redirige a la página de inicio de sesión
+     // Llama a la función de cierre de sesión
+  }
   // Guarda el valor del botón seleccionado en localStorage
   const handleButtonSelect = (buttonId) => {
     setIsSelected(buttonId);
@@ -33,7 +39,7 @@ function Sidebar() {
   return (
     <div className="sidebar d-flex rounded-end-5 flex-column justify-content-between align-items-start" style={{ zIndex: 200, height: '100vh' }}>
       <div className="w-100">
-        <div className="d-flex align-items-center justify-content-start">
+        <div className="d-flex align-items-center justify-content-start p-1">
           <img src={logo2} alt="Logo" className="logo" />
           <h3 className="ms-2 fs-4 fw-bold text-white hide">edu-vault</h3>
         </div>
@@ -65,8 +71,13 @@ function Sidebar() {
   
       {/* Botón de logout en la parte inferior */}
       <div className="mb-4 ">
+        <Link to="/UserSettings" className="text-decoration-none ">
+          <Navbutton text="Configuración" icon="bi bi-gear" id="userSettings" isSelected={isSelected} onClick={() => handleButtonSelect("userSettings")} />
+        </Link>
+      </div>
+      <div className="mb-4 ">
         <Link to="#" className="text-decoration-none">
-          <Navbutton text="Cerrar sesión" icon="bi bi-box-arrow-right" id="logout" isSelected={isSelected} onClick={() => logout} />
+          <Navbutton text="Cerrar sesión" icon="bi bi-box-arrow-right" id="logout" isSelected={isSelected} onClick={() => handleLogout()} />
         </Link>
       </div>
     </div>

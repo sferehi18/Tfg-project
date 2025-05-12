@@ -21,7 +21,7 @@ function Files(){
             <AddIconButton
         
         icon={"bi bi-plus-lg"} // Icono del botón
-        stylesClass={"addicon  d-flex justify-content-center align-items-center rounded-5"}
+        stylesClass={"addicon  d-flex justify-content-center align-items-center rounded-4"}
         resourceType={"file"} // Clase de estilos del botón
         />
             </div>

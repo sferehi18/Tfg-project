@@ -39,7 +39,7 @@ public class StorageService extends AuthMethods{
         try {
             Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
             // Crear el directorio si no existe
-            String uploadDir = "src/main/resources/uploads/" + userId;
+            String uploadDir = "src\\main\\java\\com\\example\\backend\\uploads\\" + userId;
             Path userFolder = Paths.get(uploadDir);
             if (!Files.exists(userFolder)) {
                 Files.createDirectories(userFolder);
@@ -110,7 +110,7 @@ public class StorageService extends AuthMethods{
             return null; // O lanzar una excepción si prefieres
         }
         Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
-        Path filePath = Paths.get("src\\main\\resources\\uploads\\"+userId).resolve(file.getName());
+        Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\"+userId).resolve(file.getName());
         return filePath;
     }
 
@@ -118,7 +118,8 @@ public class StorageService extends AuthMethods{
         FileUpload file = fileRepository.findById(id).orElse(null);
         if (file != null) {
             // Eliminar el archivo físico del sistema de archivos
-            Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
+            Long userId = getAuthenticatedUserId();
+            Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\"+userId).resolve(file.getName());
             try {
                 Files.deleteIfExists(filePath);
             } catch (IOException e) {
@@ -130,9 +131,10 @@ public class StorageService extends AuthMethods{
     }
     public void deleteFileByTopicId(Long topic_id) {
         List<FileUpload> files =  getFilesByTopicId(topic_id);
+        Long userId = getAuthenticatedUserId();
         for (FileUpload file : files) {
             // Eliminar el archivo físico del sistema de archivos
-            Path filePath = Paths.get("src\\main\\resources\\uploads").resolve(file.getName());
+            Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\"+ userId).resolve(file.getName());
             try {
                 Files.deleteIfExists(filePath);
             } catch (IOException e) {

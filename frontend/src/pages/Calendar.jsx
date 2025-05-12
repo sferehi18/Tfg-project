@@ -18,7 +18,7 @@ const localizer = dayjsLocalizer(dayjs); // Configura el localizador para usar d
 function MyCalendar() {
   
 
-  const { openModal } = useContext(CreationContext);
+  const { openModal,closeModal } = useContext(CreationContext);
   const [selectedOption,setSelectedOption] = useState({}); // Guarda la opción seleccionada
   const {event} = useCrudOptions();
   const [selectedSlot, setSelectedSlot] = useState(null); // Guarda la fecha seleccionada
@@ -37,6 +37,7 @@ function MyCalendar() {
     event.deleteOption.resourceId = eventSelected.id; // Muestra el evento seleccionado en la consola
     setSelectedOption(event.deleteOption); // Establece la opción seleccionada
     openModal(modalId);
+    
   }
 
 

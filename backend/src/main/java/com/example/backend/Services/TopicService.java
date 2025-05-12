@@ -1,6 +1,5 @@
 package com.example.backend.Services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,11 +11,11 @@ import com.example.backend.DTOs.TopicDTO;
 import com.example.backend.Repositories.TopicRepository;
 import com.example.backend.Repositories.UserRepository;
 import com.example.backend.Repositories.SubjectRepository;
-import com.example.backend.exceptions.TopicNotFoundException;
+
 import com.example.backend.exceptions.SubjectNotFoundException;
 import com.example.backend.models.Topic;
 import com.example.backend.models.User;
-import com.example.backend.models.FileUpload;
+
 import com.example.backend.models.Subject;
 import com.example.backend.utils.AuthMethods; 
 @Service
@@ -36,16 +35,17 @@ public class TopicService extends AuthMethods {
         return new TopicDTO(topic.getName(),topic.getId() ,topic.getSubject().getId());
     }
 
-    public Topic findTopicById(Long id){
+    public Topic findTopicById(Long id) throws Exception{
         Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
         Topic topic = topicRepository.findByIdAndUserId(id,userId)
-                .orElseThrow(() -> new TopicNotFoundException("No existe este registro"));
+                .orElseThrow(() -> new Exception("No existe este registro"));
         return topic;
     }
 
 
     public List<TopicDTO> getAllTopics() {
-        List<Topic> topics = topicRepository.findAll();
+        Long userId = getAuthenticatedUserId();
+        List<Topic> topics = topicRepository.findByUserId(userId);
         return topics.stream().map(this::toTopicDTO).collect(Collectors.toList());
     }
 
@@ -70,14 +70,14 @@ public class TopicService extends AuthMethods {
         return toTopicDTO(topic);
     }
 
-    public TopicDTO editAllTopic(String name, Long id) {
+    public TopicDTO editAllTopic(String name, Long id) throws Exception {
         Topic topic= findTopicById(id);
         topic.setName(name);
         topicRepository.save(topic);
         return toTopicDTO(topic);
     }
 
-    public TopicDTO deleteTopic(Long id) {
+    public TopicDTO deleteTopic(Long id) throws Exception {
         Topic topic= findTopicById(id);
         
         topicRepository.delete(topic);

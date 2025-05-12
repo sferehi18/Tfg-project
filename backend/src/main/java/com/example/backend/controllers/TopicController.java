@@ -31,6 +31,13 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
     return ResponseEntity.ok(topics); // Si hay datos, devolver 200 OK con el cuerpo
 }
 
+    @GetMapping("topics/All")
+    public ResponseEntity<List<TopicDTO>> getAllTopics() {
+        List<TopicDTO> topics = topicService.getAllTopics();
+        
+        return ResponseEntity.ok(topics); // Si hay datos, devolver 200 OK con el cuerpo
+    }
+
 
     @PostMapping("subjects/{id}/topics/create")
     public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long id) throws Exception{
@@ -42,13 +49,24 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
 
     @PutMapping("topics/{id}/edit")
     public ResponseEntity<TopicDTO> editAllTopic(@PathVariable(required = true) Long id,@RequestBody TopicDTO newTopic){
-      TopicDTO topic = topicService.editAllTopic( newTopic.getName(),id);
+      TopicDTO topic = null;
+      try {
+        topic = topicService.editAllTopic( newTopic.getName(),id);
+      } catch (Exception e) {
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(topic);
+      }
       return ResponseEntity.ok(topic);
     }
 
     @DeleteMapping("topics/{id}/delete") 
     public ResponseEntity<TopicDTO> deleteTopic(@PathVariable(required = true) Long id){
-      TopicDTO Topic = topicService.deleteTopic(id);
+      TopicDTO Topic = null;
+      try {
+        Topic = topicService.deleteTopic(id);
+      } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Topic);
+      }
             return ResponseEntity.ok(Topic);
 
     }

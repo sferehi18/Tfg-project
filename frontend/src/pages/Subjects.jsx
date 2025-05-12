@@ -5,54 +5,63 @@ import { Spinner } from "react-bootstrap";
 import {useSubjects} from "../hooks/UseResources";
 import LoadingPage from "./Loading";
 import AddIconButton from "../components/AddIconButton";
+import { useEffect, useContext } from "react";
+import TokenContext from "../context/AuthContext"; // Importamos el contexto de autenticación
 const Subjects = () => {
+  // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
+  const { token, setNewToken } = useContext(TokenContext);
+
+  // Al montar el componente, leemos el token desde localStorage y lo guardamos en el contexto
+  useEffect(() => {
+    setNewToken(localStorage.getItem("token"));
+  }, []);
+
+  // Obtenemos la función getSubjects desde un custom hook
   const { getSubjects } = useSubjects();
 
-
-  // useQuery permite obtener los datos del backend y almacenarlos en caché
-  // queryKey: Identifica esta consulta en la caché
-  // queryFn: Función que devuelve una promesa con los datos de la API
+  // Usamos React Query para hacer la petición a la API y manejar loading/error/data automáticamente
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["subjects"],
-    queryFn: getSubjects,
+    queryKey: ["subjects"], // Clave para caché y refetching
+    queryFn: getSubjects,   // Función que realiza la consulta
   });
 
-  // Si los datos están cargando, se muestra una Pagina de carga
+  // Mientras se cargan los datos, mostramos una página de carga
   if (isLoading) {
-    return (
-     <LoadingPage></LoadingPage>
-    );
+    return <LoadingPage />;
   }
 
-  // Si hay un error en la petición, se muestra el mensaje de error
+  // Si ocurre un error en la consulta, mostramos el mensaje
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
 
+  // Render principal de la página de asignaturas
   return (
-    // Contenedor principal de la página de asignaturas
-    <div  style={{ height: "82vh"}}>                                                      
-      <div className="d-flex align-items-center ">
+    <div style={{ height: "82vh" }}>
+      {/* Título y botón para añadir asignaturas */}
+      <div className="d-flex align-items-center">
         <h2 className="p-3">Asignaturas</h2>
         <AddIconButton
-        
-        icon={"bi bi-plus-lg"} // Icono del botón
-        stylesClass={"addicon "}
-        resourceType={"subject"} // Clase de estilos del botón
+          icon={"bi bi-plus-lg"}
+          stylesClass={"addicon"}
+          resourceType={"subject"}
         />
-        
-        </div>
+      </div>
 
-      {/* Lista de asignaturas obtenidas del backend */}
-      <div className="d-flex rounded-4 flex-row flex-wrap align-items-start   " style={{ height: "100%", overflowY: "auto" }}>
+      {/* Renderizamos la lista de asignaturas en tarjetas */}
+      <div className="d-flex rounded-4 flex-row flex-wrap align-items-start" style={{ height: "100%", overflowY: "auto" }}>
         {data && data.map((subject) => (
-          // Se genera una SubjectCard por cada asignatura
-          // La key es necesaria para que React optimice los cambios en la lista
-          <SubjectCard  key={subject.id} isFav={subject.isFav == 0 ? false : true } id={subject.id} name={subject.name} />
+          <SubjectCard
+            key={subject.id}
+            id={subject.id}
+            name={subject.name}
+            isFav={subject.isFav == 0 ? false : true}
+          />
         ))}
       </div>
     </div>
   );
 };
+
 
 export default Subjects;

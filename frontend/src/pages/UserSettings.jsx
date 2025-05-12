@@ -2,7 +2,7 @@ import react from 'react';
 
 function UserSettings() {
   return (
-    <div className="contentContainer bg-white overflow-auto rounded-4 p-2">
+    <div className="">
       <h2 className="p-2 mb-4">Configuración de Usuario</h2>
     
        <form>
