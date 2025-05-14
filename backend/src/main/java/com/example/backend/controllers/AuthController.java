@@ -47,4 +47,21 @@ public class AuthController {
           
         
     }
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateUser(@RequestBody User user) {
+        try {
+            User userDetails = userService.validateUser(user.getUsername(),user.getPassword());
+            // Verifica si el usuario existe y si la contraseña es correcta
+            if (userDetails != null) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(404).body("Usuaio o contraseña incorrectos");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprime el error en consola
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
+    }
+       
 }

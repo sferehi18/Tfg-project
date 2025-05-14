@@ -22,8 +22,11 @@ function MyCalendar() {
   const [selectedOption,setSelectedOption] = useState({}); // Guarda la opción seleccionada
   const {event} = useCrudOptions();
   const [selectedSlot, setSelectedSlot] = useState(null); // Guarda la fecha seleccionada
-  const {getEvents} = useEvents();
-  const modalId = "EventMenu";
+  const {getEvents} = useEvents(); // Hook que contiene la funcion para obtener eventos
+  const modalId = "EventMenu"; // ID del modal para abrirlo y cerrarlo
+
+  //Función para manejar la selección de un slot vacío
+  // Esta función se ejecuta cuando el usuario selecciona un slot vacío en el calendario
   const handleSelectSlot = ({ start, end }) => {
     console.log("Slot seleccionado:", start, end); // Muestra el slot seleccionado en la consola
     setSelectedSlot({ start, end }); // Guarda el slot seleccionado
@@ -31,10 +34,10 @@ function MyCalendar() {
     openModal(modalId);
      // Establece la opción seleccionada
   };
-
+//  Función para manejar la selección de un evento
   const handleSelectEvent = (eventSelected) => {
     console.log("Evento seleccionado:", eventSelected);
-    event.deleteOption.resourceId = eventSelected.id; // Muestra el evento seleccionado en la consola
+    event.deleteOption.resourceId = eventSelected.id; // Establece el ID del evento seleccionado
     setSelectedOption(event.deleteOption); // Establece la opción seleccionada
     openModal(modalId);
     
@@ -54,6 +57,7 @@ function MyCalendar() {
   });
   
   const handleAddEvent = (newevent) => {
+    //Si la opción seleccionada (selectedOption) tiene campos, se ejecuta la acción de crear evento
     if (selectedOption.fields) {
       
      
@@ -117,7 +121,7 @@ function MyCalendar() {
         action={selectedOption.action}
         resourceId={selectedOption.resourceId} // Ensure it matches the state
         modalId={modalId} // Ensure it matches the state
-        // resurceId={resourceId} // Asegúrate de que coincida con el estado
+        
        
       />
        

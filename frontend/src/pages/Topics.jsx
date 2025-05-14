@@ -6,6 +6,7 @@ import axios from "axios"; // Librería para hacer peticiones HTTP
 import { useTopics } from "../hooks/UseResources"; // Hook personalizado que maneja la obtención de temas
 import LoadingPage from "./Loading"; // Componente para mostrar una pantalla de carga
 import AddIconButton from "../components/AddIconButton";
+import ErrorPage from "./ErrorPage";
 
 // Componente que muestra los temas de una asignatura específica
 const Topics = () => {
@@ -27,7 +28,7 @@ const Topics = () => {
  
 
   // Si ocurre un error en la consulta, muestra el mensaje de error
-  if (error) return <div className="">Error: {error.message}</div>;
+  if (error) return <ErrorPage errorTitle={error.message} errorMessage={"Ha ocurrido un problema al cargar tus asignaturas"} />;
   
   return (
     <>

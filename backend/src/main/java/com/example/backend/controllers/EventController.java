@@ -20,17 +20,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class EventController {
     @Autowired
     private EventService eventService;
-
+    // Devuelve todos los eventos
     @GetMapping("/")
     public List<Event> getAllEvents() {
         return eventService.getAllEvents();
     }
-
+    //crea un evento
     @PostMapping("/create")
     public Event createEvent(@RequestBody Event event) {
         return eventService.addEvent(event);
     }
-
+    //Borra un evento por id
     @DeleteMapping("delete/{id}")
     public Event deleteEvent(@PathVariable Long id) {
         return eventService.deleteEvent(id);

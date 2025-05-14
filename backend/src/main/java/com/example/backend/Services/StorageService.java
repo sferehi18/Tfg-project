@@ -21,129 +21,128 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
+// Define esta clase como un servicio de Spring
 @Service
-public class StorageService extends AuthMethods{
+public class StorageService extends AuthMethods { // Hereda métodos de autenticación
 
-   
-    
+    // Inyecciones de dependencias para interactuar con la base de datos
     @Autowired
     private FileRepository fileRepository;
     
     @Autowired 
     private TopicRepository topicRepository;
 
-    @Autowired UserRepository userRepository;
+    @Autowired 
+    private UserRepository userRepository;
 
+    // Método para subir un archivo, asociarlo a un tema y guardar info en BD
     @Transactional
     public FileUpload uploadFile(String username, MultipartFile multipartFile, Long topic_id) {
         try {
-            Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
-            // Crear el directorio si no existe
+            Long userId = getAuthenticatedUserId(); // Obtiene ID del usuario logueado
+
+            // Crea el directorio para el usuario si no existe
             String uploadDir = "src\\main\\java\\com\\example\\backend\\uploads\\" + userId;
             Path userFolder = Paths.get(uploadDir);
             if (!Files.exists(userFolder)) {
                 Files.createDirectories(userFolder);
             }
-    
-            // Guardamos el archivo en el directorio del usuario
+
+            // Guarda el archivo en el sistema de archivos local
             String filename = multipartFile.getOriginalFilename();
             Path targetLocation = userFolder.resolve(filename);
             Files.copy(multipartFile.getInputStream(), targetLocation);
-    
-            // Detectamos el tipo MIME real del archivo
+
+            // Detecta tipo MIME real del archivo
             String realMimeType = Files.probeContentType(targetLocation);
-    
-            // Guardamos los detalles del archivo en la base de datos
+
+            // Crea y llena el objeto FileUpload con metadata
             FileUpload file = new FileUpload();
             file.setName(filename);
             file.setContentType(realMimeType);
             file.setCreated_at(LocalDate.now());
             file.setSize(multipartFile.getSize());
-    
-            Topic topic = topicRepository.findById(topic_id).orElseThrow(() ->
-                    new RuntimeException("Topic con ID " + topic_id + " no encontrado"));
-            User user = userRepository.findById(userId).orElseThrow(() ->
-                    new RuntimeException("User con ID " + userId + " no encontrado"));
+
+            // Asocia archivo a un tema (Topic) y al usuario
+            Topic topic = topicRepository.findById(topic_id)
+                .orElseThrow(() -> new RuntimeException("Topic con ID " + topic_id + " no encontrado"));
+            User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User con ID " + userId + " no encontrado"));
             file.setTopic(topic);
             file.setUser(user);
-            
-    
+
+            // Guarda el archivo en la base de datos
             return fileRepository.save(file);
-    
+
         } catch (IOException e) {
             throw new RuntimeException("Error al subir el archivo", e);
         }
     }
 
+    // Obtiene los archivos del usuario actual según el ID del tema
     public List<FileUpload> getFilesByTopicId(Long topic_id) {
-        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
-        List<FileUpload> files = fileRepository.findByTopicIdAndUserId(topic_id,userId);
-        return files;
+        Long userId = getAuthenticatedUserId();
+        return fileRepository.findByTopicIdAndUserId(topic_id, userId);
     }
 
+    // (Nombre confuso) Esto también filtra por topic_id y usuario
     public List<FileUpload> getFileById(Long id) {
-        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
-        List<FileUpload> files = fileRepository.findByTopicIdAndUserId(id,userId);
-        return files;
-    }
-    
-    
-    public List<FileUpload> getAllFiles(Long topic_id){
-     
-        List<FileUpload> files = getFilesByTopicId(topic_id);
-    
-        return files;
+        Long userId = getAuthenticatedUserId();
+        return fileRepository.findByTopicIdAndUserId(id, userId);
     }
 
-    public List<FileUpload> getAllFilesInfo(){
-        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
-        List<FileUpload> files = fileRepository.findByUserId(userId);
-        return files;
+    // Redirige a getFilesByTopicId (puede ser redundante)
+    public List<FileUpload> getAllFiles(Long topic_id) {
+        return getFilesByTopicId(topic_id);
     }
+
+    // Devuelve todos los archivos del usuario actual
+    public List<FileUpload> getAllFilesInfo() {
+        Long userId = getAuthenticatedUserId();
+        return fileRepository.findByUserId(userId);
+    }
+
+    // Busca un archivo específico por su ID (sin verificar usuario)
     public FileUpload getFileInfoById(Long id) {
         return fileRepository.findById(id).orElse(null);
     }
 
-    public Path getFilePath(Long id){
+    // Devuelve la ruta física del archivo basado en su ID
+    public Path getFilePath(Long id) {
         FileUpload file = getFileInfoById(id);
-        if (file == null) {
-            return null; // O lanzar una excepción si prefieres
-        }
-        Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
-        Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\"+userId).resolve(file.getName());
-        return filePath;
+        if (file == null) return null;
+
+        Long userId = getAuthenticatedUserId();
+        return Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\" + userId).resolve(file.getName());
     }
 
+    // Elimina archivo físico y su registro en base de datos
     public void deleteFile(Long id) {
         FileUpload file = fileRepository.findById(id).orElse(null);
         if (file != null) {
-            // Eliminar el archivo físico del sistema de archivos
             Long userId = getAuthenticatedUserId();
-            Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\"+userId).resolve(file.getName());
+            Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\" + userId).resolve(file.getName());
+            try {
+                Files.deleteIfExists(filePath); // elimina físicamente el archivo
+            } catch (IOException e) {
+                throw new RuntimeException("Error al eliminar el archivo", e);
+            }
+            fileRepository.delete(file); // elimina de la base de datos
+        }
+    }
+
+    // Elimina todos los archivos de un tema específico del usuario
+    public void deleteFileByTopicId(Long topic_id) {
+        List<FileUpload> files = getFilesByTopicId(topic_id);
+        Long userId = getAuthenticatedUserId();
+        for (FileUpload file : files) {
+            Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\" + userId).resolve(file.getName());
             try {
                 Files.deleteIfExists(filePath);
             } catch (IOException e) {
                 throw new RuntimeException("Error al eliminar el archivo", e);
             }
-            // Eliminar la entrada de la base de datos
             fileRepository.delete(file);
         }
     }
-    public void deleteFileByTopicId(Long topic_id) {
-        List<FileUpload> files =  getFilesByTopicId(topic_id);
-        Long userId = getAuthenticatedUserId();
-        for (FileUpload file : files) {
-            // Eliminar el archivo físico del sistema de archivos
-            Path filePath = Paths.get("src\\main\\java\\com\\example\\backend\\uploads\\"+ userId).resolve(file.getName());
-            try {
-                Files.deleteIfExists(filePath);
-            } catch (IOException e) {
-                throw new RuntimeException("Error al eliminar el archivo", e);
-            }
-            // Eliminar la entrada de la base de datos
-            fileRepository.delete(file);
-        }
-}
-
-   
 }

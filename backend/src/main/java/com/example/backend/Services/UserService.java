@@ -23,6 +23,14 @@ public class UserService implements UserDetailsService {
         User userDetails = userRepository.findByUsername(username);
         return userDetails;
     }
+
+    public User validateUser(String username, String rawPassword){
+        User user = userRepository.findByUsername(username);
+    if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
+        return user;
+    }
+        return null;
+    }
     
     public User saveUser(User user){
         User newUser = new User(user.getUsername(), user.getEmail(), encodePassword(user.getPassword()));

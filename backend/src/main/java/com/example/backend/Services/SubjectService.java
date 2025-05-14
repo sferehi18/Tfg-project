@@ -13,6 +13,7 @@ import com.example.backend.models.Subject;
 import com.example.backend.models.User;
 import com.example.backend.utils.AuthMethods; // Asegúrate de importar la clase AuthMethods
 @Service
+// Servicio para manejar la lógica de negocio relacionada con las asignaturas (subjects)
 public class SubjectService extends AuthMethods {
 
     @Autowired

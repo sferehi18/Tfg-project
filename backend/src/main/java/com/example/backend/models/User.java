@@ -24,60 +24,67 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Users")
-@RequiredArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class User implements UserDetails{
+@Table(name = "Users") // Esta clase representa la tabla "Users" en la base de datos
+@RequiredArgsConstructor // Crea constructor con los campos @NonNull
+@NoArgsConstructor // Constructor vacío requerido por JPA
+@Getter @Setter // Genera automáticamente getters y setters
+//Esta clase representa a un usuario en el sistema y contiene información como nombre de usuario, correo electrónico y contraseña
+public class User implements UserDetails { // Implementa UserDetails para integrarse con Spring Security
+
+
     @Id
-    // Atributos de la clase User
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID autoincremental
     private Long id;
+
     @NonNull
     private String username;
+
     @NonNull
-    @Column(unique = true)
+    @Column(unique = true) // Asegura que el email sea único
     private String email;
+
     @NonNull
     private String password;
+
+    // Relaciones uno-a-muchos: un usuario puede tener muchos subjects, topics, files, events
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @JsonIgnore // Evita bucles infinitos al serializar a JSON
     private List<Subject> subjects;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Topic> topics;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<FileUpload> files;
+
     @OneToMany(mappedBy = "user")
     private List<Event> events;
 
-     @Override
+    // Métodos requeridos por Spring Security para la autenticación :
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Devuelve los roles o permisos del usuario. Por ahora, una lista vacía.
-        return Collections.emptyList();
+        return Collections.emptyList(); // Sin roles asignados (puedes personalizar esto)
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Cambiar según la lógica de tu aplicación
+        return true; // Cambia si quieres lógica de expiración de cuenta
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Cambiar según la lógica de tu aplicación
+        return true; // Cambia si tienes bloqueo de cuenta
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Cambiar según la lógica de tu aplicación
+        return true; // Cambia si las credenciales pueden expirar
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Cambiar según la lógica de tu aplicación
+        return true; // Cambia si el usuario puede estar deshabilitado
     }
-    
-    
 }

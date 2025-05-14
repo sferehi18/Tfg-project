@@ -21,7 +21,7 @@ public class TopicController {
       @Autowired
     private TopicService topicService;
     
-
+// Devuelve todos los temas de una asignatura
    @GetMapping("subjects/{subject_id}/topics/")
 public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subject_id) {
     List<TopicDTO> topics = topicService.getTopicsBySubject(subject_id);
@@ -30,7 +30,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
     }
     return ResponseEntity.ok(topics); // Si hay datos, devolver 200 OK con el cuerpo
 }
-
+// Devuelve todos los temas
     @GetMapping("topics/All")
     public ResponseEntity<List<TopicDTO>> getAllTopics() {
         List<TopicDTO> topics = topicService.getAllTopics();
@@ -38,7 +38,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
         return ResponseEntity.ok(topics); // Si hay datos, devolver 200 OK con el cuerpo
     }
 
-
+// Crea un tema asociado a una asignatura
     @PostMapping("subjects/{id}/topics/create")
     public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long id) throws Exception{
         TopicDTO Topic = topicService.createTopic(newTopic.getName(),id);
@@ -46,7 +46,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
     
     }
 
-
+    // Edita un tema
     @PutMapping("topics/{id}/edit")
     public ResponseEntity<TopicDTO> editAllTopic(@PathVariable(required = true) Long id,@RequestBody TopicDTO newTopic){
       TopicDTO topic = null;
@@ -59,6 +59,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
       return ResponseEntity.ok(topic);
     }
 
+    // Borra un tema por id
     @DeleteMapping("topics/{id}/delete") 
     public ResponseEntity<TopicDTO> deleteTopic(@PathVariable(required = true) Long id){
       TopicDTO Topic = null;

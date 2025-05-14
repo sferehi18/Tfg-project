@@ -7,6 +7,7 @@ import LoadingPage from "./Loading";
 import AddIconButton from "../components/AddIconButton";
 import { useEffect, useContext } from "react";
 import TokenContext from "../context/AuthContext"; // Importamos el contexto de autenticación
+import ErrorPage from "./ErrorPage";
 const Subjects = () => {
   // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
   const { token, setNewToken } = useContext(TokenContext);
@@ -32,7 +33,7 @@ const Subjects = () => {
 
   // Si ocurre un error en la consulta, mostramos el mensaje
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    return <ErrorPage errorTitle={error.message} errorMessage={"Ha ocurrido un problema al cargar tus asignaturas"} />;
   }
 
   // Render principal de la página de asignaturas
@@ -44,7 +45,7 @@ const Subjects = () => {
         <AddIconButton
           icon={"bi bi-plus-lg"}
           stylesClass={"addicon"}
-          resourceType={"subject"}
+          resourceType={"subject"} //Este valor se pasa al modal para saber qué tipo de recurso se va a crear
         />
       </div>
 

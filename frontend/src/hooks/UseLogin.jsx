@@ -26,6 +26,26 @@ export function useAuth() {
     // Aquí puedes agregar cualquier otra lógica de cierre de sesión que necesites
   };
   
+  const validateUser = async (authUser) => {
+   return axios
+      .post("http://localhost:8080/auth/validate", 
+       authUser
+      )
+      .then((response) => {
+        return response.status;
+      })
+      .catch((error) => {
+        console.error("Error al obtener el usuario:", error);
+        throw error; // Lanza el error para que puedas manejarlo en el componente donde se llama
+      });
 
-  return { getToken ,logout};
+  }
+  // Manejo de errores
+  const invalidUserOrPasswordError =  {
+    //Establece un tipo de error específico personalizado distinto de los ya existentes en useForm
+        type: "manual",
+        message: "Usuario o contraseña incorrectos",
+      }
+
+  return { getToken ,logout, validateUser, invalidUserOrPasswordError};
 }

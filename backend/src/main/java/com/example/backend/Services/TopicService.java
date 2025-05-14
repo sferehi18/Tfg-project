@@ -19,6 +19,7 @@ import com.example.backend.models.User;
 import com.example.backend.models.Subject;
 import com.example.backend.utils.AuthMethods; 
 @Service
+// Servicio para manejar la lógica de negocio relacionada con los temas (topics)
 public class TopicService extends AuthMethods {
 
     @Autowired

@@ -26,6 +26,7 @@ import lombok.Setter;
 
 @Table(name = "Subjects")
 @Entity
+// Esta clase representa la tabla "Subjects" en la base de datos
 public class Subject {
 
     @Id

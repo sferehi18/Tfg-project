@@ -12,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+// Esta clase representa la tabla "Topics" en la base de datos
 public class Topic {
 
     @Id

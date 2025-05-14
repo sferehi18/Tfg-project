@@ -1,37 +1,41 @@
 import React from "react";
 import { useContext } from "react";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useAuth } from "../hooks/useLogin"; // Importamos el hook useAuth
 import { useNavigate } from "react-router-dom"; // Importamos useNavigate para navegar entre rutas
 function LoginPage() {
-  const { getToken } = useAuth(); // Importamos el hook useAuth para obtener el token
+  const { getToken,validateUser,invalidUserOrPasswordError } = useAuth(); // Importamos el hook useAuth para obtener el token
   const navigator = useNavigate(); // Inicializamos el hook useNavigate
 
   const { register, handleSubmit,
-    formState: { errors }} = useForm();
-  const onSubmit = (data) => {
-    getToken(data) // Llamamos a la función getToken con los datos del formulario
-      .then((token) => {
-        // Verificamos si el token es una cadena de texto y luego lo guardamos
-        if (typeof token === "string") {
-          localStorage.setItem("token", token);
+    formState: { errors },setError} = useForm();
+  const onSubmit = async (data) => {
+    console.log("Datos del formulario:", JSON.stringify(data));
+  try {
+    const status = await validateUser(data); // Retorna el status de la respuesta
+    if (status == '200') {
+      const token = await getToken(data); // Llama a la función para obtener el token
+      
+        localStorage.setItem("token", token); // Guarda el token en localStorage
+        navigator("/"); // Redirige a la página principal
+      
+       
+      
+    } else {
+      setError("password",invalidUserOrPasswordError);
+    }
+  } catch (error) {
+    setError("password",invalidUserOrPasswordError);
+    console.error("Error en login:", error);
+  }
+};
 
-          console.log("Token almacenado:", token); // Puedes ver el token aquí en la consola
-        } else {
-          console.error("El token no es válido:", token);
-        }
-        navigator("/"); // Redirigimos al usuario a la página principal
-      })
-      .catch((error) => {
-        console.error("Error al obtener el token:", error); // Manejamos el error si la solicitud falla
-      });
-    console.log(data);
-  };
 
   return (
     <div className="container d-flex flex-column align-items-center justify-content-center vh-100">
       <h2 className="p-2 mb-4">Iniciar Sesión</h2>
+      {/*handleSubmit pasa los datos a la función callback para que los maneje*/} 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="d-flex flex-column align-items-center">
           <label htmlFor="username" className="form-label">
@@ -40,7 +44,7 @@ function LoginPage() {
           <input
             type="text"
             {...register("username")}
-            className="form-control w-50"
+            className="form-control w-100"
           />
           <label htmlFor="password" className="form-label">
             Contraseña
@@ -48,15 +52,13 @@ function LoginPage() {
           <input
             type="password"
             {...register("password",{
-          required: "La contraseña es obligatoria",
-          minLength: {
-            value: 3,
-            message: "Debe tener al menos 3 caracteres",
-          },
+         
+           
         })}
             
-            className="form-control w-50"
+            className="form-control w-100"
           />
+          {/* Aquí se muestra el mensaje de error si existe */}
           {errors.password && <p className=" text-danger">{errors.password.message}</p>}
           <button type="submit" className="btn btn-primary mt-3">
             Iniciar Sesión
