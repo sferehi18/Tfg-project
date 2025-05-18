@@ -7,16 +7,23 @@ import { useTopics } from "../hooks/UseResources"; // Hook personalizado que man
 import LoadingPage from "./Loading"; // Componente para mostrar una pantalla de carga
 import AddIconButton from "../components/AddIconButton";
 import ErrorPage from "./ErrorPage";
-
+import { useContext } from "react";
+import TokenContext from "../context/AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // Componente que muestra los temas de una asignatura específica
 const Topics = () => {
   const { subjectId } = useParams(); // Extrae el "subjectId" desde la URL (ejemplo: /subjects/123)
   const { getTopics } = useTopics(); // Usa el hook personalizado para obtener la función de consulta de temas
-
+   const {isTokenValid} = useContext(TokenContext);
+   
+   
   // Usa useQuery para obtener los temas desde el backend
   const { isLoading, data, error } = useQuery({
     queryKey: ["topics"], // Clave única para caché y revalidación de datos
-    queryFn:() => getTopics(subjectId), // Función que obtiene los temas desde el backend
+    queryFn:() => getTopics(subjectId),
+    enabled: isTokenValid()
+// Función que obtiene los temas desde el backend
   });
 
  

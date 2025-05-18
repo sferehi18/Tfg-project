@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -43,6 +44,15 @@ public class JwtService {
                 .get("username", String.class);     // Extrae el "claim" username
     }
 
+    public Date extracDate(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())     // Clave para verificar la firma
+                .build()
+                .parseClaimsJws(token)              // Parsea el JWT (lanza excepción si es inválido)
+                .getBody().getExpiration();
+                 
+    }
+
     /**
      * Extrae el ID del usuario desde el "subject" del token.
      */
@@ -62,7 +72,11 @@ public class JwtService {
      * Solo compara el username, pero asume que el token es válido si no lanza excepción.
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return extractUsername(token).equals(userDetails.getUsername());
+        return extractUsername(token).equals(userDetails.getUsername()) ;
+    }
+
+    public boolean isTokenExpired(String token){
+        return extracDate(token).after(new Date());
     }
 
     /**

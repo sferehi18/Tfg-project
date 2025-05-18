@@ -4,12 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useSubjects } from "../hooks/UseResources";
 import SubjectCard from "../components/SubjectCard";
+import TokenContext from "../context/AuthContext";
+import { useContext } from "react";
 function Favourites() {
   const { getSubjects } = useSubjects();
-
+  const {isTokenValid} = useContext(TokenContext);
   const { data: subjects, isLoading, error } = useQuery({
     queryKey: ["subjects"],
     queryFn: getSubjects,
+    enabled:isTokenValid()
 
   }
     

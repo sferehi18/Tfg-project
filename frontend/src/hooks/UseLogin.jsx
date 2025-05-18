@@ -1,8 +1,11 @@
 import axios from "axios";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import TokenContext from "../context/AuthContext";
 
 
 export function useAuth() {
-  
+const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
   const getToken = async (authUser) => {
     return axios
       .post("http://localhost:8080/auth/login", 
@@ -18,13 +21,17 @@ export function useAuth() {
       });
   };
 
+
   const logout = () => {
-    localStorage.removeItem("token");
-   
-     // Redirige a la página de inicio de sesión
+
     
-    // Aquí puedes agregar cualquier otra lógica de cierre de sesión que necesites
-  };
+    setNewToken(null);
+    
+    setExpiredMsg('');
+   
+  }
+
+  
   
   const validateUser = async (authUser) => {
    return axios

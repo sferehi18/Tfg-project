@@ -4,13 +4,16 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useFiles } from "../hooks/UseResources";
 import AddIconButton from "../components/AddIconButton";
+import TokenContext from "../context/AuthContext";
+import { useContext } from "react";
 function Files(){
-  
+    const {isTokenValid} = useContext(TokenContext);
     const { subjectId, topicId } = useParams(); // Extraer subjectId y topicId de la URL
     const {getFiles} = useFiles(); // Hook para manejar archivos
      const {isLoading,error,data} = useQuery({
        queryKey:  ["files"],
        queryFn: () => getFiles(topicId),
+       enabled:isTokenValid(),
      });
      if (isLoading) return <div>Cargando...</div>;
      if (error) return <div>Error: {error.message}</div>;

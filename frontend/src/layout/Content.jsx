@@ -1,11 +1,23 @@
-import React from "react";
-import { Outlet } from "react-router-dom"; // Usamos Outlet para renderizar rutas hijas
+import React, { useContext } from "react";
+import { Outlet, useNavigate } from "react-router-dom"; // Usamos Outlet para renderizar rutas hijas
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom"; // Importamos useLocation para obtener la ubicación actual
+import TokenContext from "../context/AuthContext";
 function Content() {
   const location = useLocation();
+  const {isTokenValid,setNewToken,token,isTokenExpired,setExpiredMsg,isTokenPresent} = useContext(TokenContext);
+  const navigate = useNavigate();
   useEffect(() => {
     console.log('La ubicación ha cambiado:', location);
+    if(isTokenPresent()){
+      if(isTokenExpired()){
+      navigate("/login");
+      
+      setExpiredMsg("Tu token ha expirado porfavor vuelve a iniciar Sesion");
+        }
+    }
+    
+        
   }, [location]);
   
   return (

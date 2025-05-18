@@ -8,7 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import ModalTemplate from "../components/ModalTemplate";
 import CreationContext from "../context/ModalsMenusContext";
 import { useEvents } from "../hooks/UseResources";
-
+import TokenContext from "../context/AuthContext";
 import "dayjs/locale/es"; // Importa el idioma español para dayjs
 import { useCrudOptions } from "../hooks/UseCrudOptions";
 import ConfirmActionModal from "../components/ConfirmActionModal";
@@ -17,7 +17,7 @@ const localizer = dayjsLocalizer(dayjs); // Configura el localizador para usar d
  // Establece el idioma español para moment.js
 function MyCalendar() {
   
-
+  const {isTokenValid} = useContext(TokenContext);
   const { openModal,closeModal } = useContext(CreationContext);
   const [selectedOption,setSelectedOption] = useState({}); // Guarda la opción seleccionada
   const {event} = useCrudOptions();
@@ -54,6 +54,7 @@ function MyCalendar() {
         end: new Date(event.end),
       }));
     },
+    enabled:isTokenValid()
   });
   
   const handleAddEvent = (newevent) => {

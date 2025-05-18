@@ -10,6 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -34,6 +37,14 @@ public class AuthController {
        Long userid = userService.loadUserByUsername(userDetails.getUsername()).getId();
         return jwtService.generateToken(userid, userDetails.getUsername());
     }
+
+    @PostMapping("/validateToken")
+    public ResponseEntity<?> postMethodName(@RequestBody String token) {
+    
+        
+     return jwtService.isTokenExpired(token) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+    
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {

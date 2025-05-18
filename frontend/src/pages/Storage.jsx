@@ -3,13 +3,16 @@ import Filetable from "../pages/FileTable";
 import Storagebar from "../components/StorageBar";
 import { useQuery } from "@tanstack/react-query";
 import { useFiles } from "../hooks/UseResources";
+import TokenContext from "../context/AuthContext";
+import { useContext } from "react";
 // Página de Almacenamiento
 const Storage = () => {
- 
+ const {isTokenValid} = useContext(TokenContext);
   const {getAllFiles} = useFiles(); // Hook para manejar archivos
    const {isLoading,error,data} = useQuery({
      queryKey:  ["files"],
      queryFn:getAllFiles,
+     enabled: isTokenValid()
    });
    return(
       // Contenedor principal de la página de almacenamiento

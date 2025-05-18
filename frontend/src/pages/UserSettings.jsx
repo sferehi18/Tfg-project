@@ -7,11 +7,11 @@ function UserSettings() {
     
        <form>
         <div className='d-flex flex-column align-items-center'>
-        <label htmlFor="username" className=' form-label'>Nombre de Usuario</label>
+        <label htmlFor="username"  className=' form-label'>Nombre de Usuario</label>
        
-        <input type="text" name="username" id="" className='form-control w-50' />
+        <input type="text" name="username" className='form-control w-50' />
         <label htmlFor="password" className='form-label'>Contraseña</label>
-        <input type="text" name="password" id="" className='form-control w-50' />
+        <input type="text" name="password"  className='form-control w-50' />
         </div>
       
        </form>

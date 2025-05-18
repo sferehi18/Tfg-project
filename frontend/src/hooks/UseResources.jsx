@@ -4,14 +4,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import TokenContext from "../context/AuthContext";
 import CreationContext from "../context/ModalsMenusContext";
+import { useNavigate } from "react-router-dom";
 
 
 
 // Hook para manejar las asignaturas, temas y eventos
 // Este hook utiliza React Query para manejar las peticiones a la API y el estado de los datos
 export function useSubjects() { 
-  const {token} = useContext(TokenContext);
-
+  const navigate = useNavigate();
+ const { token, setNewToken } = useContext(TokenContext);
+ 
   const authHeaders = { 
   "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
@@ -29,6 +31,8 @@ export function useSubjects() {
       .then(response => {
         return response.data;
       })
+   
+    
      
   };
 

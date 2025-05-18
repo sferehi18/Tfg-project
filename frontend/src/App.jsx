@@ -20,12 +20,16 @@ import { useEffect } from "react";
 import AuthLayout from "./layout/AuthLayout";
 import LoginPage from "./pages/LoginPage";
 import { useState } from "react";
-import { TokenProvider } from "./context/AuthContext";
+import TokenContext, { TokenProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const queryClient = new QueryClient();
 
 function App() {
 
- 
+  
+  
+
   
   
   return (
@@ -35,15 +39,16 @@ function App() {
        <Router>
 
        
-      <Routes>
+      <Routes >
          <Route path="/login" element={<AuthLayout/>} >
           <Route index  element={<LoginPage/>} />
         </Route>
-
-        <Route path="/" element={<Layout />}>
+    
+        <Route path="/" element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
+        
           <Route index element={<Subjects />} /> 
           <Route path="/calendar" element={<MyCalendar />} />
-          <Route path="login" element={<Subjects />} />
+          <Route path="" element={<Subjects />} />
           <Route path="subject/:subjectId/topics/" element={<Topics />} />
           <Route path="subject/:subjectId/topics/:topicId/files" element={<Files />} />  
           <Route path="storage" element = {<Storage/>}/>

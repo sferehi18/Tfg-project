@@ -8,24 +8,26 @@ import AddIconButton from "../components/AddIconButton";
 import { useEffect, useContext } from "react";
 import TokenContext from "../context/AuthContext"; // Importamos el contexto de autenticación
 import ErrorPage from "./ErrorPage";
+import { redirect, useNavigate } from "react-router-dom"; // Importamos useNavigate para navegar entre rutas
 const Subjects = () => {
   // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
-  const { token, setNewToken } = useContext(TokenContext);
-
-  // Al montar el componente, leemos el token desde localStorage y lo guardamos en el contexto
-  useEffect(() => {
-    setNewToken(localStorage.getItem("token"));
-  }, []);
-
+  const {isTokenValid} = useContext(TokenContext);
+   // Inicializamos el hook useNavigate
+ 
+ 
   // Obtenemos la función getSubjects desde un custom hook
   const { getSubjects } = useSubjects();
 
   // Usamos React Query para hacer la petición a la API y manejar loading/error/data automáticamente
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["subjects"], // Clave para caché y refetching
-    queryFn: getSubjects,   // Función que realiza la consulta
+    queryFn: getSubjects,
+    enabled: isTokenValid()
+     
+      // Función que realiza la consulta
   });
 
+  
   // Mientras se cargan los datos, mostramos una página de carga
   if (isLoading) {
     return <LoadingPage />;
@@ -33,6 +35,7 @@ const Subjects = () => {
 
   // Si ocurre un error en la consulta, mostramos el mensaje
   if (isError) {
+     // Redirige a la página de login si hay un error
     return <ErrorPage errorTitle={error.message} errorMessage={"Ha ocurrido un problema al cargar tus asignaturas"} />;
   }
 
