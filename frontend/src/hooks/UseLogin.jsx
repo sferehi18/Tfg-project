@@ -21,16 +21,25 @@ const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
       });
   };
 
+  const createUser = async (user) =>{
+    return axios.post("http://localhost:8080/auth/register",user).then((response)=>{
+      return response.status;
+    }
+    ).catch((err) =>{
+      console.log(err);
+    })
+  }
+
 
   const logout = () => {
 
     
     setNewToken(null);
-    
     setExpiredMsg('');
    
   }
 
+ 
   
   
   const validateUser = async (authUser) => {
@@ -54,5 +63,5 @@ const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
         message: "Usuario o contraseña incorrectos",
       }
 
-  return { getToken ,logout, validateUser, invalidUserOrPasswordError};
+  return { getToken ,logout, validateUser, invalidUserOrPasswordError,createUser};
 }

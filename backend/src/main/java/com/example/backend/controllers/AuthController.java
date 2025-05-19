@@ -49,7 +49,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
          try {
-        User newUser = userService.saveUser(user);
+        boolean newUser = userService.saveUser(user);
         return ResponseEntity.ok(newUser);
     } catch (Exception e) {
         e.printStackTrace(); // Imprime el error en consola

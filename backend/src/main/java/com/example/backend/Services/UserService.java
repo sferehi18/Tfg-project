@@ -31,12 +31,12 @@ public class UserService implements UserDetailsService {
     }
         return null;
     }
-    
-    public User saveUser(User user){
+    //TODO AÑADIR LOGICA VERFIICACION DE USUARIOS NOMBRES E EMAILS
+    public boolean saveUser(User user){
         User newUser = new User(user.getUsername(), user.getEmail(), encodePassword(user.getPassword()));
         userRepository.save(newUser);
         
-        return loadUserByUsername(user.getUsername());
+        return true;
     }
     public UserDetails loadUserByEmail(String email){
         UserDetails userDetails = userRepository.findByEmail(email);

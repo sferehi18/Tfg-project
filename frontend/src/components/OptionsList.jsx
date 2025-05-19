@@ -43,10 +43,10 @@ function OptionsList({ optionsArray, menuId }) {
                 <ConfirmActionModal
                   title={option.label}
                   message={option.message}
-                  confirmButtonType={option.actionButtonStyle} // Use the correct style
-                  confirmButtonText={option.label} // Use the correct text
+                  confirmButtonType={option.actionButtonStyle} 
+                  confirmButtonText={option.label} 
                   action={option.action}
-                  modalId={uniqueModalId} // Ensure it matches the state
+                  modalId={uniqueModalId} 
                   resourceId={option.resourceId}
                 />
               )}

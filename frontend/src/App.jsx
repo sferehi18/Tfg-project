@@ -18,10 +18,11 @@ import { use } from "react";
 import { useAuth } from "./hooks/useLogin";
 import { useEffect } from "react";
 import AuthLayout from "./layout/AuthLayout";
-import LoginPage from "./pages/LoginPage";
+import AuthPage from "./pages/AuthPage";
 import { useState } from "react";
 import TokenContext, { TokenProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RegisterForm from "./pages/RegisterForm";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +42,7 @@ function App() {
        
       <Routes >
          <Route path="/login" element={<AuthLayout/>} >
-          <Route index  element={<LoginPage/>} />
+          <Route index  element={<AuthPage/>} />
         </Route>
     
         <Route path="/" element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
