@@ -172,16 +172,18 @@ export const useTopics = () =>{
         headers:authHeaders
       }
     );
+    
     return response.data;
   };
 
   const getAllTopics = async () => {
-
-    const response = await axios.get(`/topics/All`,
+   
+    const response = await axios.get(`http://localhost:8080/topics/All`,
       {
         headers:authHeaders
       }
     );
+    
     return response.data;
   };
 

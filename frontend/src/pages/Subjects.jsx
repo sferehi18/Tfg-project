@@ -9,14 +9,25 @@ import { useEffect, useContext } from "react";
 import TokenContext from "../context/AuthContext"; // Importamos el contexto de autenticación
 import ErrorPage from "./ErrorPage";
 import { redirect, useNavigate } from "react-router-dom"; // Importamos useNavigate para navegar entre rutas
+import { useTopics } from "../hooks/UseResources";
+import { QueryClient } from "@tanstack/react-query";
+const queryClient = new QueryClient();
+
 const Subjects = () => {
   // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
   const {isTokenValid} = useContext(TokenContext);
    // Inicializamos el hook useNavigate
  
- 
+ const { getAllTopics } = useTopics();
   // Obtenemos la función getSubjects desde un custom hook
   const { getSubjects } = useSubjects();
+  const {} = useQuery({
+    queryKey: ["topics"], // Clave única para caché y revalidación de datos
+    queryFn:getAllTopics,
+    enabled: isTokenValid()
+// Función que obtiene los temas desde el backend
+  });
+  
 
   // Usamos React Query para hacer la petición a la API y manejar loading/error/data automáticamente
   const { isLoading, isError, data, error } = useQuery({
@@ -26,7 +37,7 @@ const Subjects = () => {
      
       // Función que realiza la consulta
   });
-
+  
   
   // Mientras se cargan los datos, mostramos una página de carga
   if (isLoading) {

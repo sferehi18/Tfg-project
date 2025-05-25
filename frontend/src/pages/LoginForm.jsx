@@ -40,6 +40,7 @@ function LoginForm(){
     }
   };
     return (
+      
         <form onSubmit={handleSubmit(onSubmit)}>
         <div className="d-flex flex-column align-items-center">
           <label htmlFor="username" className="form-label">
@@ -64,7 +65,7 @@ function LoginForm(){
             <p className=" text-danger">{errors.password.message}</p>
           )}
           
-          <button type="submit" className="btn btn-primary mt-3">
+          <button type="submit" className="btn bg-primar text-white mt-3">
             Iniciar Sesión
           </button>
         </div>

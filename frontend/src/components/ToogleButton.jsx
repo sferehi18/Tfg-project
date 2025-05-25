@@ -8,15 +8,16 @@ function ToggleButton({enabledText,disabledText,customAction,customState}) {
        customAction(!customState);
     }
   return (
-    <Form>
+   
       <Form.Check
+      className='no-outline toogleButton-color fs-1 text-white'
         type="switch"
         id="custom-switch"
-        label={activo ? `${enabledText}` : `${disabledText}`}
+        
         checked={activo}
         onChange={handleOnChange}
       />
-    </Form>
+
   );
 }
 

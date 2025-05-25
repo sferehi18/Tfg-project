@@ -23,12 +23,11 @@ import { useState } from "react";
 import TokenContext, { TokenProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RegisterForm from "./pages/RegisterForm";
-
+import { useTopics } from "./hooks/UseResources";
 const queryClient = new QueryClient();
 
 function App() {
 
-  
   
 
   

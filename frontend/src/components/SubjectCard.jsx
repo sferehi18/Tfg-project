@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useSubjects } from "../hooks/UseResources";
 import SimpleIconButton from "./SimpleIconButton";
 import { useState } from "react";
+import TooltipTitle from "./tooltipTitle";
 /*Componente SubjectCard
   -Renderiza cada Asignatura segun sus datos en la estructura definida
   -Contiene un boton enlace a sus temas y un boton con icono (tres puntos) para la edición o eliminación de un recurso
@@ -14,6 +15,7 @@ import { useState } from "react";
 function Subjectcard({ id, name, isFav }) {
   const [isFavorite, setIsFavorite] = useState(isFav); // Estado para marcar como favorito
   const { handleMarkAsFavorite } = useSubjects();
+  
   const toggleIsFavorite = (id, newFavoriteState) => {
     setIsFavorite(newFavoriteState); 
     handleMarkAsFavorite(id, newFavoriteState);
@@ -33,7 +35,7 @@ function Subjectcard({ id, name, isFav }) {
     <div className="subjectCard d-flex flex-column align-items-center justify-content-end gap-2  rounded-4  resource  " style={cardstyle}>
       
       <div className="mt-4 ms-2">
-    <Link to={`/subject/${id}/topics`} className="text-decoration-none  ">
+    <Link to={`/subject/${id}/topics`} className="text-decoration-none   ">
             <SimpleIconButton hover={true} icon={"bi bi-arrow-right"} stylesClass={"text-white fs-4"}></SimpleIconButton>
           </Link>
       
@@ -43,7 +45,8 @@ function Subjectcard({ id, name, isFav }) {
          
            
             <div className="d-flex flex-nowrap align-items-center justify-content-between  w-100 ">
-            <h5 className="mt-4 ms-2 ">{formattedName}</h5>
+           {formattedName != name ? <TooltipTitle customClasses={" mt-4 ms-2 fs-5"}  text={formattedName} tooltipText={name}></TooltipTitle>
+           : <p className=" mt-4 ms-2 fs-5">{formattedName}</p>} 
             <div className=" align-self-end  d-flex  flex-nowrap align-items-center gap-1">
           <SimpleIconButton stylesClass={ isFavorite ? "color-gold" : "color-grey"} hover={true} animationClass={isFavorite ? "pulse" : ""} 
             icon={isFavorite ? "bi bi-bookmark-fill" : "bi bi-bookmark"}

@@ -71,7 +71,7 @@ function RegisterForm(){
           )}
           {ok && <p className="text-succes">Usuario registrado correctamente</p>}
           
-          <button type="submit" className="btn btn-primary mt-3">
+          <button type="submit" className="btn bg-primar text-white mt-3">
             Registrarse
           </button>
         </div>

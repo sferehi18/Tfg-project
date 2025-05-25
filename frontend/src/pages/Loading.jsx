@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap"; // Importa el componente Spinner de R
 // Componente que muestra una pantalla de carga con un spinner centrado
 function LoadingPage() {
   return (
-    <div className="bg-white d-flex justify-content-center align-items-center contentContainer rounded-4" style={{ height: "100vh" }}>
+    <div className=" d-flex justify-content-center align-items-center contentContainer rounded-4" style={{ height: "100vh" }}>
       <Spinner animation="border" variant="primary" />
     </div>
   );
