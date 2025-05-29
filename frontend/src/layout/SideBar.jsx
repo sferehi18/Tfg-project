@@ -34,7 +34,7 @@ function Sidebar() {
           <h3 className="ms-2 fs-4 fw-bold text-white hide">edu-vault</h3>
         </div>
 
-        <ul className="d-flex flex-column ms-3 align-items-start gap-4 p-0 w-100">
+        <ul className="d-flex flex-column ms-3 align-items-start  gap-4 p-0 w-100">
           {/* Todos los botones excepto cerrar sesión */}
           <li className="mt-5">
             <Link to="/" className="text-decoration-none">
@@ -76,7 +76,7 @@ function Sidebar() {
                 icon="bi bi-cloud"
                 id="storage"
                 isSelected={isSelected}
-                onClick={() => handleButtonSelect("Storage")}
+                onClick={() => handleButtonSelect("storage")}
               />
             </Link>
           </li>

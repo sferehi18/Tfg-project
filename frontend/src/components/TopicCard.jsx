@@ -3,12 +3,14 @@ import ThreeDots from "./threedots";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaBook, FaReact } from "react-icons/fa";
+import { useSlug } from "../hooks/useSlug";
 function TopicCard({ description, name, subjectId, topicId }) {
   //Definición de estilos para la TopicCard
   const cardstyle = {
-    height: "100px",
+    
     boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   };
+  const {slugify} = useSlug();
 
   return (
     //Estructura de la topicCard , todos los temas se mostrarán segun la misma en el componente Topic.jsx
@@ -18,8 +20,8 @@ function TopicCard({ description, name, subjectId, topicId }) {
       style={cardstyle}
     >
       <Link
-        to={`${topicId}/files`}
-        className="text-decoration-none text-black w-100 h-100  p-3"
+        to={`${topicId}-${slugify(name)}/files`}
+        className="text-decoration-none text-black w-100   p-3"
       >
         <div className="d-flex flex-row flex-nowrap align-items-center justify-content-between">
           <div className="d-flex align-items-center gap-3 justify-content-center">
@@ -27,7 +29,7 @@ function TopicCard({ description, name, subjectId, topicId }) {
               <FaBook size={"20px"} color="white" />
             </div>
             <div>
-              <h5 className="card-title align-self-start">{name}</h5>
+              <h5 className=" align-self-start">{name}</h5>
             </div>
           </div>
         </div>

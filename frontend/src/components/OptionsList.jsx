@@ -38,6 +38,7 @@ function OptionsList({ optionsArray, menuId }) {
                   action={option.action}
                   actionText={option.label}
                   actionButtonStyle={option.actionButtonStyle}
+                  validations={option.validations}
                 />
               ) : (
                 <ConfirmActionModal

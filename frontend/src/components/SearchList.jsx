@@ -50,7 +50,7 @@ function SearchList({ searchInput }) {
         resourceId={result.id}
         subjectId={subjectId}
         onClick={result.type == "subject" ? () =>{
-  navigate(`/subject/${result.id}/topics/`);
+  navigate(`/subject/${result.id}-${result.name}/topics/`);
   setShow(false);
 } : () =>{
   navigate(`subject/${subjectId}/topics/${result.id}/files/`);

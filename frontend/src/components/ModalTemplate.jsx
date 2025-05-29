@@ -4,9 +4,9 @@ import CreationContext from "../context/ModalsMenusContext";
 import { useForm } from "react-hook-form";
 import { useSubjects } from "../hooks/UseResources";
 
-function ModalTemplate({ title, fields, action, modalOptionId,message,actionText,actionButtonStyle,resourceId}) {
+function ModalTemplate({ title, fields, action, modalOptionId,message,actionText,actionButtonStyle,resourceId,validations}) {
   const { isModalOpen, closeModal } = useContext(CreationContext);
-    const {handleSubmit,register} = useForm();
+    const {handleSubmit,register,formState:{errors}} = useForm();
 
   const handleonSubmit = resourceId && fields ? ((data) => {
     
@@ -27,12 +27,16 @@ function ModalTemplate({ title, fields, action, modalOptionId,message,actionText
         <div key={fieldname + modalOptionId} className="form-floating mb-3">
         
           <input
-           {...register(fieldname)} type="text"
+           {...register(fieldname,validations)} type="text"
             className="form-control"
           
            
           />
           <label>{fieldname}</label>
+
+      {errors[fieldname] && (
+      <p className="text-danger">{errors[fieldname].message}</p>
+    )}
         </div>
       ))) : (modalbody = <p>{message}</p>);
    

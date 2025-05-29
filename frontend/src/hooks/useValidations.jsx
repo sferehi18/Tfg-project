@@ -8,6 +8,14 @@ export function useFormValidations(){
         required:"Porfavor inserta una contraseña valida"
     };
 
+    const subjectValidations = {
+        maxLength:{
+            value: 17,
+            message: "El nombre debe tener menos de 17 caracteres"
+        }
+            
+    }
+
     const emailValidations = {
         required:"Porfavor inserta un correo",
                  pattern: {
@@ -18,5 +26,5 @@ export function useFormValidations(){
 
 
 
-    return {usernameValidations,passwordValidations,emailValidations};
+    return {usernameValidations,passwordValidations,emailValidations,subjectValidations};
 }

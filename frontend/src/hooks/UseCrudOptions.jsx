@@ -1,16 +1,19 @@
 import React from "react";
 import Subjects from "../pages/Subjects";
 import { useEvents, useSubjects, useTopics} from "./UseResources";
+import { useFormValidations } from "./useValidations";
 export function useCrudOptions() {
    const {handleAddSubject,handleDeleteSubject,handleEditSubject} = useSubjects();
     const {handleDeleteTopic,handleEditTopic,handleAddTopic} = useTopics();
     const {handleAddEvent,handleDeleteEvent} = useEvents();
+    const {subjectValidations} = useFormValidations();
     const subject = {
         createOption:{
             label: "Crear Asignatura", // Texto que se mostrará en la opción del menú
             action: handleAddSubject, // Función que se ejecutará al seleccionar la opción
             fields: ["name"], // Campos requeridos para crear una asignatura
             actionButtonStyle:"success",
+            validations: subjectValidations
         },
 
         deleteOption:{
@@ -27,6 +30,7 @@ export function useCrudOptions() {
             action:handleEditSubject , 
             fields:["name"],
             actionButtonStyle:"warning",
+             validations: subjectValidations
            
          }
 

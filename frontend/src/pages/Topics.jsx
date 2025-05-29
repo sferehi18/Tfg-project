@@ -13,11 +13,16 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Componente que muestra los temas de una asignatura específica
 const Topics = () => {
-  const { subjectId } = useParams(); // Extrae el "subjectId" desde la URL (ejemplo: /subjects/123)
+  const { subjectUri } = useParams(); // Extrae el "subjectId" desde la URL (ejemplo: /subjects/123)
+const [subjectId, slug] = subjectUri.split("-");
   const { getTopics } = useTopics(); // Usa el hook personalizado para obtener la función de consulta de temas
    const {isTokenValid} = useContext(TokenContext);
-   
-   
+   const navigate = useNavigate();
+   useEffect(() =>{
+      if(!slug) navigate(-1)
+   },[])
+
+ 
   // Usa useQuery para obtener los temas desde el backend
   const { isLoading, data, error } = useQuery({
     queryKey: ["topics"], // Clave única para caché y revalidación de datos
@@ -40,7 +45,7 @@ const Topics = () => {
   return (
     <>
       <div className="d-flex align-items-center  ">
-      <h2 className="p-3">Temas de la Asignatura</h2>
+      <h2 className=" p-3 ">Temas de {slug}</h2>
       <AddIconButton
         subjectId={subjectId} // ID de la asignatura para la que se están mostrando los temas
         resourceType={"topic"} // Tipo de recurso (tema)

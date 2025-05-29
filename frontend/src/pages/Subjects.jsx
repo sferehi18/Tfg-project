@@ -52,7 +52,7 @@ const Subjects = () => {
 
   // Render principal de la página de asignaturas
   return (
-    <div style={{ height: "82vh" }}>
+    <div style={{ height: "82vh" }} >
       {/* Título y botón para añadir asignaturas */}
       <div className="d-flex align-items-center">
         <h2 className="p-3">Asignaturas</h2>

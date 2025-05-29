@@ -6,13 +6,14 @@ import TokenContext from "../context/AuthContext";
 import CreationContext from "../context/ModalsMenusContext";
 import { useNavigate } from "react-router-dom";
 
-
+import ToastContext from "../context/ToastContext";
 
 // Hook para manejar las asignaturas, temas y eventos
 // Este hook utiliza React Query para manejar las peticiones a la API y el estado de los datos
 export function useSubjects() { 
   const navigate = useNavigate();
  const { token, setNewToken } = useContext(TokenContext);
+ const {setShow,handleShow} = useContext(ToastContext);
  
   const authHeaders = { 
   "Content-Type": "application/json",
@@ -56,10 +57,18 @@ const createSubject = useMutation({
     
 
     queryClient.invalidateQueries("subjects");
+    handleShow({color:"success",
+      headerText:"Recurso creado correctamente",
+      bodyText:"Nueva Asignatura disponible"
+    });
   },
   onError: (err) => {
     console.error("Error al añadir asignatura:", err.message);
-    alert("Error al añadir asignatura");
+ 
+     handleShow({color:"danger",
+      headerText:"Error al crear recurso",
+      bodyText:"Intentalo as tarde"
+    });
   },
 });
 const handleAddSubject = (newSubject) => {
@@ -138,6 +147,7 @@ const subjectMarkAsFavorite = useMutation({
   onSuccess: () => {
     console.log("Asignatura marcada como favorita");
     queryClient.invalidateQueries("subjects");
+
   },
   onError: () => {
     console.log("Error al marcar asignatura como favorita");

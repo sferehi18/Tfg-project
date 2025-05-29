@@ -17,7 +17,10 @@ function AddIconButton({
 }) {
   const { openModal } = useContext(CreationContext);
   const { subject, topic } = useCrudOptions();
-  const { topicId } = useParams();
+  const { topicUri } = useParams();
+  const [topicId,slug] = topicUri ? topicUri.split("-") : [];
+  
+   
   const fileInputRef = useRef(null);
   const { handleAddFile } = useFiles();
   const handleClick = () => {
@@ -59,6 +62,7 @@ function AddIconButton({
           action={option.action}
           actionText={option.label}
           actionButtonStyle={option.actionButtonStyle}
+          validations={option.validations}
         />
       ) : (
         <input

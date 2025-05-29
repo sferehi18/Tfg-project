@@ -4,9 +4,9 @@
     
 }
 :root{
-  --color-primary:  rgb(99, 21, 255)!important;
+  --color-primary:  rgb(95, 28, 228)!important;
   --color-secondary: #6c757d;
-  --bs-primary: rgb(99, 21, 255);
+  --bs-primary: rgb(95, 28, 228);
 }
 body{
   
@@ -141,6 +141,17 @@ body{
 .btn-icon2{
   background-color: transparent !important;
   border: none !important;
+}
+.bg-red-light:hover {
+   background-color: rgb(252, 126, 126)
+  !important;
+ 
+}
+
+.bg-blue-light:hover {
+   background-color: rgb(111, 128, 255)
+  !important;
+ 
 }
 .btn-icon:hover{
   background-color: rgba(255, 255, 255, 0.1)
@@ -296,7 +307,7 @@ body{
   
   color :white;
   width: 250px;
-  height: 150px;
+  height: 160px;
   padding: 5px;
    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
  

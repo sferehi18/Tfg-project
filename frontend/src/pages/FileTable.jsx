@@ -15,6 +15,8 @@ function Filetable({ files }) {
     "Authorization": `Bearer ${localStorage.getItem("token")}` // Se obtiene el token JWT del almacenamiento local
   }
 
+  
+
   // Función para abrir un archivo en una nueva pestaña del navegador
   const handleOpenFile = (fileId) => {
     // Realiza una solicitud GET para obtener el archivo como un blob (contenido binario)
@@ -61,13 +63,13 @@ function Filetable({ files }) {
                 <td>{file.created_at}</td>
                 <td>
                   {/* Botón para eliminar el archivo */}
-                  <div style={{ width: "fit-content" }} className="d-flex p-2 rounded-2 bg-danger bg-opacity-25 align-items-center">
+                  <div style={{ width: "fit-content", cursor:"pointer" }}  className="d-flex p-2 rounded-2 bg-danger bg-opacity-25 align-items-center bg-red-light">
                     <SimpleIconButton icon={"bi bi-trash"} hover={false} color={"red"} onClick={() => handleDeleteFile(file.id)} />
                   </div>
                 </td>
                 <td>
                   {/* Botón para abrir el archivo en una nueva pestaña */}
-                  <div style={{ width: "fit-content" }} className="d-flex p-2 rounded-2 bg-primary bg-opacity-25 align-items-center">
+                  <div style={{ width: "fit-content",cursor: "pointer"}} className="d-flex p-2 rounded-2 bg-primary bg-opacity-25 align-items-center bg-blue-light">
                     <SimpleIconButton icon={"bi bi-eye"} hover={false} color={"black"} onClick={() => handleOpenFile(file.id)} />
                   </div>
                 </td>

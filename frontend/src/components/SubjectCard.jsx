@@ -7,6 +7,7 @@ import { useSubjects } from "../hooks/UseResources";
 import SimpleIconButton from "./SimpleIconButton";
 import { useState } from "react";
 import TooltipTitle from "./tooltipTitle";
+import { useSlug } from "../hooks/useSlug";
 /*Componente SubjectCard
   -Renderiza cada Asignatura segun sus datos en la estructura definida
   -Contiene un boton enlace a sus temas y un boton con icono (tres puntos) para la edición o eliminación de un recurso
@@ -15,7 +16,7 @@ import TooltipTitle from "./tooltipTitle";
 function Subjectcard({ id, name, isFav }) {
   const [isFavorite, setIsFavorite] = useState(isFav); // Estado para marcar como favorito
   const { handleMarkAsFavorite } = useSubjects();
-  
+  const {slugify} = useSlug();
   const toggleIsFavorite = (id, newFavoriteState) => {
     setIsFavorite(newFavoriteState); 
     handleMarkAsFavorite(id, newFavoriteState);
@@ -30,12 +31,13 @@ function Subjectcard({ id, name, isFav }) {
     
   };
 
+
   return (
     //Contenedor de Asignatura
     <div className="subjectCard d-flex flex-column align-items-center justify-content-end gap-2  rounded-4  resource  " style={cardstyle}>
       
       <div className="mt-4 ms-2">
-    <Link to={`/subject/${id}/topics`} className="text-decoration-none   ">
+    <Link to={`/subject/${id}-${slugify(name)}/topics`} className="text-decoration-none   ">
             <SimpleIconButton hover={true} icon={"bi bi-arrow-right"} stylesClass={"text-white fs-4"}></SimpleIconButton>
           </Link>
       
