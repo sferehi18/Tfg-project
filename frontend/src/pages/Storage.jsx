@@ -5,10 +5,19 @@ import { useQuery } from "@tanstack/react-query";
 import { useFiles } from "../hooks/UseResources";
 import TokenContext from "../context/AuthContext";
 import { useContext } from "react";
+import { use } from "react";
+import { useEffect } from "react";
+import HeaderContext from "../context/HeaderContext"; // Importar el contexto del encabezado
 // Página de Almacenamiento
 const Storage = () => {
  const {isTokenValid} = useContext(TokenContext);
   const {getAllFiles} = useFiles(); // Hook para manejar archivos
+  const {setTitle,setPageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
+  useEffect(() => {
+    setTitle("Almacenamiento"); // Establecer el título del encabezado
+    setPageType(null); // Establecer el tipo de página para el encabezado
+  }
+  , []);
    const {isLoading,error,data} = useQuery({
      queryKey:  ["files"],
      queryFn:getAllFiles,
@@ -17,7 +26,7 @@ const Storage = () => {
    return(
       // Contenedor principal de la página de almacenamiento
     <div >
-        <h2 className="p-3"><i className="bi bi-cloud p-1"></i>Almacenamiento</h2>
+  
         <div>
       {/*Usamos el componente Storagebar que muestra la barra cargada segun el almacenamiento usado*/ }
         <Storagebar files= {data} ></Storagebar>

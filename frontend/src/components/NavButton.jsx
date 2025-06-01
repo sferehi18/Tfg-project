@@ -3,7 +3,7 @@ import { Router } from "react-router-dom";
 function Navbutton({text,icon,isSelected,setSelected,id,onClick}){
  
   //Clases con los estilos por defecto que tendra el botón
- let defaultclasses=" btn-custom p-1 d-flex align-items-center rounded-3 ";
+ let defaultclasses=" btn-custom  pb-2 pt-2 d-flex align-items-center rounded-3 ";
 
     
     return(

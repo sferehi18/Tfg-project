@@ -11,10 +11,21 @@ import { useContext } from "react";
 import TokenContext from "../context/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import HeaderContext from "../context/HeaderContext"; // Contexto para manejar el título de la página
+import SearchBar from "../components/SearchBar"; // Componente de búsqueda para filtrar temas
+import NoContentPage from "./NoCotentPage";
 // Componente que muestra los temas de una asignatura específica
 const Topics = () => {
+     const {title,setTitle,setPageType} = useContext(HeaderContext);
+
   const { subjectUri } = useParams(); // Extrae el "subjectId" desde la URL (ejemplo: /subjects/123)
 const [subjectId, slug] = subjectUri.split("-");
+
+
+ useEffect(()=>{
+ setTitle("Temas de " + slug);
+setPageType("topic");
+ },[])
   const { getTopics } = useTopics(); // Usa el hook personalizado para obtener la función de consulta de temas
    const {isTokenValid} = useContext(TokenContext);
    const navigate = useNavigate();
@@ -37,27 +48,22 @@ const [subjectId, slug] = subjectUri.split("-");
   if (isLoading) return <LoadingPage></LoadingPage>;
 
   // Si no hay temas para esta asignatura, muestra un mensaje informativo
+
+  
  
 
   // Si ocurre un error en la consulta, muestra el mensaje de error
   if (error) return <ErrorPage errorTitle={error.message} errorMessage={"Ha ocurrido un problema al cargar tus asignaturas"} />;
   
+
+ 
   return (
     <>
-      <div className="d-flex align-items-center  ">
-      <h2 className=" p-3 ">Temas de {slug}</h2>
-      <AddIconButton
-        subjectId={subjectId} // ID de la asignatura para la que se están mostrando los temas
-        resourceType={"topic"} // Tipo de recurso (tema)
-        icon={"bi bi-plus-lg"} // Icono del botón
-        stylesClass={"addicon  d-flex justify-content-center align-items-center rounded-4"} // Clase de estilos del botón
-        />
-        
-        </div>
+   
 
       {/* Contenedor para los temas */}
       <div className=" d-flex overflow-y-auto align-items-center  flex-column  rounded-3 " style={{ height: "100%"}} >
-        { data && data.map(topic => (
+        { data && data.length != 0 ?  data.map(topic => (
           // Renderiza una tarjeta para cada tema
           <TopicCard  
             key={topic.name} 
@@ -66,7 +72,7 @@ const [subjectId, slug] = subjectUri.split("-");
             subjectId={subjectId} 
             topicId={topic.id} 
           />
-        ))}
+        )) : <NoContentPage title={"Aún no existen temas en esta asignatura"}  message={"¡Completa tu Asignatura!"}></NoContentPage>}
       </div>
     </>
   );

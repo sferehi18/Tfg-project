@@ -24,7 +24,7 @@ import TokenContext, { TokenProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RegisterForm from "./pages/RegisterForm";
 import ToastContext from "./context/ToastContext";
-
+import { HeaderProvider } from "./context/HeaderContext";
 import { ToastProvider } from "./context/ToastContext"; // asegúrate que el nombre del archivo esté bien: "ToastContext.jsx"
 
 const queryClient = new QueryClient();
@@ -37,7 +37,8 @@ function App() {
   
   
   return (
-    <ToastProvider>
+    <HeaderProvider>
+       <ToastProvider>
       <TokenProvider>
      <CreationProvider>
        <QueryClientProvider client={queryClient}>
@@ -51,11 +52,10 @@ function App() {
     
         <Route path="/" element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
         
-          <Route index element={<Subjects />} /> 
+          <Route index path="subjects" element={<Subjects />} /> 
           <Route path="/calendar" element={<MyCalendar />} />
-          <Route path="" element={<Subjects />} />
-          <Route path="subject/:subjectUri/topics" element={<Topics />} />
-          <Route path="subject/:subjectUri/topics/:topicUri/files" element={<Files />} />  
+          <Route path="subjects/:subjectUri/topics" element={<Topics />} />
+          <Route path="subjects/:subjectUri/topics/:topicUri/files" element={<Files />} />  
           <Route path="/storage" element={<Storage></Storage>}></Route>
 
           <Route path="userSettings" element={<UserSettings />} />
@@ -69,6 +69,8 @@ function App() {
    </TokenProvider>
     
     </ToastProvider>
+    </HeaderProvider>
+   
     
     
   );

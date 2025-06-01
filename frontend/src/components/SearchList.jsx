@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import searchResult from './searchResult';
-import { useLocation } from 'react-router-dom'; // Importamos useLocation para obtener la ubicación actual
-import { useTopics } from '../hooks/UseResources';
 import { useContext } from 'react';
+import HeaderContext from '../context/HeaderContext'; // Importar el contexto del encabezado
 function SearchList({ searchInput }) {
+  const {pageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
+  const resourcesType = pageType+ "s"; // Asignamos el tipo de recursos según el contexto del encabezado
+
   const [show, setShow] = useState(false);
   
-  const location = useLocation();
+  const { subjectUri } = useParams(); // Extrae el "subjectId" desde la URL (ejemplo: /subjects/123)
+const [subjectId, slug] = subjectUri ? subjectUri.split("-") : [];
+
   const navigate = useNavigate();
   useEffect(() => {
   searchInput != null ?  setShow(true) : setShow(false);
   }, [searchInput]);
 
- const subjectId = location.pathname.split('/')[2]; // Obtener el ID de la asignatura de la URL
+ 
   const queryClient = useQueryClient();
-  const cachedSubjects = queryClient.getQueryData(['subjects']) || [];
-  const cachedTopics =  queryClient.getQueryData(['topics'])
- || [];
-  cachedSubjects.forEach((subject) => {
-    subject.type = 'subject'; // Añadir el tipo a cada asignatura
+  const resources = queryClient.getQueryData([resourcesType]) || [];
+
+  resources.forEach((resource) => {
+    resource.type = resourcesType; // Añadir el tipo a cada asignatura
   });
-  cachedTopics.forEach((topic) => {
-    topic.type = 'topic'; // Añadir el tipo a cada tema
-  });
+
   const filterResources = (resourcesArray) =>{
     const filteredResources = resourcesArray.filter((resource) =>
       resource.name.toLowerCase().includes(searchInput.toLowerCase())
@@ -34,9 +35,13 @@ function SearchList({ searchInput }) {
     return filteredResources;
 
   }
-  const filteredResources = filterResources(cachedSubjects).concat(filterResources(cachedTopics));
+  const filteredResources = filterResources(resources);
+   const resourcesTranslated = {
+    subjects: 'Asignatura',
+    topics: 'Tema',
+    files: 'Archivo',
+  };
    
-
 
   return (
     <Dropdown.Menu show={show} className="w-100 shadow bg-white rounded overflow-auto" style={{ maxHeight: '300px' }}>
@@ -45,15 +50,15 @@ function SearchList({ searchInput }) {
         <Dropdown.Item
         key={result.id +result.type}
         as={searchResult}
-        resourceType={result.type === 'topic' ? 'Tema' : 'Asignatura'}
+        resourceType={resourcesTranslated[result.type] || result.type}
         resourceName={result.name}
         resourceId={result.id}
         subjectId={subjectId}
         onClick={result.type == "subject" ? () =>{
-  navigate(`/subject/${result.id}-${result.name}/topics/`);
+  navigate(`/subjects/${result.id}-${result.name}/topics/`);
   setShow(false);
 } : () =>{
-  navigate(`subject/${subjectId}/topics/${result.id}/files/`);
+  navigate(`subjects/${subjectId}-${slug}/topics/${result.id}-${result.name}/files/`);
   setShow(false);
 }}
       >

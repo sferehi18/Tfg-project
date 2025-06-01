@@ -79,5 +79,15 @@ export function useCrudOptions() {
            actionButtonStyle:"danger",
         },
       }
-    return {subject,topic,event};
+
+      const file = {
+        createOption:{
+            label: "Añadir Archivo", // Texto que se mostrará en la opción del menú
+            action: null, // Función que se ejecutará al seleccionar la opción
+            fields: ["file"], // Campos requeridos para crear un archivo
+        },
+
+
+      }
+    return {subject,topic,event,file};
 }

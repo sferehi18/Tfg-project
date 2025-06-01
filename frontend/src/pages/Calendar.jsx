@@ -12,11 +12,19 @@ import TokenContext from "../context/AuthContext";
 import "dayjs/locale/es"; // Importa el idioma español para dayjs
 import { useCrudOptions } from "../hooks/UseCrudOptions";
 import ConfirmActionModal from "../components/ConfirmActionModal";
+import { useEffect } from "react";
+import HeaderContext from "../context/HeaderContext"; // Importar el contexto del encabezado
 dayjs.locale("es"); // Establece el idioma español para dayjs
 const localizer = dayjsLocalizer(dayjs); // Configura el localizador para usar dayjs
  // Establece el idioma español para moment.js
+    
 function MyCalendar() {
-  
+  const {setTitle,setPageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
+  useEffect(() => {
+    setTitle("Calendario"); // Establecer el título del encabezado
+    setPageType(null); // Establecer el tipo de página para el encabezado
+  }
+  , []);
   const {isTokenValid} = useContext(TokenContext);
   const { openModal,closeModal } = useContext(CreationContext);
   const [selectedOption,setSelectedOption] = useState({}); // Guarda la opción seleccionada
@@ -90,7 +98,6 @@ function MyCalendar() {
 
   return (
     <div className=" p-3 ">
-      <h2 className="p-2">Calendario</h2>
       <Calendar
       popup
         localizer={localizer}

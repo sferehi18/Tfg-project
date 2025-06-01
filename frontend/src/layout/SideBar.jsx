@@ -25,20 +25,21 @@ function Sidebar() {
 
   return (
     <div
-      className="sidebar d-flex rounded-end-5 flex-column justify-content-between align-items-start"
+      className="sidebar d-flex  flex-column justify-content-between align-items-start"
       style={{ zIndex: 200, height: "100vh" }}
     >
       <div className="w-100">
         <div className="d-flex align-items-center justify-content-start p-1">
           <img src={logo2} alt="Logo" className="logo" />
-          <h3 className="ms-2 fs-4 fw-bold text-white hide">edu-vault</h3>
+          <h3 className="ms-2 fs-4 fw-bold  hide">edu-vault</h3>
         </div>
 
         <ul className="d-flex flex-column ms-3 align-items-start  gap-4 p-0 w-100">
           {/* Todos los botones excepto cerrar sesión */}
           <li className="mt-5">
-            <Link to="/" className="text-decoration-none">
+            <Link to="/subjects" className="text-decoration-none">
               <Navbutton
+                
                 text="Página principal"
                 icon="bi bi-house-door"
                 id="Home"

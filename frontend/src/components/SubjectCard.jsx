@@ -37,7 +37,7 @@ function Subjectcard({ id, name, isFav }) {
     <div className="subjectCard d-flex flex-column align-items-center justify-content-end gap-2  rounded-4  resource  " style={cardstyle}>
       
       <div className="mt-4 ms-2">
-    <Link to={`/subject/${id}-${slugify(name)}/topics`} className="text-decoration-none   ">
+    <Link to={`/subjects/${id}-${slugify(name)}/topics`} className="text-decoration-none   ">
             <SimpleIconButton hover={true} icon={"bi bi-arrow-right"} stylesClass={"text-white fs-4"}></SimpleIconButton>
           </Link>
       
@@ -47,7 +47,7 @@ function Subjectcard({ id, name, isFav }) {
          
            
             <div className="d-flex flex-nowrap align-items-center justify-content-between  w-100 ">
-           {formattedName != name ? <TooltipTitle customClasses={" mt-4 ms-2 fs-5"}  text={formattedName} tooltipText={name}></TooltipTitle>
+           {formattedName != name ? <TooltipTitle customClasses={" mt-4 ms-2 fs-5"} placement={"right"}  text={formattedName} tooltipText={name}></TooltipTitle>
            : <p className=" mt-4 ms-2 fs-5">{formattedName}</p>} 
             <div className=" align-self-end  d-flex  flex-nowrap align-items-center gap-1">
           <SimpleIconButton stylesClass={ isFavorite ? "color-gold" : "color-grey"} hover={true} animationClass={isFavorite ? "pulse" : ""} 

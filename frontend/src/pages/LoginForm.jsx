@@ -30,7 +30,7 @@ function LoginForm(){
         localStorage.setItem("token", token);
         setNewToken(token); // Guarda el token en localStorage
 
-        navigate("/"); // Redirige a la página principal
+        navigate("/subjects"); // Redirige a la página principal
       } else {
         setError("password", invalidUserOrPasswordError);
       }

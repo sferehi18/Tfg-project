@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
 import SearchBar from "../components/SearchBar";
 import SimpleIconButton from "../components/SimpleIconButton";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import HeaderContext from "../context/HeaderContext";
+import AddIconButton from "../components/AddIconButton";
+import TooltipTitle from "../components/tooltipTitle";
 function Header() {
+  const {title,pageType} = useContext(HeaderContext);
+  const {subjectUri} = useParams();
+  const [subjectId, slug] = subjectUri ? subjectUri.split("-") : [];
   return (
-    <div className=" row d-flex align-items-center  flex-nowrap p-1 mt-1   ">
+    <div className=" container d-flex  flex-column   flex-nowrap    ">
       {/* Logo y texto */}
      
 
       {/* Barra de búsqueda */}
       
       <div
-        className="col-md-8 col-sm-9 col-9"
+        className="row d-flex align-items-center justify-content-between  "
         
       >
-        <SearchBar />
+           {/*<TooltipTitle  fontsize={"title"} customClasses={"col-6"}  tooltipText={title} placement={"bottom"} text={title}></TooltipTitle>*/}
+           <h2 className="col  p-2">{title}</h2>
+          {pageType && <AddIconButton
+                        icon={"bi bi-plus-lg"}
+                        stylesClass={"me-3  col-6"}
+                        resourceType={pageType} 
+                        subjectId={subjectId} // Este valor se pasa al modal para saber qué tipo de recurso se va a crear
+                        //Este valor se pasa al modal para saber qué tipo de recurso se va a crear
+                      />}
+
+          
+
+         
       </div>
+      {pageType && <div className=" row d-flex align-items-center pb-1 pt-2">
+           
+                                  <SearchBar customClasses={"col-9"}  />
+                                 
+            </div>}
      {/* <div className="col-md-6  col-4 d-flex justify-content-center align-items-center ">
   <div className="input-group ">
     <span className="input-group-text ">
@@ -31,14 +54,7 @@ function Header() {
 
 
       {/* Iconos */}
-      <div className=" col-md-4  col-sm-3 col-3 d-flex justify-content-end ">
-       
       
-      
-      <Link to="/userSettings" className="text-decoration-none"> 
-        <SimpleIconButton icon={"bi bi-person fs-3"}></SimpleIconButton>
-        </Link>
-      </div>
     </div>
   );
 }

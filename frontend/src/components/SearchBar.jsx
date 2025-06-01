@@ -12,9 +12,9 @@ function SearchBar() {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: '800px' }}>
+    <div style={{ position: 'relative', width: '300px', maxWidth: '800px' }}>
       {/* Search input bar */}
-      <div className="rounded-5 p-2 gap-2 bg-white shadow d-flex justify-content-start align-items-center">
+      <div className="rounded-5 p-2 gap-2 bg-white shadow d-flex justify-content-start align-items-center ">
         <Button
           className="bi bi-search p-1 btn-sm search-button"
           style={{ backgroundColor: 'transparent', border: 'none' }}

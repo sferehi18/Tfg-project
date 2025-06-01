@@ -16,10 +16,10 @@ function AddIconButton({
   subjectId,
 }) {
   const { openModal } = useContext(CreationContext);
-  const { subject, topic } = useCrudOptions();
-  const { topicUri } = useParams();
+  const { subject, topic,file } = useCrudOptions();
+  const { topicUri, subjectUri } = useParams();
   const [topicId,slug] = topicUri ? topicUri.split("-") : [];
-  
+
    
   const fileInputRef = useRef(null);
   const { handleAddFile } = useFiles();
@@ -40,19 +40,21 @@ function AddIconButton({
       ? subject.createOption
       : resourceType === "topic"
       ? topic.createOption
-      : "file";
+      : resourceType === "file"
+      ? file.createOption : {};
   const uniqueModalId = `addResource`;
   return (
     <>
-      <SimpleIconButton
-        icon={icon}
+      <button
+       className={"addicon d-flex align-items-center justify-content-center gap-2 p-2  mt-3 rounded-3 " + stylesClass}
         onClick={
           resourceType != "file"
             ? () => openModal(uniqueModalId)
             : () => handleClick()
         }
-        stylesClass={stylesClass}
-      />
+        text={option.label}
+      
+      > <i className={icon}></i> <div className="hide">{option.label}</div>  </button>
       {resourceType != "file" ? (
         <ModalTemplate
           title={option.label}

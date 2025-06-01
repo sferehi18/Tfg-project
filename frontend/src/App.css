@@ -6,6 +6,7 @@
 :root{
   --color-primary:  rgb(95, 28, 228)!important;
   --color-secondary: #6c757d;
+  --color-primary-light: rgba(96, 0, 255, 0.9);
   --bs-primary: rgb(95, 28, 228);
 }
 body{
@@ -71,10 +72,12 @@ body{
       
       display: none;
     }
+    
     /* .scale{
       scale: 0.8;
     } */
   }
+  
 
 
   .rbc-event {
@@ -97,10 +100,10 @@ body{
   .btn-custom{
     
     
-    background-color: rgba(99, 21, 255, 0.1);
+    background-color: transparent !important;
     border-color: transparent !important;
   
-    color: white;
+    color: rgb(0, 0, 0);
     
   }
   
@@ -113,19 +116,26 @@ body{
   } */
   /*Con esta opción no salta ninguna animación de movimiento al hacer hover en los botones del sidebar*/
 
-   .btn-custom:hover,
-  .selected{
-    background-color: rgba(255, 255, 255, 0.1)
+   .btn-custom:hover{
+    background-color: rgb(179, 174, 255)
     !important;
-    transition: all 0.5s ease;
+    transition: all 0.1s ease-in-out !important;
     
-    color:white !important;
+    color:rgb(0, 0, 0) !important;
   }
 
   
 
   .selected{
-    background-color: rgba(255, 255, 255, 0.1)
+    background-color: var(--color-primary)
+    !important;
+    
+    
+    color:white !important;
+  }
+
+  .selected:hover{
+    background-color: var(--color-primary)
     !important;
     
     
@@ -160,10 +170,14 @@ body{
  
 }
 .addicon{
-  background-color: rgba(0, 0, 0, 0.1)
+  background-color: var(--color-primary)
   !important;
-  width: 50px;
-  height: 50px;
+  color: white !important;
+  width: fit-content;
+  height:fit-content;
+  border: none !important;
+  
+
  
 }
   .addicon:focus{
@@ -171,7 +185,7 @@ body{
   }
 
   .addicon:hover{
-    background-color:  var(--color-primary)
+    background-color: var(--color-primary-light)
     !important;
     color: white !important;
   }
@@ -200,8 +214,8 @@ body{
     
     height: 100vh;
     
-    
-    background-color: var(--color-primary);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgb(243, 243, 243);
     
   }
 

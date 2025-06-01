@@ -6,7 +6,15 @@ import { useSubjects } from "../hooks/UseResources";
 import SubjectCard from "../components/SubjectCard";
 import TokenContext from "../context/AuthContext";
 import { useContext } from "react";
+import { useEffect } from "react";
+import HeaderContext from "../context/HeaderContext"; // Importar el contexto del encabezado
 function Favourites() {
+   const {setTitle,setPageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
+  useEffect(() => {
+    setTitle("Marcados"); // Establecer el título del encabezado
+    setPageType(null); // Establecer el tipo de página para el encabezado
+  }
+  , []);
   const { getSubjects } = useSubjects();
   const {isTokenValid} = useContext(TokenContext);
   const { data: subjects, isLoading, error } = useQuery({
@@ -28,7 +36,7 @@ function Favourites() {
   const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
   return (
     <div className="" style={{ height: "82vh" }}>
-    <h2 className="p-3">Asignaturas</h2>
+    
 
     {/* Lista de asignaturas obtenidas del backend */}
     <div className=" d-flex overflow-auto gap-2 flex-wrap text-align-start contentContainer">

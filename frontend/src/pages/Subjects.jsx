@@ -8,15 +8,22 @@ import AddIconButton from "../components/AddIconButton";
 import { useEffect, useContext } from "react";
 import TokenContext from "../context/AuthContext"; // Importamos el contexto de autenticación
 import ErrorPage from "./ErrorPage";
-import { redirect, useNavigate } from "react-router-dom"; // Importamos useNavigate para navegar entre rutas
+import { redirect, useLocation, useNavigate } from "react-router-dom"; // Importamos useNavigate para navegar entre rutas
 import { useTopics } from "../hooks/UseResources";
 import { QueryClient } from "@tanstack/react-query";
+import HeaderContext from "../context/HeaderContext"; // Importamos el contexto del encabezado
+import SearchBar from "../components/SearchBar"; // Importamos el componente de búsqueda
 const queryClient = new QueryClient();
 
 const Subjects = () => {
   // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
   const {isTokenValid} = useContext(TokenContext);
-   // Inicializamos el hook useNavigate
+    const {title,setTitle,setPageType} = useContext(HeaderContext);
+const location = useLocation();
+ useEffect(()=>{
+  setTitle("Asignaturas");
+setPageType("subject");
+ },[])
  
  const { getAllTopics } = useTopics();
   // Obtenemos la función getSubjects desde un custom hook
@@ -52,16 +59,10 @@ const Subjects = () => {
 
   // Render principal de la página de asignaturas
   return (
-    <div style={{ height: "82vh" }} >
+    <div style={{ height: "100%" }} >
+     
       {/* Título y botón para añadir asignaturas */}
-      <div className="d-flex align-items-center">
-        <h2 className="p-3">Asignaturas</h2>
-        <AddIconButton
-          icon={"bi bi-plus-lg"}
-          stylesClass={"addicon"}
-          resourceType={"subject"} //Este valor se pasa al modal para saber qué tipo de recurso se va a crear
-        />
-      </div>
+     
 
       {/* Renderizamos la lista de asignaturas en tarjetas */}
       <div className="d-flex rounded-4 flex-row flex-wrap align-items-start" style={{ height: "100%", overflowY: "auto" }}>
