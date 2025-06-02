@@ -39,7 +39,7 @@ function Favourites() {
     
 
     {/* Lista de asignaturas obtenidas del backend */}
-    <div className=" d-flex overflow-auto gap-2 flex-wrap text-align-start contentContainer">
+    <div className=" d-flex overflow-auto gap-2 flex-wrap  ">
       {favouriteSubjects && favouriteSubjects.map((subject) => (
         // Se genera una SubjectCard por cada asignatura
         // La key es necesaria para que React optimice los cambios en la lista

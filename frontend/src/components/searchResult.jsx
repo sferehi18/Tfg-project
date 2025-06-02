@@ -13,7 +13,7 @@ function searchResult({resourceType,resourceId,resourceName,onClick}) {
   <span className="bg-primar d-flex justify-content-center   rounded-3 p-1 ">
                       <FaBookOpen size={"20px"} color="white" />
                      
-                    </span> : resourceType == "Temas" ? <span className="bg-primar d-flex justify-content-start   rounded-3 p-1 ">
+                    </span> : resourceType == "Tema" ? <span className="bg-primar d-flex justify-content-start   rounded-3 p-1 ">
                       <FaBook size={"20px"} color="white" />
                      
                     </span> : <span className="bg-primar d-flex justify-content-start   rounded-3 p-1 ">
@@ -22,7 +22,7 @@ function searchResult({resourceType,resourceId,resourceName,onClick}) {
    
   return (
     <button  className=" border-0 w-100" onClick={onClick}>
-      <div className="d-flex bg-white flex-nowrap  align-items-center gap-2 p-1 rounded-3 border   w-100">
+      <div className="d-flex bg-body flex-nowrap  align-items-center gap-2 p-1 rounded-3 border   w-100">
         <div className="  d-flex align-items-center gap-2 justify-content-center ">
           {resorceIcon}
           <p className="fs-6">{resourceType}</p></div>

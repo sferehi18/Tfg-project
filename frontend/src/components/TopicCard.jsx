@@ -15,34 +15,30 @@ function TopicCard({ description, name, subjectId, topicId }) {
   return (
     //Estructura de la topicCard , todos los temas se mostrarán segun la misma en el componente Topic.jsx
 
-    <div
-      className="d-flex align-items-center justify-content-between rounded-2 resource bg-white m-4  w-75"
-      style={cardstyle}
-    >
-      <Link
-        to={`${topicId}-${slugify(name)}/files`}
-        className="text-decoration-none text-black w-100   p-3"
-      >
-        <div className="d-flex flex-row flex-nowrap align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-3 justify-content-center">
-            <div className="bg-primar d-flex justify-content-center  rounded-5 p-2">
-              <FaBook size={"20px"} color="white" />
-            </div>
-            <div>
-              <h5 className=" align-self-start">{name}</h5>
-            </div>
-          </div>
+   <div className="d-flex align-items-center justify-content-between rounded-2 resource bg-body-secondary text-body m-4 w-75">
+  <Link
+    to={`${topicId}-${slugify(name)}/files`}
+    className="text-decoration-none w-100 p-3"
+  >
+    <div className="d-flex flex-row flex-nowrap align-items-center justify-content-between">
+      <div className="d-flex align-items-center gap-3 justify-content-center">
+        <div className="bg-primar d-flex justify-content-center rounded-5 p-2">
+          <FaBook size="20px" color="white" />
         </div>
-      </Link>
-
-      <>
-        <ThreeDots
-          resourceId={topicId}
-          stylesClass={"text-black"}
-          resourceType={"topic"}
-        ></ThreeDots>
-      </>
+        <div>
+          <h5 className="align-self-start text-body">{name}</h5>
+        </div>
+      </div>
     </div>
+  </Link>
+
+  <ThreeDots
+    resourceId={topicId}
+    stylesClass="text-body"
+    resourceType="topic"
+  />
+</div>
+
   );
 }
 

@@ -14,7 +14,9 @@ import AuthButton from "../components/AuthButton";
 function AuthPage() {
   const [form,setForm] = useState(true);
  // Importamos el hook useAuth para obtener el token
-  
+  const handleformChange = () => {
+    setForm(!form);
+  }
   const {
   
     expiredMsg,
@@ -25,22 +27,24 @@ function AuthPage() {
  
 
   return (
-    <div className="d-flex flex-row align-items-center justify-content-beetween vh-100 w-100  bg-white">
+    <div className="d-flex bg-body flex-row align-items-center justify-content-beetween vh-100 w-100  bg-white">
       <div className="w-50  h-100 bg-primary-gradient rounded-4 d-flex flex-column align-items-center justify-content-center">
-      <h1 className="text-white login-text">!Bienvenido!</h1>
-      <h2 className="text-white login-text">Comienza tu experiencia</h2>
-      <h3 className="text-white login-text">Gestiona tus asignaturas, temas, archivos y eventos </h3>
-      <ToggleButton enabledText={"Login"} disabledText={"Sign up"} customAction={setForm} customState={form} ></ToggleButton>
+        <div>
+          <h1 className="text-body login-text">!Bienvenido!</h1>
+      <h2 className="text-body login-text">Comienza tu experiencia</h2>
+      <h3 className="text-body  login-text">Gestiona tus asignaturas, temas, archivos y eventos </h3>
+        </div>
+     
      
       </div>
 
       <div className={` d-flex flex-column align-items-center justify-content-center h-100 w-50`}>
       
-      {form && <h1 className={alert}>{expiredMsg}</h1>}
+      {form && <h1 className={alert + "text-sm"}>{expiredMsg}</h1>}
       <h2 className="p-2 mb-4">{form ? "Iniciar Sesión" : "Registrarse"}</h2>
       {/*handleSubmit pasa los datos a la función callback para que los maneje*/}
             {form ?  <LoginForm></LoginForm> : <RegisterForm></RegisterForm>}
-      
+       <ToggleButton enabledText={"Login"} disabledText={"Sign up"} setState={()=> setForm(prev => !prev)} state={form} ></ToggleButton>
     </div>
     </div>
     

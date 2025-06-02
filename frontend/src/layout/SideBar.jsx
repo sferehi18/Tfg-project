@@ -25,7 +25,7 @@ function Sidebar() {
 
   return (
     <div
-      className="sidebar d-flex  flex-column justify-content-between align-items-start"
+      className="sidebar d-flex bg-body-tertiary  flex-column justify-content-between align-items-start"
       style={{ zIndex: 200, height: "100vh" }}
     >
       <div className="w-100">
@@ -81,21 +81,23 @@ function Sidebar() {
               />
             </Link>
           </li>
+          <li>
+            <Link to="/Usersettings" className="text-decoration-none">
+              <Navbutton
+                text="Configuración"
+                icon="bi bi-gear"
+                id="settings"
+                isSelected={isSelected}
+                onClick={() => handleButtonSelect("settings")}
+              />
+            </Link>
+          </li>
+
         </ul>
       </div>
 
       {/* Botón de logout en la parte inferior */}
-      <div className="mb-4 ">
-        <Link to="/UserSettings" className="text-decoration-none ">
-          <Navbutton
-            text="Configuración"
-            icon="bi bi-gear"
-            id="userSettings"
-            isSelected={isSelected}
-            onClick={() => handleButtonSelect("userSettings")}
-          />
-        </Link>
-      </div>
+     
       <div className="mb-4 ">
        
           <Navbutton

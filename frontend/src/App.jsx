@@ -26,6 +26,7 @@ import RegisterForm from "./pages/RegisterForm";
 import ToastContext from "./context/ToastContext";
 import { HeaderProvider } from "./context/HeaderContext";
 import { ToastProvider } from "./context/ToastContext"; // asegúrate que el nombre del archivo esté bien: "ToastContext.jsx"
+import { ThemeProvider } from "./context/UseTheme";
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,8 @@ function App() {
   
   
   return (
-    <HeaderProvider>
+    <ThemeProvider>
+      <HeaderProvider>
        <ToastProvider>
       <TokenProvider>
      <CreationProvider>
@@ -70,6 +72,8 @@ function App() {
     
     </ToastProvider>
     </HeaderProvider>
+    </ThemeProvider>
+    
    
     
     

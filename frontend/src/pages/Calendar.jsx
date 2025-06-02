@@ -97,7 +97,7 @@ function MyCalendar() {
   };
 
   return (
-    <div className=" p-3 ">
+    <div className=" p-3  ">
       <Calendar
       popup
         localizer={localizer}

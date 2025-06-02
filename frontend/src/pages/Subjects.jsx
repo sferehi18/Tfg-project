@@ -25,15 +25,10 @@ const location = useLocation();
 setPageType("subject");
  },[])
  
- const { getAllTopics } = useTopics();
+
   // Obtenemos la función getSubjects desde un custom hook
   const { getSubjects } = useSubjects();
-  const {} = useQuery({
-    queryKey: ["topics"], // Clave única para caché y revalidación de datos
-    queryFn:getAllTopics,
-    enabled: isTokenValid()
-// Función que obtiene los temas desde el backend
-  });
+
   
 
   // Usamos React Query para hacer la petición a la API y manejar loading/error/data automáticamente

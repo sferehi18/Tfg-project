@@ -24,7 +24,7 @@ function Content() {
   }, [location]);
   
   return (
-    <div key={location.pathname}  className="d-flex flex-column   justify-content-start "  style={{ height: "82vh"}} >
+    <div key={location.pathname}  className="d-flex flex-column    justify-content-start "  style={{ height: "82vh"}} >
       <ToastTemplate show={show} color={variant.color} headerText={variant.headerText} bodyText={variant.bodyText} ></ToastTemplate>
       {/* Aquí renderizamos el contenido dinámicamente usando Outlet */}
       <Outlet 

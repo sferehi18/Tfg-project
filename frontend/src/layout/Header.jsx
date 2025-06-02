@@ -21,7 +21,7 @@ function Header() {
         
       >
            {/*<TooltipTitle  fontsize={"title"} customClasses={"col-6"}  tooltipText={title} placement={"bottom"} text={title}></TooltipTitle>*/}
-           <h2 className="col  p-2">{title}</h2>
+           <h2 className="col  text-body p-2">{title}</h2>
           {pageType && <AddIconButton
                         icon={"bi bi-plus-lg"}
                         stylesClass={"me-3  col-6"}

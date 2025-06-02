@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { use } from 'react';
 import { Form } from 'react-bootstrap';
 
-function ToggleButton({enabledText,disabledText,customAction,customState}) {
-  const [activo, setActivo] = useState(false);
-    const handleOnChange = () =>{
-        setActivo(!activo);
-       customAction(!customState);
-    }
+function ToggleButton({enabledText,disabledText,setState,state}) {
+
+  
   return (
    
       <Form.Check
-      className='no-outline toogleButton-color fs-1 text-white'
+      className='no-outline toogleButton-color fs-3 text-white'
         type="switch"
         id="custom-switch"
-        
-        checked={activo}
-        onChange={handleOnChange}
+        label={state ? enabledText : disabledText}
+        checked={state}
+        onChange={ setState}
       />
 
   );

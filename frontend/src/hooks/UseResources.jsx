@@ -445,3 +445,12 @@ const  getFiles = async (id) => {
   }
   return {getFiles,getAllFiles,handleAddFile,handleDeleteFile};
 }
+
+export const useUsers = () => {
+  const { token } = useContext(TokenContext);
+  const authHeaders = {
+    "Content-Type": "application/json", } 
+
+  const queryClient = useQueryClient();
+  const BASE_URL = `http://localhost:8080/users/${id}`;
+}

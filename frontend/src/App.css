@@ -4,9 +4,9 @@
     
 }
 :root{
-  --color-primary:  rgb(95, 28, 228)!important;
+  --color-primary:  rgba(95, 28, 228, 0.9)!important;
   --color-secondary: #6c757d;
-  --color-primary-light: rgba(96, 0, 255, 0.9);
+  --color-primary-light: rgba(96, 0, 255, 0.5);
   --bs-primary: rgb(95, 28, 228);
 }
 body{
@@ -52,10 +52,7 @@ body{
    background-color: var(--color-primary) !important;
   
 }
-.toogleButton-color input[type="checkbox"]{
-  border-color: var(--color-primary);
-  
-}
+
 
 .auth-button{
   color: white ;
@@ -103,7 +100,7 @@ body{
     background-color: transparent !important;
     border-color: transparent !important;
   
-    color: rgb(0, 0, 0);
+    
     
   }
   
@@ -121,7 +118,7 @@ body{
     !important;
     transition: all 0.1s ease-in-out !important;
     
-    color:rgb(0, 0, 0) !important;
+    
   }
 
   
@@ -215,7 +212,7 @@ body{
     height: 100vh;
     
     border: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: rgb(243, 243, 243);
+    
     
   }
 
@@ -228,9 +225,7 @@ body{
   
   
   }
-  .search-button{
-   color: black !important;
-  }
+
   
 
   .search-input:focus{

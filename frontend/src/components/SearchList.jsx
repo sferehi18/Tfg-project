@@ -44,7 +44,7 @@ const [subjectId, slug] = subjectUri ? subjectUri.split("-") : [];
    
 
   return (
-    <Dropdown.Menu show={show} className="w-100 shadow bg-white rounded overflow-auto" style={{ maxHeight: '300px' }}>
+    <Dropdown.Menu show={show} className="w-100 shadow bg-body rounded overflow-auto" style={{ maxHeight: '300px' }}>
       {filteredResources.map((result) => (
       
         <Dropdown.Item

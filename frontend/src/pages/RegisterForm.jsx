@@ -40,12 +40,13 @@ function RegisterForm(){
             Nombre de Usuario
           </label>
           <input
+        
             type="text"
             {...register("username",{ required: "Porfavor inserta un usuario valido"
             })
               
             }
-            className="form-control w-100"
+            className="form-control text-body bg-body w-100"
           />
           {errors.username && ( <p className=" text-danger">{errors.username.message}</p>)}
           <label htmlFor="password" className="form-label">
