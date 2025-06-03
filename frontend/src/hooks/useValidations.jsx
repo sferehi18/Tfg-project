@@ -16,6 +16,24 @@ export function useFormValidations(){
             
     }
 
+     const topicValidations = {
+        maxLength:{
+            value: 17,
+            message: "El nombre debe tener menos de 17 caracteres"
+        }
+        
+            
+    }
+
+     const eventValidations = {
+        maxLength:{
+            value: 10,
+            message: "El nombre debe tener menos de 10 caracteres"
+        }
+        
+            
+    }
+
     const emailValidations = {
         required:"Porfavor inserta un correo",
                  pattern: {
@@ -26,5 +44,6 @@ export function useFormValidations(){
 
 
 
-    return {usernameValidations,passwordValidations,emailValidations,subjectValidations};
+    return {usernameValidations,passwordValidations,
+        emailValidations,subjectValidations,topicValidations,eventValidations};
 }

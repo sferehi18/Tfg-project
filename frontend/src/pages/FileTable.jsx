@@ -39,7 +39,7 @@ function Filetable({ files }) {
   }
 
   return (
-    <div className="overflow-y-auto mt-5" style={{ height: "100%" }}>
+    <div className="overflow-y-auto mt-3" style={{ height: "100%" }}>
       <table className="table rounded-4 table-striped table-hover table-responsive">
         <thead className="rounded-4 ">
           <tr>

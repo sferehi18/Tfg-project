@@ -40,7 +40,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
 
 // Crea un tema asociado a una asignatura
     @PostMapping("subjects/{id}/topics/create")
-    public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long id) throws Exception{
+    public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO newTopic, @PathVariable Long id) {
         TopicDTO Topic = topicService.createTopic(newTopic.getName(),id);
        return ResponseEntity.status(HttpStatus.CREATED).body(Topic);
     

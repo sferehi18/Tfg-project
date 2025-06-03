@@ -13,4 +13,5 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     List<Topic> findBySubjectIdAndUserId(Long subjectId,Long userId);
     List<Topic> findByUserId(Long userId);
     Optional<Topic> findByIdAndUserId(Long id, Long userId);
+    boolean existsByNameAndUserId(String name, Long userId);
 }

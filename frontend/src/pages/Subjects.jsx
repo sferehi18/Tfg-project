@@ -2,7 +2,7 @@ import React from "react"; // Permite escribir JSX
 import SubjectCard from "../components/SubjectCard";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "react-bootstrap";
-import {useSubjects} from "../hooks/UseResources";
+import {useSubjects, useUsers} from "../hooks/UseResources";
 import LoadingPage from "./Loading";
 import AddIconButton from "../components/AddIconButton";
 import { useEffect, useContext } from "react";
@@ -12,8 +12,9 @@ import { redirect, useLocation, useNavigate } from "react-router-dom"; // Import
 import { useTopics } from "../hooks/UseResources";
 import { QueryClient } from "@tanstack/react-query";
 import HeaderContext from "../context/HeaderContext"; // Importamos el contexto del encabezado
-import SearchBar from "../components/SearchBar"; // Importamos el componente de búsqueda
-const queryClient = new QueryClient();
+import { get } from "react-hook-form";
+
+
 
 const Subjects = () => {
   // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
@@ -23,12 +24,13 @@ const location = useLocation();
  useEffect(()=>{
   setTitle("Asignaturas");
 setPageType("subject");
+
  },[])
  
 
   // Obtenemos la función getSubjects desde un custom hook
   const { getSubjects } = useSubjects();
-
+  
   
 
   // Usamos React Query para hacer la petición a la API y manejar loading/error/data automáticamente
@@ -37,7 +39,7 @@ setPageType("subject");
     queryFn: getSubjects,
     enabled: isTokenValid()
      
-      // Función que realiza la consulta
+      
   });
   
   

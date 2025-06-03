@@ -1,6 +1,8 @@
 package com.example.backend.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.backend.DTOs.SubjectDTO;
 
@@ -56,9 +58,15 @@ public class SubjectController {
 
   //Crea una asignatura
   @PostMapping("/create")
-  public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectDTO newSubject) throws Exception {
-    SubjectDTO subject = subjectService.createSubject(newSubject.getName());
-    return ResponseEntity.status(HttpStatus.CREATED).body(subject);
+  public ResponseEntity<?> createSubject(@RequestBody SubjectDTO newSubject)  {
+    try {
+       SubjectDTO subject = subjectService.createSubject(newSubject.getName());
+      return ResponseEntity.status(HttpStatus.CREATED).body(subject);
+    } catch (ResponseStatusException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); // Si hay un conflicto, devolver 409 Conflict
+    }
+   
+    
 
   }
   //Edita una asignatura

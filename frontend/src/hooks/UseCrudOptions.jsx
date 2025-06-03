@@ -6,7 +6,7 @@ export function useCrudOptions() {
    const {handleAddSubject,handleDeleteSubject,handleEditSubject} = useSubjects();
     const {handleDeleteTopic,handleEditTopic,handleAddTopic} = useTopics();
     const {handleAddEvent,handleDeleteEvent} = useEvents();
-    const {subjectValidations} = useFormValidations();
+    const {subjectValidations,topicValidations,eventValidations} = useFormValidations();
     const subject = {
         createOption:{
             label: "Crear Asignatura", // Texto que se mostrará en la opción del menú
@@ -42,6 +42,7 @@ export function useCrudOptions() {
             label: "Añadir Tema", // Texto que se mostrará en la opción del menú
             action: handleAddTopic, // Función que se ejecutará al seleccionar la opción
             fields: ["name"], // Campos requeridos para crear un tema
+            validations: topicValidations
         },
 
         deleteOption:{
@@ -70,6 +71,7 @@ export function useCrudOptions() {
             label: "Añadir Evento", // Texto que se mostrará en la opción del menú
             action: handleAddEvent, // Función que se ejecutará al seleccionar la opción
             fields: ["title"], // Campos requeridos para crear un tema
+            validations: eventValidations,
         },
 
         deleteOption:{

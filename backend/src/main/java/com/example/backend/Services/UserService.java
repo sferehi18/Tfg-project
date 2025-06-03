@@ -4,14 +4,18 @@ import org.springframework.stereotype.Service;
 
 import com.example.backend.models.User;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.backend.DTOs.UserDTO;
 import com.example.backend.Repositories.UserRepository;
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService  {
     @Autowired
     private UserRepository userRepository;
 
@@ -22,6 +26,10 @@ public class UserService implements UserDetailsService {
         
         User userDetails = userRepository.findByUsername(username);
         return userDetails;
+    }
+
+    private UserDTO toUserDTO(User user) {
+        return new UserDTO(user.getUsername(), user.getEmail());
     }
 
     public User validateUser(String username, String rawPassword){
@@ -45,5 +53,18 @@ public class UserService implements UserDetailsService {
     
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    public UserDTO getUser(){
+         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        Optional<User> user = userRepository.findById(authUser.getId());
+        if(user.isPresent()){
+            return toUserDTO(user.get());
+
+        }else{
+            return null;
+        }
+        
     }
 }

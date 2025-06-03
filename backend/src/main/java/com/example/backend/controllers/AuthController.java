@@ -12,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 
 
 @RestController
@@ -73,6 +76,17 @@ public class AuthController {
             e.printStackTrace(); // Imprime el error en consola
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
+    }
+
+    
+    @GetMapping("/userAuthenticated")
+    public ResponseEntity<?> getAuthUser(){
+        try {
+           return ResponseEntity.ok().body(userService.getUser());
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+     
     }
        
 }

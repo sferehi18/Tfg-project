@@ -15,4 +15,5 @@ import com.example.backend.models.Subject;
 public interface SubjectRepository extends JpaRepository<Subject,Long> {
    Optional<Subject> findByIdAndUserId(Long id, Long userId);
    Optional<List<Subject>> findByUserId( Long userId);
+   boolean existsByNameAndUserId(String name, Long userId);
 }

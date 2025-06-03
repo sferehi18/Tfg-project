@@ -31,7 +31,7 @@ const Storage = () => {
       {/*Usamos el componente Storagebar que muestra la barra cargada segun el almacenamiento usado*/ }
         <Storagebar files= {data} ></Storagebar>
         </div>
-        <div>
+        <div className="" style={{ height: "80vh"}}>
           {/*Usamos el componente Filetable que muestra una lista de archivos*/ }
         <Filetable files={data}></Filetable>
         </div>

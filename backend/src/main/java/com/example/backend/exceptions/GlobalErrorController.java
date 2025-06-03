@@ -11,20 +11,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalErrorController extends ResponseEntityExceptionHandler {
 
     // Manejo de la excepción SubjectNotFoundException
-    @ExceptionHandler(SubjectNotFoundException.class)
-    public ResponseEntity<ProblemDetail> handleSubjectNotFound(SubjectNotFoundException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problemDetail.setTitle("Subject Not Found");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
-    }
+    @ExceptionHandler(SubjectException.class)
+    public ResponseEntity<ProblemDetail> handleSubjectException(SubjectException ex) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getMessage());
+    problemDetail.setTitle("Error de Asignatura");
+    return ResponseEntity.status(ex.getStatus()).body(problemDetail);
+}
 
-    @ExceptionHandler(TopicNotFoundException.class)
-    public ResponseEntity<ProblemDetail> handleTopicNotFound(SubjectNotFoundException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problemDetail.setTitle("Topic Not Found");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    @ExceptionHandler(TopicException.class)
+    public ResponseEntity<ProblemDetail> handleTopicNotFound(TopicException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getMessage());
+        problemDetail.setTitle("Error de Tema");
+        return ResponseEntity.status(ex.getStatus()).body(problemDetail);
     }
-
+    
     // Manejo de excepciones generales (por si ocurren otros errores)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleGenericException(Exception ex) {

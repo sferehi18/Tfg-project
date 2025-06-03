@@ -35,11 +35,11 @@ function Favourites() {
   }
   const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
   return (
-    <div className="" style={{ height: "82vh" }}>
+    <div className="" style={{ height: "100%" }}>
     
 
     {/* Lista de asignaturas obtenidas del backend */}
-    <div className=" d-flex overflow-auto gap-2 flex-wrap  ">
+    <div className=" d-flex overflow-auto gap-2 flex-wrap  "  style={{ height: "100%"}}>
       {favouriteSubjects && favouriteSubjects.map((subject) => (
         // Se genera una SubjectCard por cada asignatura
         // La key es necesaria para que React optimice los cambios en la lista

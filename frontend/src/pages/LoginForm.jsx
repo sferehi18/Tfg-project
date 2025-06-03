@@ -1,17 +1,20 @@
 import { useFormValidations } from "../hooks/useValidations";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useLogin";
 import { useContext } from "react";
 import TokenContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {useUsers} from "../hooks/UseResources"; // Asegúrate de que el nombre del archivo sea correcto
+import UserContext from "../context/UserContext";
 function LoginForm(){
       const {
     setNewToken,
     expiredMsg,
   } = useContext(TokenContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
+  const { getUserDetails } = useUsers();
   
     const {
         register,
@@ -29,7 +32,10 @@ function LoginForm(){
         const token = await getToken(data);
         localStorage.setItem("token", token);
         setNewToken(token); // Guarda el token en localStorage
-
+       const userDetails = await getUserDetails(token);
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+      
+      
         navigate("/subjects"); // Redirige a la página principal
       } else {
         setError("password", invalidUserOrPasswordError);

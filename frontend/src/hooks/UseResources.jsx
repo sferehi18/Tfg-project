@@ -63,11 +63,13 @@ const createSubject = useMutation({
     });
   },
   onError: (err) => {
-    console.error("Error al añadir asignatura:", err.message);
+    console.error("Error al añadir asignatura:", err.response?.data || err.message);
  
      handleShow({color:"danger",
       headerText:"Error al crear recurso",
-      bodyText:"Intentalo as tarde"
+   bodyText: err.response?.data?.detail
+
+
     });
   },
 });
@@ -86,6 +88,7 @@ const deleteSubject = async (id) => {
       headers:authHeaders
     });
     
+    
     return response;
   
 };
@@ -94,10 +97,19 @@ const subjectDelete = useMutation({
   mutationFn: deleteSubject,
   onSuccess: () =>{
     queryClient.invalidateQueries("subjects");
-    console.log("Se ha borrado la asignatura correctamente");
+    handleShow({color:"success",
+      headerText:"Asignatura borrada correctamente",
+      bodyText:"Todos los temas y archivos asociados a esta asignatura han sido eliminados"
+    });
+
   },
-  onError: ()=> {
-    console.log("Error al borrar asignatura");
+  onError: (err)=> {
+     handleShow({color:"danger",
+      headerText:"Error al borrar asignatura",
+      bodyText: err.response?.data?.detail
+
+
+    });
   }
 })
 
@@ -165,7 +177,7 @@ const handleMarkAsFavorite = (id, isFavorite) => {
 }
 
 export const useTopics = () =>{
-
+  const {setShow,handleShow} = useContext(ToastContext);
   const {token} = useContext(TokenContext);
   
   const authHeaders = { 
@@ -209,10 +221,19 @@ export const useTopics = () =>{
     mutationFn:addTopic,
     onSuccess: () =>{
       console.log("Tema añadido correctamente");
+      
     queryClient.invalidateQueries(["topics"]);
+    handleShow({color:"success",
+      headerText:"Tema creado correctamente",
+      bodyText:"Nuevo Tema disponible"
+    });
     },
     
-    onError:() =>{
+    onError:(err) =>{
+      handleShow({color:"danger",
+      headerText:"Error al añadir tema",
+      bodyText:err.response?.data?.detail || "No se ha podido añadir el tema"
+    });
       console.log(" Error al añadir tema");
     }
    
@@ -234,13 +255,20 @@ export const useTopics = () =>{
  const topicDelete = useMutation({
     mutationFn:deleteTopic,
     onSuccess:() =>{
-      
+      handleShow({color:"success",
+      headerText:"Tema borrado correctamente",
+      bodyText:"Todos los archivos asociados a este tema han sido eliminados"
+    });
       console.log("Tema borrado correctamente");
       queryClient.invalidateQueries("topics");
 
     },
-    onError:() =>{
-      console.log("Error al borrar tema");
+    onError:(err) =>{
+      handleShow({color:"danger",
+      headerText:"Tema borrado correctamente",
+      bodyText:"No se ha podido eliminar el tema"
+    });
+
     }
   })
  
@@ -284,7 +312,7 @@ const handleEditTopic = ({ id, newValues }) => {
 
 
 export const useEvents = () =>{
-
+  const {setShow,handleShow} = useContext(ToastContext);
   const queryClient = useQueryClient();
   const { closeModal } = useContext(CreationContext);
   const {token} = useContext(TokenContext);
@@ -327,11 +355,20 @@ export const useEvents = () =>{
     mutationFn:deleteEvent,
     onSuccess: () =>{
       queryClient.invalidateQueries("events");
+      handleShow({color:"success",
+      headerText:"Evento borrado correctamente",
+      bodyText:"El evento ha sido eliminado del calendario"
+    });
+
       console.log("Evento borrado correctamente");
       closeModal();
     },
     onError: () =>{
-      console.log("Error al borrar evento");
+      handleShow({color:"danger",
+      headerText:"Error al borrar evento",
+      bodyText:"No se ha podido eliminar el evento del calendario"
+    });
+     
     }
   })
 
@@ -343,11 +380,19 @@ export const useEvents = () =>{
   const eventAdd = useMutation({
     mutationFn:addEvent,
     onSuccess: () =>{
+      handleShow({color:"success",
+      headerText:"Evento creado correctamente",
+      bodyText:"Nuevo evento añadido al calendario"
+    });
       queryClient.invalidateQueries("events");
       console.log("Evento creado correctamente");
       
     },
     onError: () =>{
+      handleShow({color:"danger",
+      headerText:"Error al añadir evento",
+      bodyText:"No se ha podido añadir el evento al calendario"
+    });
       console.log("Error al añadir evento");
     }
 
@@ -364,6 +409,7 @@ export const useEvents = () =>{
 
 export const useFiles = () =>{
   const queryClient = useQueryClient();
+  const {setShow,handleShow} = useContext(ToastContext);
   const {token} = useContext(TokenContext);
   
   const authHeaders = { 
@@ -409,10 +455,19 @@ const  getFiles = async (id) => {
   const fileAdd = useMutation({
     mutationFn:addFiles,
     onSuccess: () =>{
+   
       queryClient.invalidateQueries("files");
+         handleShow({color:"success",
+      headerText:"Archivo añadido correctamente",
+      bodyText:"Nuevo archivo disponible en el tema"
+    });
       console.log("Archivo añadido correctamente");
     },
     onError: () =>{
+      handleShow({color:"danger",
+      headerText:"Error al añadir archivo",
+      bodyText:"No se ha podido añadir el archivo al tema"
+    });
       console.error("Error al añadir archivo:", error?.response?.data || error.message);
     }
   })
@@ -432,10 +487,18 @@ const  getFiles = async (id) => {
   const fileDelete = useMutation({
     mutationFn:deleteFile,
     onSuccess: () =>{
+      handleShow({color:"success",
+      headerText:"Archivo borrado correctamente",
+      bodyText:"El archivo ha sido eliminado del tema"
+    });
       queryClient.invalidateQueries("files");
       console.log("Archivo borrado correctamente");
     },
     onError: () =>{
+      handleShow({color:"danger",
+      headerText:"Error al borrar archivo",
+      bodyText:"No se ha podido eliminar el archivo del tema"
+    });
       console.log("Error al borrar archivo");
     }
   })
@@ -448,9 +511,24 @@ const  getFiles = async (id) => {
 
 export const useUsers = () => {
   const { token } = useContext(TokenContext);
-  const authHeaders = {
-    "Content-Type": "application/json", } 
+ 
 
   const queryClient = useQueryClient();
-  const BASE_URL = `http://localhost:8080/users/${id}`;
+  const BASE_URL = `http://localhost:8080/user/`;
+   
+  const getUserDetails = async (token) =>{
+   const authHeaders = { 
+  "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+
+}
+ return axios.get(`${BASE_URL}userDetails`,{
+      headers:authHeaders
+    })
+    .then(response => {
+      return response.data;}
+    );
+    
+  }
+  return { getUserDetails };
 }

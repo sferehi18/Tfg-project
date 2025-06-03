@@ -4,8 +4,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.example.backend.exceptions.SubjectNotFoundException;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.example.backend.exceptions.SubjectException;
 import com.example.backend.DTOs.SubjectDTO;
 import com.example.backend.Repositories.SubjectRepository;
 import com.example.backend.Repositories.UserRepository;
@@ -39,12 +42,23 @@ public class SubjectService extends AuthMethods {
     }
 
     // CREATE METHODS
-    public SubjectDTO createSubject(String name) throws Exception {
+    public SubjectDTO createSubject(String name) {
         Long userId = getAuthenticatedUserId(); 
         Optional<User> user = userRepository.findById(userId);// Obtener el ID del usuario autenticado
-        Subject subject = new Subject(name,false,user.get());
-        subjectRepository.save(subject);
-        return toSubjectDTO(subject);
+        
+        if (user.isEmpty()) {
+           throw new SubjectException( "No ha sido posible determinar tu identidad.", HttpStatus.UNAUTHORIZED);
+        }
+
+        if(subjectRepository.existsByNameAndUserId(name, userId)) {
+          throw new SubjectException( "La asignatura ya existe",HttpStatus.CONFLICT);
+        }else{
+             Subject subject = new Subject(name,false,user.get());
+              subjectRepository.save(subject);
+               return toSubjectDTO(subject);
+        }
+      
+       
     }
 
    
@@ -55,7 +69,7 @@ public class SubjectService extends AuthMethods {
         if (subjectOptional.isPresent()) {
              return subjectOptional.get().stream().map(this::toSubjectDTO).collect(Collectors.toList());
         } else {
-            throw new SubjectNotFoundException("No existen este registro");
+            throw new SubjectException("No existen este registro",HttpStatus.NOT_FOUND);
         }
         
        

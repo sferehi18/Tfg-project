@@ -27,7 +27,7 @@ import ToastContext from "./context/ToastContext";
 import { HeaderProvider } from "./context/HeaderContext";
 import { ToastProvider } from "./context/ToastContext"; // asegúrate que el nombre del archivo esté bien: "ToastContext.jsx"
 import { ThemeProvider } from "./context/UseTheme";
-
+import {UserProvider} from "./context/UserContext"; // Asegúrate de que el nombre del archivo sea correcto
 const queryClient = new QueryClient();
 
 function App() {
@@ -38,7 +38,8 @@ function App() {
   
   
   return (
-    <ThemeProvider>
+    <UserProvider>
+      <ThemeProvider>
       <HeaderProvider>
        <ToastProvider>
       <TokenProvider>
@@ -73,6 +74,8 @@ function App() {
     </ToastProvider>
     </HeaderProvider>
     </ThemeProvider>
+    </UserProvider>
+    
     
    
     

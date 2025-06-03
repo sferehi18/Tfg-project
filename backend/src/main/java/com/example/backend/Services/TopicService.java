@@ -5,14 +5,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.DTOs.TopicDTO;
 import com.example.backend.Repositories.TopicRepository;
 import com.example.backend.Repositories.UserRepository;
+import com.example.backend.exceptions.SubjectException;
+import com.example.backend.exceptions.TopicException;
 import com.example.backend.Repositories.SubjectRepository;
 
-import com.example.backend.exceptions.SubjectNotFoundException;
+
 import com.example.backend.models.Topic;
 import com.example.backend.models.User;
 
@@ -63,9 +66,14 @@ public class TopicService extends AuthMethods {
         Long userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
         Optional<Subject> subject = subjectRepository.findByIdAndUserId(subjectId,userId);
         if (subject.isEmpty()) {
-            throw new SubjectNotFoundException("No existe este registro");
+            throw new SubjectException("No existe este registro", HttpStatus.NOT_FOUND);
         }
+        
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        if (topicRepository.existsByNameAndUserId(name, userId)) {
+            throw new TopicException("Ya existe un tema con este nombre", HttpStatus.BAD_REQUEST);
+            
+        }
         Topic topic = new Topic(name, subject.get(),user);
         topicRepository.save(topic);
         return toTopicDTO(topic);

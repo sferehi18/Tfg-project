@@ -3,11 +3,13 @@ import { createContext, useState } from "react";
 import { useEffect } from "react";
 import { useAuth } from "../hooks/useLogin";
 import { jwtDecode } from "jwt-decode";
+import { useUsers } from "../hooks/UseResources";
 // 1. Crear el contexto
 const TokenContext = createContext();
 export function TokenProvider({ children }) {
 
 const [token, setToken] = useState(localStorage.getItem("token"));
+
 const [expiredMsg,setExpiredMsg] = useState('');
 // Cada vez que se recarga la pagina se asegura
 //de que no se pierda el valor del token del Contexto de la app
@@ -42,3 +44,4 @@ const isTokenExpired = () =>{
     );}
 
 export default TokenContext;
+
