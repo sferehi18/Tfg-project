@@ -6,15 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import searchResult from './searchResult';
 import { useContext } from 'react';
 import HeaderContext from '../context/HeaderContext'; // Importar el contexto del encabezado
+import { useSlug } from '../hooks/useSlug';
+import { useFiles } from '../hooks/UseResources';
 function SearchList({ searchInput }) {
   const {pageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
   const resourcesType = pageType+ "s"; // Asignamos el tipo de recursos según el contexto del encabezado
-
+  const { slugify} = useSlug(); // Importar el hook useSlug para usar la función slugify si es necesario
   const [show, setShow] = useState(false);
-  
+  const { handleOpenFile} = useFiles(); // Usar el hook useFiles para manejar archivos, aunque no se usa directamente en este componente 
   const { subjectUri } = useParams(); // Extrae el "subjectId" desde la URL (ejemplo: /subjects/123)
-const [subjectId, slug] = subjectUri ? subjectUri.split("-") : [];
-
+  const [subjectId, ...slugParts] = subjectUri ? subjectUri.split("-") : [];
+  const slug = slugParts.join("-");
+  
   const navigate = useNavigate();
   useEffect(() => {
   searchInput != null ?  setShow(true) : setShow(false);
@@ -54,11 +57,14 @@ const [subjectId, slug] = subjectUri ? subjectUri.split("-") : [];
         resourceName={result.name}
         resourceId={result.id}
         subjectId={subjectId}
-        onClick={result.type == "subject" ? () =>{
-  navigate(`/subjects/${result.id}-${result.name}/topics/`);
+        onClick={result.type == "subjects" ? () =>{
+  navigate(`/subjects/${result.id}-${slugify(result.name)}/topics/`);
   setShow(false);
-} : () =>{
-  navigate(`subjects/${subjectId}-${slug}/topics/${result.id}-${result.name}/files/`);
+} : result.type == "topics" ? () =>{
+  navigate(`subjects/${subjectId}-${slug}/topics/${result.id}-${slugify(result.name)}/files/`);
+  setShow(false);
+} : () => {
+  handleOpenFile(result.id);
   setShow(false);
 }}
       >

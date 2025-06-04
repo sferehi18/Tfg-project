@@ -10,18 +10,10 @@ function Content() {
   const {isTokenValid,setNewToken,token,isTokenExpired,setExpiredMsg,isTokenPresent} = useContext(TokenContext);
   const navigate = useNavigate();
   const {show,variant} = useContext(ToastContext);
-  useEffect(() => {
-    console.log('La ubicación ha cambiado:', location);
-    if(isTokenPresent()){
-      if(isTokenExpired()){
-      navigate("/login");
-      
-      setExpiredMsg("Tu token ha expirado porfavor vuelve a iniciar Sesion");
-        }
-    }
+  
     
         
-  }, [location]);
+
   
   return (
     <div key={location.pathname}  className="d-flex flex-column    justify-content-start "  style={{ height: "82vh"}} >

@@ -1,15 +1,16 @@
 import axios from "axios";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import TokenContext from "../context/AuthContext";
 
 
 export function useAuth() {
 const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
+const navigate = useNavigate();
   const getToken = async (authUser) => {
     return axios
       .post("http://localhost:8080/auth/login", 
-       authUser
+       authUser,{withCredentials: true}
       )
       .then((response) => {
         // El token es directamente el `response.data`
@@ -21,6 +22,15 @@ const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
       });
   };
 
+ const redirectToLogin = () => {
+    // Redirige al usuario a la página de inicio de sesión
+    if(err.response?.status === 401 || err.response?.status === 403){
+      setExpiredMsg("Tu sesión ha expirado, por favor inicia sesión de nuevo");
+      navigate("/login");
+    }
+    
+   
+  }
 
   const createUser = async (user) =>{
     return axios.post("http://localhost:8080/auth/register",user).then((response)=>{
@@ -31,14 +41,17 @@ const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
     })
   }
 
-
-  const logout = () => {
-
-    
-    setNewToken(null);
+  const logout = async () =>{
+    await axios.post("http://localhost:8080/auth/logout").then((response)=>{
+      if(response.status === 200){
+        localStorage.removeItem("isAuthenticated"); // Elimina el estado de autenticación del localStorage
     setExpiredMsg('');
+      }
+    })
    
   }
+
+
 
  
   
@@ -64,5 +77,5 @@ const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
         message: "Usuario o contraseña incorrectos",
       }
 
-  return { getToken ,logout, validateUser, invalidUserOrPasswordError,createUser};
+  return { getToken ,logout, validateUser, invalidUserOrPasswordError,createUser,redirectToLogin };
 }

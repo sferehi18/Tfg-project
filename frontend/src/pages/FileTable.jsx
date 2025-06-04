@@ -7,36 +7,11 @@ import FileIcon from "../components/FileIcon"; // Asegúrate de que la ruta sea 
 
 function Filetable({ files }) {
   // Desestructura la función handleDeleteFile del hook useFiles, la cual maneja la eliminación de archivos
-  const { handleDeleteFile } = useFiles(); 
+  const { handleDeleteFile ,handleOpenFile} = useFiles(); 
 
-  // Cabeceras de autenticación, incluyendo el token de usuario para las solicitudes API
-  const authHeaders = { 
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}` // Se obtiene el token JWT del almacenamiento local
-  }
+ 
 
   
-
-  // Función para abrir un archivo en una nueva pestaña del navegador
-  const handleOpenFile = (fileId) => {
-    // Realiza una solicitud GET para obtener el archivo como un blob (contenido binario)
-    axios.get(`http://localhost:8080/files/${fileId}/open`, {
-      headers: authHeaders, // Enviar cabeceras de autenticación
-      responseType: 'blob' // Especifica que la respuesta será un blob (archivo binario)
-    })
-      .then((response) => {
-        // Crea un objeto Blob a partir de los datos binarios recibidos
-        const file = new Blob([response.data], { type: response.headers['content-type'] });
-        // Crea una URL temporal para el archivo Blob
-        const fileURL = URL.createObjectURL(file);
-        // Abre el archivo en una nueva pestaña del navegador
-        window.open(fileURL, "_blank");
-      })
-      .catch((error) => {
-        // Maneja errores si la solicitud o procesamiento del archivo falla
-        console.error("Error al abrir el archivo:", error);
-      });
-  }
 
   return (
     <div className="overflow-y-auto mt-3" style={{ height: "100%" }}>

@@ -7,6 +7,7 @@ import CreationContext from "../context/ModalsMenusContext";
 import { useNavigate } from "react-router-dom";
 
 import ToastContext from "../context/ToastContext";
+import { useAuth } from "./useLogin";
 
 // Hook para manejar las asignaturas, temas y eventos
 // Este hook utiliza React Query para manejar las peticiones a la API y el estado de los datos
@@ -14,23 +15,25 @@ export function useSubjects() {
   const navigate = useNavigate();
  const { token, setNewToken } = useContext(TokenContext);
  const {setShow,handleShow} = useContext(ToastContext);
- 
-  const authHeaders = { 
-  "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+ const { redirectToLogin } = useAuth();// Funcion del Hook de login para manejar la redirección al login
 
-}
   //Definimos queryClient para poder invalidar las queries, es decir, decir que unos datos ya no estan actualizados y forzar un refetch
   const queryClient = useQueryClient(); 
   
 //Obtener Asignaturas
   const getSubjects = async () => {
-    console.log("Obteniendo asignaturas desde el backend... con token:", localStorage.getItem("token"));
+  
     return axios.get("http://localhost:8080/subjects/",{
-     headers:authHeaders
+     withCredentials: true
     })
       .then(response => {
         return response.data;
+      }).catch((error) => {
+        console.error("Error al obtener las asignaturas:", error);
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          window.location.href = "/login"; // Redirige al usuario a la página de inicio de sesión
+        }
+       
       })
    
     
@@ -42,7 +45,7 @@ export function useSubjects() {
   const addSubject = async (subject) => {
 
     const response = await axios.post("http://localhost:8080/subjects/create", subject,{
-      headers:authHeaders
+      withCredentials: true
     });
     return response.data;
   
@@ -63,7 +66,7 @@ const createSubject = useMutation({
     });
   },
   onError: (err) => {
-    console.error("Error al añadir asignatura:", err.response?.data || err.message);
+   redirectToLogin(err);
  
      handleShow({color:"danger",
       headerText:"Error al crear recurso",
@@ -85,7 +88,7 @@ const handleAddSubject = (newSubject) => {
 const deleteSubject = async (id) => {
  
     const response = await axios.delete(`http://localhost:8080/subjects/${id}`,{
-      headers:authHeaders
+      withCredentials: true
     });
     
     
@@ -122,7 +125,7 @@ const handleDeleteSubject = (id) => {
 const editSubject = async ({ id, newValues }) =>{
   console.log("Editando asignatura con ID:", id, "y nuevos valores:", newValues);
   const response = await axios.put(`http://localhost:8080/subjects/${id}`,newValues,{
-    headers:authHeaders
+    withCredentials: true
   });
   return response.data;
 
@@ -148,7 +151,7 @@ const handleEditSubject = ({ id, newValues }) => {
 
 const markasfavorite = async ({ id, isFavorite }) => {
   const response = await axios.patch(`http://localhost:8080/subjects/${id}/favorite`, isFavorite, {
-    headers: authHeaders,
+    withCredentials: true
   });
   return response.data;
 };
@@ -178,20 +181,16 @@ const handleMarkAsFavorite = (id, isFavorite) => {
 
 export const useTopics = () =>{
   const {setShow,handleShow} = useContext(ToastContext);
-  const {token} = useContext(TokenContext);
   
-  const authHeaders = { 
-  "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+  
 
-}
   const queryClient = useQueryClient(); 
   const BASE_URL = "http://localhost:8080/subjects/";
   const getTopics = async (subjectId) => {
 
     const response = await axios.get(`${BASE_URL}${subjectId}/topics/`,
       {
-        headers:authHeaders
+        withCredentials: true
       }
     );
     
@@ -202,7 +201,7 @@ export const useTopics = () =>{
    
     const response = await axios.get(`http://localhost:8080/topics/All`,
       {
-        headers:authHeaders
+        withCredentials: true
       }
     );
     
@@ -212,7 +211,7 @@ export const useTopics = () =>{
   const addTopic = async ({id,newValues}) =>{
     console.log("Añadiendo nuevo tema:", newValues, "a la asignatura con ID:", id);
    const response = await axios.post(`${BASE_URL}${id}/topics/create`,newValues,{
-    headers:authHeaders
+    withCredentials: true
    })
    return response.data;
   }
@@ -247,7 +246,7 @@ export const useTopics = () =>{
 
   const deleteTopic = async (id) => {
     const response = await axios.delete(`http://localhost:8080/topics/${id}/delete`,{
-      headers:authHeaders
+      withCredentials: true
     });
     return response;
   }
@@ -282,7 +281,7 @@ export const useTopics = () =>{
  const editTopic = async ({ id, newValues }) =>{
   console.log("Editando tema con ID:", id, "y nuevos valores:", newValues);
   const response = await axios.put(`http://localhost:8080/topics/${id}/edit`,newValues,{
-    headers:authHeaders
+    withCredentials: true
   });
   return response.data;
 
@@ -315,17 +314,13 @@ export const useEvents = () =>{
   const {setShow,handleShow} = useContext(ToastContext);
   const queryClient = useQueryClient();
   const { closeModal } = useContext(CreationContext);
-  const {token} = useContext(TokenContext);
   
-  const authHeaders = { 
-  "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+  
 
-}
 
   const getEvents = async () => {
     return axios.get("http://localhost:8080/events/",{
-      headers:authHeaders
+      withCredentials: true
     })
     .then(response => {
       return response.data;}
@@ -339,14 +334,14 @@ export const useEvents = () =>{
 
   const addEvent = async (newEvent) =>{
    const response = await axios.post("http://localhost:8080/events/create",newEvent,{
-    headers:authHeaders
+    withCredentials: true
    });
     return response;
   }
 
   const deleteEvent = async (id) => {
     const response = await axios.delete(`http://localhost:8080/events/delete/${id}`,{
-      headers:authHeaders
+      withCredentials: true
     });
     return response;
   }
@@ -410,23 +405,19 @@ export const useEvents = () =>{
 export const useFiles = () =>{
   const queryClient = useQueryClient();
   const {setShow,handleShow} = useContext(ToastContext);
-  const {token} = useContext(TokenContext);
   
-  const authHeaders = { 
-  "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+  
 
-}
 const  getFiles = async (id) => {
     const response = await axios.get(`http://localhost:8080/topics/${id}/files/`,{
-      headers:authHeaders
+      withCredentials: true
     });
     return response.data;
   }
 
   const  getAllFiles = async () => {
     const response = await axios.get(`http://localhost:8080/files/`,{
-      headers:authHeaders
+      withCredentials: true
     });
     return response.data;
   }
@@ -475,11 +466,30 @@ const  getFiles = async (id) => {
   const handleAddFile = ({id,newFile}) => {
     fileAdd.mutate({id,newFile});
   }
-
+// Función para abrir un archivo en una nueva pestaña del navegador
+  const handleOpenFile = (fileId) => {
+    // Realiza una solicitud GET para obtener el archivo como un blob (contenido binario)
+    axios.get(`http://localhost:8080/files/${fileId}/open`, {
+      headers: authHeaders, // Enviar cabeceras de autenticación
+      responseType: 'blob' // Especifica que la respuesta será un blob (archivo binario)
+    })
+      .then((response) => {
+        // Crea un objeto Blob a partir de los datos binarios recibidos
+        const file = new Blob([response.data], { type: response.headers['content-type'] });
+        // Crea una URL temporal para el archivo Blob
+        const fileURL = URL.createObjectURL(file);
+        // Abre el archivo en una nueva pestaña del navegador
+        window.open(fileURL, "_blank");
+      })
+      .catch((error) => {
+        // Maneja errores si la solicitud o procesamiento del archivo falla
+        console.error("Error al abrir el archivo:", error);
+      });
+  }
 
   const deleteFile = async (id) => {
     const response = await axios.delete(`http://localhost:8080/files/${id}/delete`,{
-      headers:authHeaders
+      withCredentials: true
     });
     return response.data;
   }
@@ -506,7 +516,7 @@ const  getFiles = async (id) => {
   const handleDeleteFile = (id) =>{
     fileDelete.mutate(id);
   }
-  return {getFiles,getAllFiles,handleAddFile,handleDeleteFile};
+  return {getFiles,getAllFiles,handleAddFile,handleDeleteFile,handleOpenFile};
 }
 
 export const useUsers = () => {
@@ -517,13 +527,9 @@ export const useUsers = () => {
   const BASE_URL = `http://localhost:8080/user/`;
    
   const getUserDetails = async (token) =>{
-   const authHeaders = { 
-  "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-
-}
+ 
  return axios.get(`${BASE_URL}userDetails`,{
-      headers:authHeaders
+      withCredentials: true
     })
     .then(response => {
       return response.data;}

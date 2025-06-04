@@ -21,7 +21,6 @@ const Storage = () => {
    const {isLoading,error,data} = useQuery({
      queryKey:  ["files"],
      queryFn:getAllFiles,
-     enabled: isTokenValid()
    });
    return(
       // Contenedor principal de la página de almacenamiento

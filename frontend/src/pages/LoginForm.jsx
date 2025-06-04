@@ -9,8 +9,7 @@ import {useUsers} from "../hooks/UseResources"; // Asegúrate de que el nombre d
 import UserContext from "../context/UserContext";
 function LoginForm(){
       const {
-    setNewToken,
-    expiredMsg,
+    setAuthenticated,
   } = useContext(TokenContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -30,10 +29,8 @@ function LoginForm(){
       const status = await validateUser(data); // Retorna el status de la respuesta
       if (status == "200") {
         const token = await getToken(data);
-        localStorage.setItem("token", token);
-        setNewToken(token); // Guarda el token en localStorage
-       const userDetails = await getUserDetails(token);
-      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+        setAuthenticated(true); // Actualiza el estado de autenticación
+        localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Guarda el estado en localStorage
       
       
         navigate("/subjects"); // Redirige a la página principal

@@ -10,11 +10,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
 
-
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import org.springframework.http.ResponseEntity;
 
 
 @RestController
@@ -28,18 +27,42 @@ public class AuthController {
 
     @Autowired
     private JwtService jwtService;
-
+ 
     
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-        );
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-       Long userid = userService.loadUserByUsername(userDetails.getUsername()).getId();
-        return jwtService.generateToken(userid, userDetails.getUsername());
-    }
+public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) {
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+    );
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    Long userId = userService.loadUserByUsername(userDetails.getUsername()).getId();
+
+    String token = jwtService.generateToken(userId, userDetails.getUsername());
+
+    // Crear cookie HttpOnly
+    Cookie cookie = new Cookie("token", token);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(false); // Solo si usas HTTPS
+    cookie.setPath("/");
+    cookie.setMaxAge( 3600); // 1 hora
+
+    // Agregar cookie a la respuesta
+    response.addCookie(cookie);
+
+    return ResponseEntity.ok("Login exitoso");
+}
+
+@PostMapping("/logout")
+public ResponseEntity<?> logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie("token", "");
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
+    cookie.setSecure(false); // si usas HTTPS
+    cookie.setMaxAge(0); // Eliminar la cookie
+    response.addCookie(cookie);
+    return ResponseEntity.ok().build();
+}
 
     @PostMapping("/validateToken")
     public ResponseEntity<?> postMethodName(@RequestBody String token) {

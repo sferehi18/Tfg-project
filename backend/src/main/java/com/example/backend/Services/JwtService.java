@@ -72,11 +72,11 @@ public class JwtService {
      * Solo compara el username, pero asume que el token es válido si no lanza excepción.
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return extractUsername(token).equals(userDetails.getUsername()) ;
+        return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token) ;
     }
 
     public boolean isTokenExpired(String token){
-        return extracDate(token).after(new Date());
+        return extracDate(token).before(new Date());
     }
 
     /**

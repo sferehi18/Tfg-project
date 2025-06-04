@@ -7,12 +7,10 @@ import { useEffect } from "react";
 import TokenContext from "../context/AuthContext";
 
 function ProtectedRoute({children}){
-     const {token,isTokenValid,isTokenExpired,isTokenPresent} = useContext(TokenContext);
+     const {isAuthenticated} = useContext(TokenContext);
     
    
     
-   
-    const [isValid,setIsValid] = useState( isTokenPresent() ? !isTokenExpired() : false);
     
   
     
@@ -20,7 +18,7 @@ function ProtectedRoute({children}){
    
     
     
-    return  isValid ? children : <Navigate to="/login"  />;
+    return  isAuthenticated ? children : <Navigate to="/login"  />;
 }
 
 export default ProtectedRoute;

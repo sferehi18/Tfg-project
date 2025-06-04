@@ -27,7 +27,7 @@ function searchResult({resourceType,resourceId,resourceName,onClick}) {
           {resorceIcon}
           <p className="fs-6">{resourceType}</p></div>
          { formattedName != resourceName ? 
-          <TooltipTitle customClasses="text-start fs-5 " text={formattedName} tooltipText={resourceName}></TooltipTitle>
+          <TooltipTitle customClasses="text-start fs-5 " fontsize={"text"} text={formattedName} tooltipText={resourceName}></TooltipTitle>
            :
            <div> <p className="fs-5">{formattedName}</p></div>
           }

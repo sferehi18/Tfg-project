@@ -37,7 +37,7 @@ setPageType("subject");
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["subjects"], // Clave para caché y refetching
     queryFn: getSubjects,
-    enabled: isTokenValid()
+    
      
       
   });

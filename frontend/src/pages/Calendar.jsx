@@ -61,8 +61,7 @@ function MyCalendar() {
         start: new Date(event.start), // <-- 🔥 convertir a Date
         end: new Date(event.end),
       }));
-    },
-    enabled:isTokenValid()
+    }
   });
   
   const handleAddEvent = (newevent) => {

@@ -29,41 +29,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // Método principal que ejecuta el filtro de autenticación JWT
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        // Obtener el encabezado Authorization de la solicitud HTTP
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt; // Declaramos la variable jwt para almacenar el token JWT
-        final String username; // Declaramos la variable username para almacenar el nombre de usuario extraído del JWT
+   @Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
 
-        // Verificar si el encabezado de autorización es nulo o no tiene el prefijo "Bearer "
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response); // Si no es válido, pasa la solicitud al siguiente filtro sin realizar ninguna acción
-            return; // Salir del método, ya que no se necesita hacer más comprobaciones
-        }
+    String jwt = null;
+    String username = null;
 
-        // Extraer el token JWT del encabezado "Authorization" (el prefijo "Bearer " se elimina)
+    // 1. Intentar obtener el token del encabezado Authorization
+    final String authHeader = request.getHeader("Authorization");
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
         jwt = authHeader.substring(7);
-        // Extraer el nombre de usuario del token JWT utilizando el JwtService
-        username = jwtService.extractUsername(jwt);
-
-        // Verificar si el nombre de usuario no es nulo y si no hay un usuario ya autenticado en el contexto de seguridad
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Cargar los detalles del usuario desde el servicio de usuario usando el nombre de usuario extraído del JWT
-            var userDetails = userService.loadUserByUsername(username);
-            // Verificar si el token JWT es válido para ese usuario
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                // Si el token es válido, crear un nuevo objeto de autenticación con los detalles del usuario
-                var authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                // Establecer los detalles de la solicitud para este objeto de autenticación
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // Establecer el contexto de seguridad con la autenticación recién creada
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+    } else if (request.getCookies() != null) {
+        // 2. Si no hay header, buscar la cookie con el nombre "token"
+        for (var cookie : request.getCookies()) {
+            if (cookie.getName().equals("token")) {
+                jwt = cookie.getValue();
+                break;
             }
         }
-        // Pasar la solicitud al siguiente filtro en la cadena de filtros
-        filterChain.doFilter(request, response);
     }
+
+    // Si no hay JWT, continuar con la cadena de filtros
+    if (jwt == null) {
+        filterChain.doFilter(request, response);
+        return;
+    }
+
+    username = jwtService.extractUsername(jwt);
+
+    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        var userDetails = userService.loadUserByUsername(username);
+        if (jwtService.isTokenValid(jwt, userDetails) ) {
+            var authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+    }
+
+    filterChain.doFilter(request, response);
+}
+
 }

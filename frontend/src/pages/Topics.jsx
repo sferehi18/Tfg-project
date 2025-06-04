@@ -38,7 +38,6 @@ setPageType("topic");
   const { isLoading, data, error } = useQuery({
     queryKey: ["topics"], // Clave única para caché y revalidación de datos
     queryFn:() => getTopics(subjectId),
-    enabled: isTokenValid()
 // Función que obtiene los temas desde el backend
   });
 

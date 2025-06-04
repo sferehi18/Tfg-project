@@ -15,6 +15,18 @@ body{
 
   
 }
+
+ [data-bs-theme="dark"] .rbc-today{
+  background-color:  rgba(95, 28, 228, 0.3) !important;
+  color: white !important;
+  
+ }
+
+ [data-bs-theme="dark"] .rbc-off-range
+  {
+    background-color: white !important;
+    color: var(--color-secondary) !important;}
+
 #root{
   margin: 0;
   padding: 0;
@@ -131,6 +143,7 @@ body{
     color:white !important;
   }
 
+  
   .selected:hover{
     background-color: var(--color-primary)
     !important;
