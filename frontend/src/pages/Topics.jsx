@@ -13,7 +13,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HeaderContext from "../context/HeaderContext"; // Contexto para manejar el título de la página
 import SearchBar from "../components/SearchBar"; // Componente de búsqueda para filtrar temas
-import NoContentPage from "./NoCotentPage";
+import NoContentPage from "./NoContentPage";
+import { AnimatePresence } from "framer-motion";
 // Componente que muestra los temas de una asignatura específica
 const Topics = () => {
      const {title,setTitle,setPageType} = useContext(HeaderContext);
@@ -62,8 +63,10 @@ setPageType("topic");
 
       {/* Contenedor para los temas */}
       <div className=" d-flex overflow-y-auto align-items-center  flex-column  rounded-3 " style={{ height: "100%"}} >
-        { data && data.length != 0 ?  data.map(topic => (
+          <AnimatePresence>
+             { data && data.length != 0 ?  data.map(topic => (
           // Renderiza una tarjeta para cada tema
+        
           <TopicCard  
             key={topic.name} 
             name={topic.name} 
@@ -72,6 +75,8 @@ setPageType("topic");
             topicId={topic.id} 
           />
         )) : <NoContentPage title={"Aún no existen temas en esta asignatura"}  message={"¡Completa tu Asignatura!"}></NoContentPage>}
+          </AnimatePresence>
+       
       </div>
     </>
   );

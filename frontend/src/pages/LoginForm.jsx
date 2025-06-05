@@ -22,18 +22,25 @@ function LoginForm(){
         setError,
       } = useForm();
     const {usernameValidations,passwordValidations} = useFormValidations();
-     const { getToken, validateUser, invalidUserOrPasswordError } = useAuth(); 
+     const { login, validateUser, invalidUserOrPasswordError } = useAuth(); 
      const onSubmit = async (data) => {
     console.log("Datos del formulario:", JSON.stringify(data));
     try {
       const status = await validateUser(data); // Retorna el status de la respuesta
       if (status == "200") {
-        const token = await getToken(data);
-        setAuthenticated(true); // Actualiza el estado de autenticación
+        console.log("Usuario validado correctamente");
+        const authenticated = await login(data);
+        
+        
+      if(authenticated === 200) {
+        console.log("Login exitoso");
+          setAuthenticated(true); // Actualiza el estado de autenticación
         localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Guarda el estado en localStorage
+      }
+        
       
       
-        navigate("/subjects"); // Redirige a la página principal
+        navigate("subjects"); // Redirige a la página principal
       } else {
         setError("password", invalidUserOrPasswordError);
       }

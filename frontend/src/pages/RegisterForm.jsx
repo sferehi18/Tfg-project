@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"; // Importamos useNavigate para n
 import TokenContext from "../context/AuthContext";
 import { useFormValidations } from "../hooks/useValidations";
 function RegisterForm(){
-    const {emailValidations} = useFormValidations();
+    const {emailValidations,passwordValidations} = useFormValidations();
     const { getToken, validateUser, invalidUserOrPasswordError, createUser } = useAuth(); // Importamos el hook useAuth para obtener el token
   const {
     token,
@@ -26,10 +26,11 @@ function RegisterForm(){
     setError,
   } = useForm();
   const onSubmit = async (data) =>{
-    console.log(data)
+    
     const status = await createUser(data);
     if(status == "200"){
       ok = true;
+      console.log(status);
     }
   };
    return (
@@ -54,11 +55,12 @@ function RegisterForm(){
           </label>
           <input
             type="password"
-            {...register("password", {
-              required: "Porfavor inserta una contraseña valida"
-            })}
+            {...register("password", passwordValidations)}
             className="form-control w-100"
           />
+          {errors.password && (
+            <p className=" text-danger">{errors.password.message}</p>
+          )}
 
           <label htmlFor="email" className="form-label">
             Correo electrónico
@@ -66,10 +68,11 @@ function RegisterForm(){
           <input className="form-control" type="text" {...register("email",emailValidations)
            
           }  />
-          {/* Aquí se muestra el mensaje de error si existe */}
-          {errors.password && (
-            <p className=" text-danger">{errors.password.message}</p>
+           {errors.email && (
+            <p className=" text-danger">{errors.email.message}</p>
           )}
+          {/* Aquí se muestra el mensaje de error si existe */}
+          
           {ok && <p className="text-succes">Usuario registrado correctamente</p>}
           
           <button type="submit" className="btn bg-primar text-white mt-3">

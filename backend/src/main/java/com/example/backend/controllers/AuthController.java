@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.DTOs.UserDTO;
 import com.example.backend.Services.JwtService;
 import com.example.backend.Services.UserService;
 import com.example.backend.models.User;
@@ -37,7 +38,7 @@ public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse respo
     );
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     Long userId = userService.loadUserByUsername(userDetails.getUsername()).getId();
-
+    
     String token = jwtService.generateToken(userId, userDetails.getUsername());
 
     // Crear cookie HttpOnly
@@ -46,11 +47,11 @@ public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse respo
     cookie.setSecure(false); // Solo si usas HTTPS
     cookie.setPath("/");
     cookie.setMaxAge( 3600); // 1 hora
-
+    UserDTO authenticatedUser = userService.getUser(userDetails.getUsername());
     // Agregar cookie a la respuesta
     response.addCookie(cookie);
 
-    return ResponseEntity.ok("Login exitoso");
+    return ResponseEntity.ok(authenticatedUser);
 }
 
 @PostMapping("/logout")
@@ -102,14 +103,5 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
     }
 
     
-    @GetMapping("/userAuthenticated")
-    public ResponseEntity<?> getAuthUser(){
-        try {
-           return ResponseEntity.ok().body(userService.getUser());
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-     
-    }
-       
+  
 }

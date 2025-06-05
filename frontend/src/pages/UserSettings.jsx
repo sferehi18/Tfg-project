@@ -9,11 +9,11 @@ function UserSettings() {
   const { darkMode, toggleTheme } = useContext(ThemeContext);
   const {user , setUser} = useContext(UserContext); // Puedes usar el contexto de usuario si es necesario
   
-  console.log("UserSettings", user);
+  console.log("userDetails", user);
   useEffect(() => {
     setTitle("Configuración de Usuario");
     setPageType(null);
-    setUser(JSON.parse(localStorage.getItem('userDetails')));
+   
   }, []);
 
   return (

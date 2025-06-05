@@ -2,19 +2,23 @@ import axios from "axios";
 import { useContext } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import TokenContext from "../context/AuthContext";
-
+import UserContext from "../context/UserContext";
 
 export function useAuth() {
 const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
+const {setUser} = useContext(UserContext);
 const navigate = useNavigate();
-  const getToken = async (authUser) => {
+  const login = async (authUser) => {
     return axios
       .post("http://localhost:8080/auth/login", 
        authUser,{withCredentials: true}
       )
       .then((response) => {
         // El token es directamente el `response.data`
-        return response.data; // Aquí no necesitamos acceder a `response.data.token`
+
+       localStorage.setItem("userDetails",JSON.stringify(response.data));
+        setUser(response.data);
+        return response.status; // Aquí no necesitamos acceder a `response.data.token`
       })
       .catch((error) => {
         console.error("Error al obtener el token:", error);
@@ -44,8 +48,14 @@ const navigate = useNavigate();
   const logout = async () =>{
     await axios.post("http://localhost:8080/auth/logout").then((response)=>{
       if(response.status === 200){
-        localStorage.removeItem("isAuthenticated"); // Elimina el estado de autenticación del localStorage
+        localStorage.removeItem("isAuthenticated");
+        setUser(null);
+        localStorage.removeItem("userDetails");
+        
+         // Elimina el estado de autenticación del localStorage
     setExpiredMsg('');
+    localStorage.setItem("selectedButton","Home")
+    
       }
     })
    
@@ -77,5 +87,5 @@ const navigate = useNavigate();
         message: "Usuario o contraseña incorrectos",
       }
 
-  return { getToken ,logout, validateUser, invalidUserOrPasswordError,createUser,redirectToLogin };
+  return { logout, validateUser, invalidUserOrPasswordError,createUser,redirectToLogin,login };
 }

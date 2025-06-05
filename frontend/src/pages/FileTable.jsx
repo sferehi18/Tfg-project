@@ -2,8 +2,10 @@ import React from "react";
 import SimpleIconButton from "../components/SimpleIconButton";
 import { useFiles } from "../hooks/UseResources";
 import axios from "axios";
+import { AnimatePresence, motion } from "framer-motion";
 
 import FileIcon from "../components/FileIcon"; // Asegúrate de que la ruta sea correcta
+
 
 function Filetable({ files }) {
   // Desestructura la función handleDeleteFile del hook useFiles, la cual maneja la eliminación de archivos
@@ -26,10 +28,19 @@ function Filetable({ files }) {
             <th ></th>
           </tr>
         </thead>
-        <tbody>
+        
+        <tbody className="fade-transition">
+           <AnimatePresence>
           {files && // Comprueba si hay archivos para mostrar
+          
             files.map((file) => (
-              <tr key={file.id}>
+             
+                <motion.tr     key={file.id}
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.5 }}>
+                
                 <td>
                   <FileIcon contentType={file.name}></FileIcon> {/* Muestra un icono basado en el tipo de archivo */}
                 </td>
@@ -48,8 +59,11 @@ function Filetable({ files }) {
                     <SimpleIconButton icon={"bi bi-eye"} hover={false} color={"black"} onClick={() => handleOpenFile(file.id)} />
                   </div>
                 </td>
-              </tr>
+              </motion.tr>
+              
+              
             ))}
+            </AnimatePresence>
         </tbody>
       </table>
     </div>

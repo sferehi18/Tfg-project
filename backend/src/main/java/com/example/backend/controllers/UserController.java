@@ -27,14 +27,6 @@ public class UserController {
    
 
     
-    @GetMapping("/userDetails")
-    public ResponseEntity<?> getAuthUser(){
-        try {
-           return ResponseEntity.ok().body(userService.getUser());
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-     
-    }
+
        
 }

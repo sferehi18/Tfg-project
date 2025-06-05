@@ -150,9 +150,16 @@ const handleEditSubject = ({ id, newValues }) => {
 };
 
 const markasfavorite = async ({ id, isFavorite }) => {
-  const response = await axios.patch(`http://localhost:8080/subjects/${id}/favorite`, isFavorite, {
-    withCredentials: true
-  });
+  const response = await axios.patch(
+    `http://localhost:8080/subjects/${id}/favorite`,
+    JSON.stringify(isFavorite), // Convertir a JSON explícitamente
+    {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      withCredentials: true
+    }
+  );
   return response.data;
 };
 
@@ -470,7 +477,7 @@ const  getFiles = async (id) => {
   const handleOpenFile = (fileId) => {
     // Realiza una solicitud GET para obtener el archivo como un blob (contenido binario)
     axios.get(`http://localhost:8080/files/${fileId}/open`, {
-      headers: authHeaders, // Enviar cabeceras de autenticación
+     withCredentials:true,
       responseType: 'blob' // Especifica que la respuesta será un blob (archivo binario)
     })
       .then((response) => {
@@ -520,10 +527,7 @@ const  getFiles = async (id) => {
 }
 
 export const useUsers = () => {
-  const { token } = useContext(TokenContext);
- 
-
-  const queryClient = useQueryClient();
+  
   const BASE_URL = `http://localhost:8080/user/`;
    
   const getUserDetails = async (token) =>{

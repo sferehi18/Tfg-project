@@ -12,7 +12,7 @@ function SearchBar() {
   };
 
   return (
-    <div style={{ position: 'relative', width: '300px', maxWidth: '800px' }}>
+    <div style={{ position: 'relative', width:"100%", maxWidth: '500px' }}>
       {/* Search input bar */}
       <div className="rounded-5 p-2 gap-2 bg-body-secondary shadow-sm d-flex justify-content-start align-items-center ">
         <Button

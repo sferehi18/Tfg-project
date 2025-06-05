@@ -13,7 +13,7 @@ import { useTopics } from "../hooks/UseResources";
 import { QueryClient } from "@tanstack/react-query";
 import HeaderContext from "../context/HeaderContext"; // Importamos el contexto del encabezado
 import { get } from "react-hook-form";
-
+import { AnimatePresence, motion } from "framer-motion";
 
 
 const Subjects = () => {
@@ -56,13 +56,15 @@ setPageType("subject");
 
   // Render principal de la página de asignaturas
   return (
+    
     <div style={{ height: "100%" }} >
      
       {/* Título y botón para añadir asignaturas */}
      
 
       {/* Renderizamos la lista de asignaturas en tarjetas */}
-      <div className="d-flex rounded-4 flex-row flex-wrap align-items-start" style={{ height: "100%", overflowY: "auto" }}>
+      <div  className="d-flex rounded-4 flex-row flex-wrap align-items-start" style={{ height: "100%", overflowY: "auto" }}>
+        <AnimatePresence>
         {data && data.map((subject) => (
           <SubjectCard
             key={subject.id}
@@ -70,7 +72,9 @@ setPageType("subject");
             name={subject.name}
             isFav={subject.isFav == 0 ? false : true}
           />
+       
         ))}
+           </AnimatePresence>
       </div>
     </div>
   );

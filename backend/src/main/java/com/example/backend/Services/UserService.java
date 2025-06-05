@@ -24,8 +24,11 @@ public class UserService implements UserDetailsService  {
     @Override
     public  User loadUserByUsername(String username){
         
-        User userDetails = userRepository.findByUsername(username);
-        return userDetails;
+        Optional<User> userDetails = userRepository.findByUsername(username);
+        if (userDetails.isPresent()) {
+        return userDetails.get();
+    }
+        return null;
     }
 
     private UserDTO toUserDTO(User user) {
@@ -33,9 +36,9 @@ public class UserService implements UserDetailsService  {
     }
 
     public User validateUser(String username, String rawPassword){
-        User user = userRepository.findByUsername(username);
-    if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
-        return user;
+        Optional<User> user = userRepository.findByUsername(username);
+    if (user.isPresent() && passwordEncoder.matches(rawPassword, user.get().getPassword())) {
+        return user.get();
     }
         return null;
     }
@@ -55,10 +58,10 @@ public class UserService implements UserDetailsService  {
         return passwordEncoder.encode(password);
     }
 
-    public UserDTO getUser(){
-         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public UserDTO getUser(String username) {
+         
         
-        Optional<User> user = userRepository.findById(authUser.getId());
+        Optional<User> user = userRepository.findByUsername(username);
         if(user.isPresent()){
             return toUserDTO(user.get());
 

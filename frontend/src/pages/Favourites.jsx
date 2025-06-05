@@ -8,6 +8,7 @@ import TokenContext from "../context/AuthContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 import HeaderContext from "../context/HeaderContext"; // Importar el contexto del encabezado
+import NoContentPage from "./NoContentPage";
 function Favourites() {
    const {setTitle,setPageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
   useEffect(() => {
@@ -16,12 +17,10 @@ function Favourites() {
   }
   , []);
   const { getSubjects } = useSubjects();
-  const {isTokenValid} = useContext(TokenContext);
   const { data: subjects, isLoading, error } = useQuery({
     queryKey: ["subjects"],
     queryFn: getSubjects,
-    enabled:isTokenValid()
-
+    
   }
     
   );
@@ -32,6 +31,12 @@ function Favourites() {
 
   if (error) {
     return <div>Error: {error.message}</div>;
+  }
+
+  if (!subjects || subjects.length === 0) {
+    return (
+     <NoContentPage title={"No hay ningun tema en marcado"} message={"!Marca alguno y aparcerá aqui"}></NoContentPage>
+    );
   }
   const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
   return (

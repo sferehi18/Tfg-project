@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaBook, FaReact } from "react-icons/fa";
 import { useSlug } from "../hooks/useSlug";
+import { motion } from "framer-motion";
 function TopicCard({ description, name, subjectId, topicId }) {
   //Definición de estilos para la TopicCard
   const cardstyle = {
@@ -15,7 +16,10 @@ function TopicCard({ description, name, subjectId, topicId }) {
   return (
     //Estructura de la topicCard , todos los temas se mostrarán segun la misma en el componente Topic.jsx
 
-   <div className="d-flex align-items-center justify-content-between rounded-2 resource bg-body-secondary text-body m-4 w-75">
+   <motion.div   initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.3 }} className="d-flex align-items-center justify-content-between rounded-2  bg-body-secondary text-body m-4 w-75">
   <Link
     to={`${topicId}-${slugify(name)}/files`}
     className="text-decoration-none w-100 p-3"
@@ -37,7 +41,7 @@ function TopicCard({ description, name, subjectId, topicId }) {
     stylesClass="text-body"
     resourceType="topic"
   />
-</div>
+</motion.div>
 
   );
 }

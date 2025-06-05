@@ -8,6 +8,7 @@ import SimpleIconButton from "./SimpleIconButton";
 import { useState } from "react";
 import TooltipTitle from "./tooltipTitle";
 import { useSlug } from "../hooks/useSlug";
+import { motion } from "framer-motion"; // Importar motion para animaciones
 /*Componente SubjectCard
   -Renderiza cada Asignatura segun sus datos en la estructura definida
   -Contiene un boton enlace a sus temas y un boton con icono (tres puntos) para la edición o eliminación de un recurso
@@ -34,7 +35,13 @@ function Subjectcard({ id, name, isFav }) {
 
   return (
     //Contenedor de Asignatura
-    <div className="subjectCard d-flex flex-column align-items-center justify-content-end gap-2  rounded-4  resource  " style={cardstyle}>
+    
+    <motion.div
+     initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.3 }}
+     className="subjectCard d-flex flex-column align-items-center justify-content-end gap-2  rounded-4   " style={cardstyle}>
       
       <div className="mt-4 ms-2">
     <Link to={`/subjects/${id}-${slugify(name)}/topics`} className="text-decoration-none   ">
@@ -71,7 +78,7 @@ function Subjectcard({ id, name, isFav }) {
         
     
        
-      </div>
+      </motion.div>
     
   );
 }

@@ -120,6 +120,7 @@ function MyCalendar() {
           actionText={selectedOption.label}
           action={handleAddEvent}
           modalOptionId={modalId}
+          validations={selectedOption.validations}
         ></ModalTemplate>):  <ConfirmActionModal
         title={selectedOption.label}
         message={selectedOption.message}

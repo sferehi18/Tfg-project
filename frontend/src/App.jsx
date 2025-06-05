@@ -27,13 +27,11 @@ import ToastContext from "./context/ToastContext";
 import { HeaderProvider } from "./context/HeaderContext";
 import { ToastProvider } from "./context/ToastContext"; // asegúrate que el nombre del archivo esté bien: "ToastContext.jsx"
 import { ThemeProvider } from "./context/UseTheme";
-import {UserProvider} from "./context/UserContext"; // Asegúrate de que el nombre del archivo sea correcto
+import UserContext, {UserProvider} from "./context/UserContext"; // Asegúrate de que el nombre del archivo sea correcto
 const queryClient = new QueryClient();
 
 function App() {
 
-  
-  
 
   
   
@@ -49,17 +47,17 @@ function App() {
 
        
       <Routes >
-         <Route path="/login" element={<AuthLayout/>} >
-          <Route index  element={<AuthPage/>} />
+         <Route path="/" element={<AuthLayout/>} >
+          <Route index path="login" element={<AuthPage/>} />
         </Route>
     
         <Route path="/" element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
         
           <Route index path="subjects" element={<Subjects />} /> 
-          <Route path="/calendar" element={<MyCalendar />} />
+          <Route path="calendar" element={<MyCalendar />} />
           <Route path="subjects/:subjectUri/topics" element={<Topics />} />
           <Route path="subjects/:subjectUri/topics/:topicUri/files" element={<Files />} />  
-          <Route path="/storage" element={<Storage></Storage>}></Route>
+          <Route path="storage" element={<Storage></Storage>}></Route>
 
           <Route path="userSettings" element={<UserSettings />} />
           <Route path="favourites" element={<Favourites />} />

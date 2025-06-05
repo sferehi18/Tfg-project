@@ -60,6 +60,7 @@ export function useCrudOptions() {
            action: handleEditTopic, 
            fields:["name"],
            actionButtonStyle:"warning",
+        validations: topicValidations
           
         }
 

@@ -8,7 +8,7 @@ import TokenContext from "../context/AuthContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 import HeaderContext from "../context/HeaderContext";
-import NoContentPage from "./NoCotentPage";
+import NoContentPage from "./NoContentPage";
 function Files() {
   const { isTokenValid } = useContext(TokenContext);
   const { subjectUri, topicUri } = useParams(); // Extraer subjectId y topicId de la URL
