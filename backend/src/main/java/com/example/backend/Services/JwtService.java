@@ -32,6 +32,16 @@ public class JwtService {
                 .compact();                          // Genera el token como String
     }
 
+        public String generateEmailToken(Long userId, String username) {
+        return Jwts.builder()
+                .setSubject(String.valueOf(userId)) // El ID del usuario como "subject"
+                .claim("username", username)        // Campo adicional con el nombre de usuario
+                .setIssuedAt(new Date())            // Fecha de creación
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Expira en 1 hora
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Firma con clave secreta
+                .compact();                          // Genera el token como String
+    }
+
     /**
      * Extrae el nombre de usuario desde el token.
      */

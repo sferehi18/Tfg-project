@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.DTOs.UserDTO;
+import com.example.backend.Services.EmailService;
 import com.example.backend.Services.JwtService;
 import com.example.backend.Services.UserService;
 import com.example.backend.models.User;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -28,6 +32,9 @@ public class AuthController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private EmailService emailService; // Asegúrate de tener un servicio de email configurado
  
     
 
@@ -77,6 +84,8 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
     public ResponseEntity<?> register(@RequestBody User user) {
          try {
         boolean newUser = userService.saveUser(user);
+        String token = jwtService.generateEmailToken(user.getId(), user.getUsername());
+        emailService.sendConfirmationEmail(user.getEmail(), "localhost:8080/auth/confirmRegistration?token=" + token);
         return ResponseEntity.ok(newUser);
     } catch (Exception e) {
         e.printStackTrace(); // Imprime el error en consola
@@ -85,6 +94,26 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
           
         
     }
+
+    @GetMapping("/confirmRegistration")
+    public ResponseEntity<String> confirmRegistration(@PathVariable String token) {
+        if (!jwtService.isTokenExpired(token)) {
+            String username = jwtService.extractUsername(token);
+            User user = userService.loadUserByUsername(username);
+            if (user != null) {
+                user.setEnabled(true); // Habilita al usuario
+                userService.saveUser(user); // Guarda los cambios
+                return ResponseEntity.ok("Registro confirmado exitosamente. Puedes iniciar sesión ahora.");
+            } else {
+                return ResponseEntity.status(404).body("Usuario no encontrado.");
+            }
+        } else {
+            return  ResponseEntity.status(400).body("El token de confirmación ha expirado.");
+           
+            
+        }
+    }
+    
 
     @PostMapping("/validate")
     public ResponseEntity<?> validateUser(@RequestBody User user) {

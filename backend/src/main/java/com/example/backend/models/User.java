@@ -46,6 +46,10 @@ public class User implements UserDetails { // Implementa UserDetails para integr
     @NonNull
     private String password;
 
+    @NonNull
+    
+    private Boolean enabled;
+
     // Relaciones uno-a-muchos: un usuario puede tener muchos subjects, topics, files, events
     @OneToMany(mappedBy = "user")
     @JsonIgnore // Evita bucles infinitos al serializar a JSON

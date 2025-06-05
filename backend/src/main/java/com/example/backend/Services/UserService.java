@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService  {
     }
     //TODO AÑADIR LOGICA VERFIICACION DE USUARIOS NOMBRES E EMAILS
     public boolean saveUser(User user){
-        User newUser = new User(user.getUsername(), user.getEmail(), encodePassword(user.getPassword()));
+        User newUser = new User(user.getUsername(), user.getEmail(), encodePassword(user.getPassword()),user.getEnabled());
         userRepository.save(newUser);
         
         return true;
