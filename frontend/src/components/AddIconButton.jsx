@@ -22,14 +22,16 @@ function AddIconButton({
 
    
   const fileInputRef = useRef(null);
-  const { handleAddFile } = useFiles();
+  const { handleAddFile, uploadFileDirectToSupabase } = useFiles();
   const handleClick = () => {
     fileInputRef.current.click(); // Abre el diálogo de archivos
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
+      const result = await uploadFileDirectToSupabase(file, topicId);
+       console.log("Archivo subido:", result);
       handleAddFile({ id: topicId, newFile: file });
     }
   };

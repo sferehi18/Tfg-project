@@ -40,7 +40,7 @@ function LoginForm(){
         
       
       
-        navigate("subjects"); // Redirige a la página principal
+        navigate("/subjects"); // Redirige a la página principal
       } else {
         setError("password", invalidUserOrPasswordError);
       }

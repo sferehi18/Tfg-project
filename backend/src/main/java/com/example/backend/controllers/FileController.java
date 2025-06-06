@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,24 +93,14 @@ public ResponseEntity<Resource> openFile(@PathVariable Long id) {
 
  @PostMapping("topics/{topic_id}/files/upload")
 public ResponseEntity<?> uploadFile(
-        @RequestParam("file") MultipartFile newFile,
-        @PathVariable Long topic_id,
-        @RequestHeader("Authorization") String authHeader) {
-
+    @RequestParam("file") MultipartFile newFile,
+    @PathVariable Long topic_id,
+    @CookieValue("token") String token // <-- así lo extraes desde la cookie
+) {
     try {
-        
-
-        // 1. Obtener el token del header
-        String token = authHeader.substring(7); // Eliminar "Bearer " del token
-
-        // 3. Extraer el username del token (el subject)
-        String username = jwtService.extractUsername(token); // Este método debe extraer el subject del JWT
-
-        // 4. Llamar al servicio de subida, pasándole el username
-        FileUpload filedata = storageService.uploadFile( username,newFile, topic_id);
-
+        String username = jwtService.extractUsername(token);
+        FileUpload filedata = storageService.uploadFile(username, newFile, topic_id);
         return ResponseEntity.status(HttpStatus.CREATED).body(filedata);
-
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Error al subir el archivo: " + e.getMessage());

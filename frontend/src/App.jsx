@@ -47,15 +47,15 @@ function App() {
 
        
       <Routes >
-         <Route path="/" element={<AuthLayout/>} >
-          <Route index path="login" element={<AuthPage/>} />
+         <Route path="/login" element={<AuthLayout/>} >
+          <Route index element={<AuthPage/>} />
         </Route>
     
         <Route path="/" element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
         
           <Route index path="subjects" element={<Subjects />} /> 
-          <Route path="calendar" element={<MyCalendar />} />
-          <Route path="subjects/:subjectUri/topics" element={<Topics />} />
+          <Route path="/calendar" element={<MyCalendar />} />
+          <Route path="/subjects/:subjectUri/topics" element={<Topics />} />
           <Route path="subjects/:subjectUri/topics/:topicUri/files" element={<Files />} />  
           <Route path="storage" element={<Storage></Storage>}></Route>
 
