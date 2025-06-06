@@ -49,6 +49,17 @@ public class UserService implements UserDetailsService  {
         
         return true;
     }
+
+    public boolean enableUser(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            User existingUser = user.get();
+            existingUser.setEnabled(true);
+            userRepository.save(existingUser);
+            return true;
+        }
+        return false;
+    }
     public UserDetails loadUserByEmail(String email){
         UserDetails userDetails = userRepository.findByEmail(email);
         return userDetails;

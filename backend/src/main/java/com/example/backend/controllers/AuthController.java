@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -38,7 +36,7 @@ public class AuthController {
  
     
 
-    @PostMapping("/login")
+   @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) {
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
@@ -48,18 +46,15 @@ public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse respo
     
     String token = jwtService.generateToken(userId, userDetails.getUsername());
 
-    // Crear cookie HttpOnly
-    Cookie cookie = new Cookie("token", token);
-    cookie.setHttpOnly(true);
-    cookie.setSecure(false); // Solo si usas HTTPS
-    cookie.setPath("/");
-    cookie.setMaxAge( 3600); // 1 hora
+    // Construir el header Set-Cookie manualmente con SameSite=None y Secure
+    String cookieValue = "token=" + token + "; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=3600";
+    response.setHeader("Set-Cookie", cookieValue);
+
     UserDTO authenticatedUser = userService.getUser(userDetails.getUsername());
-    // Agregar cookie a la respuesta
-    response.addCookie(cookie);
 
     return ResponseEntity.ok(authenticatedUser);
 }
+
 
 @PostMapping("/logout")
 public ResponseEntity<?> logout(HttpServletResponse response) {
@@ -84,8 +79,8 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
     public ResponseEntity<?> register(@RequestBody User user) {
          try {
         boolean newUser = userService.saveUser(user);
-        String token = jwtService.generateEmailToken(user.getId(), user.getUsername());
-        emailService.sendConfirmationEmail(user.getEmail(), "localhost:8080/auth/confirmRegistration?token=" + token);
+        String token = jwtService.generateEmailToken(user.getUsername());
+        emailService.sendConfirmationEmail(user.getEmail(), "https://mysubdomain.serveo.net/auth/confirmRegistration?token=" + token);
         return ResponseEntity.ok(newUser);
     } catch (Exception e) {
         e.printStackTrace(); // Imprime el error en consola
@@ -95,25 +90,28 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
         
     }
 
-    @GetMapping("/confirmRegistration")
-    public ResponseEntity<String> confirmRegistration(@PathVariable String token) {
+   @GetMapping("/confirmRegistration")
+public ResponseEntity<String> confirmRegistration(@RequestParam String token) {
+    try {
         if (!jwtService.isTokenExpired(token)) {
             String username = jwtService.extractUsername(token);
             User user = userService.loadUserByUsername(username);
             if (user != null) {
                 user.setEnabled(true); // Habilita al usuario
-                userService.saveUser(user); // Guarda los cambios
+                userService.enableUser(user.getUsername()); // Guarda los cambios
                 return ResponseEntity.ok("Registro confirmado exitosamente. Puedes iniciar sesión ahora.");
             } else {
                 return ResponseEntity.status(404).body("Usuario no encontrado.");
             }
         } else {
-            return  ResponseEntity.status(400).body("El token de confirmación ha expirado.");
-           
-            
+            return ResponseEntity.status(400).body("El token de confirmación ha expirado.");
         }
+    } catch (Exception e) {
+        e.printStackTrace(); // Esto imprime el error completo en consola/terminal
+        return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
     }
-    
+}
+
 
     @PostMapping("/validate")
     public ResponseEntity<?> validateUser(@RequestBody User user) {

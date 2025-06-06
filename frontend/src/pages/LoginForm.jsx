@@ -13,7 +13,7 @@ function LoginForm(){
   } = useContext(TokenContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const { getUserDetails } = useUsers();
+ 
   
     const {
         register,
@@ -40,7 +40,7 @@ function LoginForm(){
         
       
       
-        navigate("subjects"); // Redirige a la página principal
+        navigate("/subjects"); // Redirige a la página principal
       } else {
         setError("password", invalidUserOrPasswordError);
       }

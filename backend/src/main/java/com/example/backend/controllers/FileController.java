@@ -129,6 +129,31 @@ public ResponseEntity<?> deleteFile(@PathVariable Long file_id) {
 
 }
 
+@PostMapping("topics/{topic_id}/files/upload-supabase")
+public ResponseEntity<?> uploadFileToSupabase(
+        @RequestParam("file") MultipartFile newFile,
+        @PathVariable Long topic_id,
+        @RequestHeader("Authorization") String authHeader) {
+
+    try {
+        // Obtener el token del header
+        String token = authHeader.substring(7); // Eliminar "Bearer " del token
+
+        // Extraer el username del token (el subject)
+        String username = jwtService.extractUsername(token);
+
+        // Llamar al método que sube el archivo a Supabase
+        FileUpload filedata = storageService.uploadFileToSupabase(username, newFile, topic_id);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(filedata);
+
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error al subir el archivo a Supabase: " + e.getMessage());
+    }
+}
+
+
 
 
 }

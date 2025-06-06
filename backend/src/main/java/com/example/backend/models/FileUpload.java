@@ -37,6 +37,7 @@ public class FileUpload{
     @NonNull
     private Long size;
     
+    private String filePath;
     @NonNull
     @ManyToOne
     @JoinColumn(name = "topic_id",  nullable = false)

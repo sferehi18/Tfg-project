@@ -26,7 +26,7 @@ public class EmailService {
         Context context = new Context();
         context.setVariable("confirmationUrl", confirmationUrl);
 
-        String htmlContent = templateEngine.process("mail-templates/confirmation-email", context);
+        String htmlContent = templateEngine.process("mail-templates/confirmRegistration", context);
 
         helper.setTo(to);
         helper.setSubject("Confirma tu registro en Edu-vault");

@@ -10,10 +10,18 @@ import com.example.backend.models.FileUpload;
 import com.example.backend.models.Topic;
 import com.example.backend.models.User;
 import com.example.backend.utils.AuthMethods;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import com.example.backend.Repositories.FileRepository;
 import com.example.backend.Repositories.TopicRepository;
 import com.example.backend.Repositories.UserRepository;
-
+    import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,6 +42,61 @@ public class StorageService extends AuthMethods { // Hereda métodos de autentic
 
     @Autowired 
     private UserRepository userRepository;
+
+
+
+
+
+public FileUpload uploadFileToSupabase(String username, MultipartFile multipartFile, Long topic_id) {
+    try {
+        Long userId = getAuthenticatedUserId();
+
+        String supabaseBucket = "uploads"; // Asegúrate de que este es el nombre del bucket real
+        String projectRef = "astxfoxaqlvqejfvpmzd";
+        String serviceRoleKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdHhmb3hhcWx2cWVqZnZwbXpkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTIwMjM4NCwiZXhwIjoyMDY0Nzc4Mzg0fQ.QxhuOJ9gaMnuitVg0OBybcLl4Z9oEInd5LsppOLrRgY";
+
+        String filename = multipartFile.getOriginalFilename();
+        String objectPath = userId + "/" + filename;
+
+        String uploadUrl = "https://" + projectRef + ".supabase.co/storage/v1/object/" + supabaseBucket + "/" + objectPath;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(multipartFile.getContentType()));
+        headers.set("Authorization", "Bearer " + serviceRoleKey);
+
+        HttpEntity<byte[]> requestEntity = new HttpEntity<>(multipartFile.getBytes(), headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(uploadUrl, HttpMethod.PUT, requestEntity, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            FileUpload file = new FileUpload();
+            file.setName(filename);
+            file.setContentType(multipartFile.getContentType());
+            file.setCreated_at(LocalDate.now());
+            file.setSize(multipartFile.getSize());
+            file.setFilePath(objectPath);
+
+            Topic topic = topicRepository.findById(topic_id)
+                .orElseThrow(() -> new RuntimeException("Topic con ID " + topic_id + " no encontrado"));
+            User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User con ID " + userId + " no encontrado"));
+
+            file.setTopic(topic);
+            file.setUser(user);
+
+            return fileRepository.save(file);
+        } else {
+            throw new RuntimeException("Error al subir archivo a Supabase: " + response.getStatusCode() + " - " + response.getBody());
+        }
+    } catch (IOException e) {
+        throw new RuntimeException("Error al leer archivo", e);
+    }
+}
+
+
+
 
     // Método para subir un archivo, asociarlo a un tema y guardar info en BD
     @Transactional

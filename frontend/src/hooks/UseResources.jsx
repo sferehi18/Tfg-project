@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import ToastContext from "../context/ToastContext";
 import { useAuth } from "./useLogin";
-
+const BASE_DOMAIN = "https://mysubdomain.serveo.net";
 // Hook para manejar las asignaturas, temas y eventos
 // Este hook utiliza React Query para manejar las peticiones a la API y el estado de los datos
 export function useSubjects() { 
@@ -20,18 +20,19 @@ export function useSubjects() {
   //Definimos queryClient para poder invalidar las queries, es decir, decir que unos datos ya no estan actualizados y forzar un refetch
   const queryClient = useQueryClient(); 
   
+  const BASE_URL_PRO= "https://api.escuelavirtual.com";
 //Obtener Asignaturas
   const getSubjects = async () => {
   
-    return axios.get("http://localhost:8080/subjects/",{
+    return axios.get(`${BASE_DOMAIN}/subjects/`,{
      withCredentials: true
     })
       .then(response => {
         return response.data;
       }).catch((error) => {
-        console.error("Error al obtener las asignaturas:", error);
+       
         if (error.response?.status === 401 || error.response?.status === 403) {
-          window.location.href = "/login"; // Redirige al usuario a la página de inicio de sesión
+          console.log(`Error al obtener las asignaturas:`, error.response); // Redirige al usuario a la página de inicio de sesión
         }
        
       })
@@ -44,7 +45,7 @@ export function useSubjects() {
   //Crear Asignaturas
   const addSubject = async (subject) => {
 
-    const response = await axios.post("http://localhost:8080/subjects/create", subject,{
+    const response = await axios.post(`${BASE_DOMAIN}/subjects/create`, subject,{
       withCredentials: true
     });
     return response.data;
@@ -87,7 +88,7 @@ const handleAddSubject = (newSubject) => {
 
 const deleteSubject = async (id) => {
  
-    const response = await axios.delete(`http://localhost:8080/subjects/${id}`,{
+    const response = await axios.delete(`${BASE_DOMAIN}/subjects/${id}`,{
       withCredentials: true
     });
     
@@ -124,7 +125,7 @@ const handleDeleteSubject = (id) => {
 //Editar Asignatura
 const editSubject = async ({ id, newValues }) =>{
   console.log("Editando asignatura con ID:", id, "y nuevos valores:", newValues);
-  const response = await axios.put(`http://localhost:8080/subjects/${id}`,newValues,{
+  const response = await axios.put(`${BASE_DOMAIN}/subjects/${id}`,newValues,{
     withCredentials: true
   });
   return response.data;
@@ -151,7 +152,7 @@ const handleEditSubject = ({ id, newValues }) => {
 
 const markasfavorite = async ({ id, isFavorite }) => {
   const response = await axios.patch(
-    `http://localhost:8080/subjects/${id}/favorite`,
+    `${BASE_DOMAIN}/subjects/${id}/favorite`,
     JSON.stringify(isFavorite), // Convertir a JSON explícitamente
     {
       headers: {
@@ -192,7 +193,7 @@ export const useTopics = () =>{
   
 
   const queryClient = useQueryClient(); 
-  const BASE_URL = "http://localhost:8080/subjects/";
+  const BASE_URL = `${BASE_DOMAIN}/subjects/`;
   const getTopics = async (subjectId) => {
 
     const response = await axios.get(`${BASE_URL}${subjectId}/topics/`,
@@ -206,7 +207,7 @@ export const useTopics = () =>{
 
   const getAllTopics = async () => {
    
-    const response = await axios.get(`http://localhost:8080/topics/All`,
+    const response = await axios.get(`${BASE_DOMAIN}/topics/All`,
       {
         withCredentials: true
       }
@@ -252,7 +253,7 @@ export const useTopics = () =>{
 
 
   const deleteTopic = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/topics/${id}/delete`,{
+    const response = await axios.delete(`${BASE_DOMAIN}/topics/${id}/delete`,{
       withCredentials: true
     });
     return response;
@@ -287,7 +288,7 @@ export const useTopics = () =>{
 
  const editTopic = async ({ id, newValues }) =>{
   console.log("Editando tema con ID:", id, "y nuevos valores:", newValues);
-  const response = await axios.put(`http://localhost:8080/topics/${id}/edit`,newValues,{
+  const response = await axios.put(`${BASE_DOMAIN}/topics/${id}/edit`,newValues,{
     withCredentials: true
   });
   return response.data;
@@ -326,7 +327,7 @@ export const useEvents = () =>{
 
 
   const getEvents = async () => {
-    return axios.get("http://localhost:8080/events/",{
+    return axios.get(`${BASE_DOMAIN}/events/`,{
       withCredentials: true
     })
     .then(response => {
@@ -340,14 +341,14 @@ export const useEvents = () =>{
 
 
   const addEvent = async (newEvent) =>{
-   const response = await axios.post("http://localhost:8080/events/create",newEvent,{
+   const response = await axios.post(`${BASE_DOMAIN}/events/create`,newEvent,{
     withCredentials: true
    });
     return response;
   }
 
   const deleteEvent = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/events/delete/${id}`,{
+    const response = await axios.delete(`${BASE_DOMAIN}/events/delete/${id}`,{
       withCredentials: true
     });
     return response;
@@ -416,18 +417,40 @@ export const useFiles = () =>{
   
 
 const  getFiles = async (id) => {
-    const response = await axios.get(`http://localhost:8080/topics/${id}/files/`,{
+    const response = await axios.get(`${BASE_DOMAIN}/topics/${id}/files/`,{
       withCredentials: true
     });
     return response.data;
   }
 
   const  getAllFiles = async () => {
-    const response = await axios.get(`http://localhost:8080/files/`,{
+    const response = await axios.get(`${BASE_DOMAIN}/files/`,{
       withCredentials: true
     });
     return response.data;
   }
+
+  const uploadFileToSupabase = async ({ id, newFile }) => {
+  const supabaseBucket = "uploads";
+  const projectRef = "astxfoxaqlvqejfvpmzd";
+  const filename = file.name;
+  const objectPath = `${id}/${newFile}`;
+
+  const uploadUrl = `https://${projectRef}.supabase.co/storage/v1/object/${supabaseBucket}/${objectPath}`;
+
+  try {
+    const response = await axios.put(uploadUrl, file, {
+      headers: {
+       
+        "Authorization": `Bearer F6AxTtzongNXtRxlSerfAhoqvZPKfEmgQig7wW+pzDDvM3ucCWYPLPJ2JQx+7RsBfzFxzuWjOCLyjeLU6tsiSw==` // ⚠️ Solo para pruebas, no en prod
+      }
+    });
+
+    console.log("Archivo subido:", response.status);
+  } catch (error) {
+    console.error("Error al subir archivo:", error.response?.data || error.message);
+  }
+};
 
   const addFiles = async ({ id, newFile }) => {
     console.log("Añadiendo nuevo archivo:", newFile, "al tema con ID:", id);
@@ -436,14 +459,10 @@ const  getFiles = async (id) => {
     formData.append("file", newFile); // "file" debe coincidir con @RequestParam("file") en tu backend
   
     const response = await axios.post(
-      `http://localhost:8080/topics/${id}/files/upload`,
+      `${BASE_DOMAIN}/topics/${id}/files/upload-supabase`,
       formData,
       {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          
-        },
+        withCredentials: true // Asegúrate de enviar las cookies de sesión si es necesario
       }
     );
   
@@ -451,7 +470,7 @@ const  getFiles = async (id) => {
   };
 
   const fileAdd = useMutation({
-    mutationFn:addFiles,
+    mutationFn:uploadFileToSupabase,
     onSuccess: () =>{
    
       queryClient.invalidateQueries("files");
@@ -476,7 +495,7 @@ const  getFiles = async (id) => {
 // Función para abrir un archivo en una nueva pestaña del navegador
   const handleOpenFile = (fileId) => {
     // Realiza una solicitud GET para obtener el archivo como un blob (contenido binario)
-    axios.get(`http://localhost:8080/files/${fileId}/open`, {
+    axios.get(`${BASE_DOMAIN}/files/${fileId}/open`, {
      withCredentials:true,
       responseType: 'blob' // Especifica que la respuesta será un blob (archivo binario)
     })
@@ -495,7 +514,7 @@ const  getFiles = async (id) => {
   }
 
   const deleteFile = async (id) => {
-    const response = await axios.delete(`http://localhost:8080/files/${id}/delete`,{
+    const response = await axios.delete(`${BASE_DOMAIN}/files/${id}/delete`,{
       withCredentials: true
     });
     return response.data;
@@ -528,7 +547,7 @@ const  getFiles = async (id) => {
 
 export const useUsers = () => {
   
-  const BASE_URL = `http://localhost:8080/user/`;
+  const BASE_URL = `${BASE_DOMAIN}/user/`;
    
   const getUserDetails = async (token) =>{
  

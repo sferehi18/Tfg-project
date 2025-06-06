@@ -58,6 +58,11 @@ function RegisterForm(){
             {...register("password", passwordValidations)}
             className="form-control w-100"
           />
+          <input
+            type="hidden"
+            {...register("enabled", { value: false })} // Campo oculto para enabled
+            className="form-control w-100"
+          />
           {errors.password && (
             <p className=" text-danger">{errors.password.message}</p>
           )}
