@@ -30,8 +30,7 @@ function AddIconButton({
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const result = await uploadFileDirectToSupabase(file, topicId);
-       console.log("Archivo subido:", result);
+
       handleAddFile({ id: topicId, newFile: file });
     }
   };
