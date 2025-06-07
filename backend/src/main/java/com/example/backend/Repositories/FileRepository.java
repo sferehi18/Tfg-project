@@ -13,5 +13,6 @@ import com.example.backend.models.FileUpload;
 public interface FileRepository extends JpaRepository<FileUpload,Long>{
      List<FileUpload> findByTopicIdAndUserId(Long TopicId, Long userId);
      FileUpload findByIdAndUserId(Long TopicId, Long userId);
+     boolean existsByNameAndUserId(String name, Long userId);
      List<FileUpload> findByUserId(Long TopicId);
 }

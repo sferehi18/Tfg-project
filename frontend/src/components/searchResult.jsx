@@ -8,7 +8,7 @@ import { FaBookQuran } from "react-icons/fa6";
 import { FaFile } from "react-icons/fa6";
 function searchResult({resourceType,resourceId,resourceName,onClick}) {
   
-  const formattedName = resourceName.length >= 11 ? resourceName.slice(0,8) + "..." : resourceName;
+  const formattedName = resourceName.length >= 15 ? resourceName.slice(0,12) + "..." : resourceName;
   const resorceIcon = resourceType == "Asignatura" ?  
   <span className="bg-primar d-flex justify-content-center   rounded-3 p-1 ">
                       <FaBookOpen size={"20px"} color="white" />

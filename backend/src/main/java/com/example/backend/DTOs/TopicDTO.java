@@ -1,7 +1,5 @@
 package com.example.backend.DTOs;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -14,7 +12,7 @@ import lombok.Setter;
 @Setter
 
 public class TopicDTO {
-    @NonNull
+@NonNull
  private String name;
  @NonNull
  private Long id;

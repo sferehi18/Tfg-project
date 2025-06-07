@@ -12,6 +12,15 @@ function Filetable({ files }) {
   const { handleDeleteFile ,handleOpenFile} = useFiles(); 
 
  
+function formatFileSize(bytes) {
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let i = 0;
+    while (bytes >= 1024 && i < units.length - 1) {
+        bytes /= 1024;
+        i++;
+    }
+    return bytes.toFixed(2) + ' ' + units[i];
+}
 
   
 
@@ -45,7 +54,7 @@ function Filetable({ files }) {
                   <FileIcon contentType={file.name}></FileIcon> {/* Muestra un icono basado en el tipo de archivo */}
                 </td>
                 <td>{file.name}</td>
-                <td>{file.size}</td>
+                <td>{formatFileSize(file.size)}</td>
                 <td>{file.created_at}</td>
                 <td>
                   {/* Botón para eliminar el archivo */}

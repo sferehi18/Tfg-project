@@ -60,13 +60,13 @@ function Sidebar() {
             </Link>
           </li>
           <li>
-            <Link to="/favourites" className="text-decoration-none">
+            <Link to="/marked" className="text-decoration-none">
               <Navbutton
-                text="Favoritos"
-                icon="bi bi-heart"
-                id="fav"
+                text="Marcados"
+                icon="bi bi-bookmark"
+                id="marked"
                 isSelected={isSelected}
-                onClick={() => handleButtonSelect("fav")}
+                onClick={() => handleButtonSelect("marked")}
               />
             </Link>
           </li>

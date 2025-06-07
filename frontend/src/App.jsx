@@ -60,7 +60,7 @@ function App() {
           <Route path="storage" element={<Storage></Storage>}></Route>
 
           <Route path="userSettings" element={<UserSettings />} />
-          <Route path="favourites" element={<Favourites />} />
+          <Route path="marked" element={<Favourites />} />
         </Route>
       </Routes>
     </Router>

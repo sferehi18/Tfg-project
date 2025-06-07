@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.backend.exceptions.SubjectException;
 import com.example.backend.DTOs.SubjectDTO;
@@ -53,7 +52,7 @@ public class SubjectService extends AuthMethods {
         if(subjectRepository.existsByNameAndUserId(name, userId)) {
           throw new SubjectException( "La asignatura ya existe",HttpStatus.CONFLICT);
         }else{
-             Subject subject = new Subject(name,false,user.get());
+             Subject subject = new Subject(name.trim(),false,user.get());
               subjectRepository.save(subject);
                return toSubjectDTO(subject);
         }
@@ -82,8 +81,12 @@ public class SubjectService extends AuthMethods {
 
     // UPDATE METHODS
     public SubjectDTO editSubject(Long id, String name) throws Exception {
+        Long userId = getAuthenticatedUserId();
+        if(subjectRepository.existsByNameAndUserId(name, userId)) {
+          throw new SubjectException( "La asignatura ya existe",HttpStatus.CONFLICT);
+        }
         Subject subject = findSubjectById(id); // Usamos el método auxiliar
-        subject.setName(name);
+        subject.setName(name.trim());
         subjectRepository.save(subject);
         return toSubjectDTO(subject);
     }

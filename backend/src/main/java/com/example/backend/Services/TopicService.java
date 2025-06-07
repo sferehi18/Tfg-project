@@ -74,14 +74,14 @@ public class TopicService extends AuthMethods {
             throw new TopicException("Ya existe un tema con este nombre", HttpStatus.BAD_REQUEST);
             
         }
-        Topic topic = new Topic(name, subject.get(),user);
+        Topic topic = new Topic(name.trim(), subject.get(),user);
         topicRepository.save(topic);
         return toTopicDTO(topic);
     }
 
     public TopicDTO editAllTopic(String name, Long id) throws Exception {
         Topic topic= findTopicById(id);
-        topic.setName(name);
+        topic.setName(name.trim());
         topicRepository.save(topic);
         return toTopicDTO(topic);
     }

@@ -44,6 +44,9 @@ public class StorageService extends AuthMethods { // Hereda métodos de autentic
             // Crea el directorio para el usuario si no existe
             String uploadDir = "src\\main\\java\\com\\example\\backend\\uploads\\" + userId;
             Path userFolder = Paths.get(uploadDir);
+            if(fileRepository.existsByNameAndUserId(multipartFile.getOriginalFilename(), userId)){
+                throw new RuntimeException("El archivo ya existe para este usuario");
+            };
             if (!Files.exists(userFolder)) {
                 Files.createDirectories(userFolder);
             }

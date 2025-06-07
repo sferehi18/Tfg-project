@@ -67,7 +67,7 @@ const createSubject = useMutation({
     });
   },
   onError: (err) => {
-   redirectToLogin(err);
+   
  
      handleShow({color:"danger",
       headerText:"Error al crear recurso",
