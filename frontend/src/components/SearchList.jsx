@@ -64,7 +64,7 @@ function SearchList({ searchInput }) {
   navigate(`subjects/${subjectId}-${slug}/topics/${result.id}-${slugify(result.name)}/files/`);
   setShow(false);
 } : () => {
-  handleOpenFile(result.id,result.topic_id);
+  handleOpenFile(result.id,result.topic_id,result.subject_id);
   setShow(false);
 }}
       >

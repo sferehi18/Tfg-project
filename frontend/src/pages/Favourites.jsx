@@ -9,6 +9,8 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import HeaderContext from "../context/HeaderContext"; // Importar el contexto del encabezado
 import NoContentPage from "./NoContentPage";
+import { Spinner } from "react-bootstrap";
+import LoadingPage from "./Loading";
 function Favourites() {
    const {setTitle,setPageType} = useContext(HeaderContext); // Extraer el contexto del encabezado
   useEffect(() => {
@@ -26,19 +28,20 @@ function Favourites() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return  <LoadingPage></LoadingPage>;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!subjects || subjects.length === 0) {
+ 
+  const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
+   if (!favouriteSubjects|| favouriteSubjects.length === 0) {
     return (
-     <NoContentPage title={"No hay ningun tema en marcado"} message={"!Marca alguno y aparcerá aqui"}></NoContentPage>
+     <NoContentPage title={"No hay ningun tema en marcado"} message={"¡ Marca alguno y aparcerá aquí !"}></NoContentPage>
     );
   }
-  const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
   return (
     <div className="" style={{ height: "100%" }}>
     

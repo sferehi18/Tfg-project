@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import HeaderContext from "../context/HeaderContext";
 import NoContentPage from "./NoContentPage";
+import LoadingPage from "./Loading";
 function Files() {
   const { isTokenValid } = useContext(TokenContext);
   const { subjectUri, topicUri } = useParams(); // Extraer subjectId y topicId de la URL
@@ -29,7 +30,7 @@ function Files() {
     queryKey: ["files"],
     queryFn: () => getFiles(topicId),
   });
-  if (isLoading) return <div>Cargando...</div>;
+  if (isLoading) return <LoadingPage></LoadingPage>; // Mostrar mensaje de carga
   if (error) return <div>Error: {error.message}</div>;
   if (!data || data.length === 0)
     return (

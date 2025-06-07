@@ -9,6 +9,7 @@ import { use } from "react";
 import { useEffect } from "react";
 import HeaderContext from "../context/HeaderContext"; // Importar el contexto del encabezado
 import NoContentPage from "./NoContentPage";
+import LoadingPage from "./Loading";
 // Página de Almacenamiento
 const Storage = () => {
  const {isTokenValid} = useContext(TokenContext);
@@ -24,7 +25,7 @@ const Storage = () => {
      queryFn:getAllFiles,
    });
 
-   if(isLoading) return <div>Cargando...</div>; // Mostrar mensaje de carga
+   if(isLoading) return <LoadingPage></LoadingPage>; // Mostrar mensaje de carga
    if(error) return <div>Error: {error.message}</div>; // Mostrar mensaje de error
    if(!data || data.length === 0) return <NoContentPage message={"Crea una asignatura, un tema y añade algun archivo asociado"} title={"No existen archivos "}></NoContentPage>; // Mostrar mensaje si no hay archivos
    return(
