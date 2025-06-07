@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom"; // Hook para obtener parámetros d
 import { useFiles } from "../hooks/UseResources";
 import FileUploader from "./FileUploader"; // Componente para subir archivos
 import { useRef } from "react"; // Hook para crear referencias a elementos del DOM
+import { s } from "framer-motion/client";
 function AddIconButton({
   icon,
   animationClass,
@@ -19,6 +20,7 @@ function AddIconButton({
   const { subject, topic,file } = useCrudOptions();
   const { topicUri, subjectUri } = useParams();
   const [topicId,slug] = topicUri ? topicUri.split("-") : [];
+  const [subjectIdFromUri, subjectSlug] = subjectUri ? subjectUri.split("-") : [];
 
    
   const fileInputRef = useRef(null);
@@ -31,7 +33,7 @@ function AddIconButton({
     const file = event.target.files[0];
     if (file) {
 
-      handleAddFile({ id: topicId, newFile: file });
+      handleAddFile({subject_id:subjectIdFromUri ,topic_id: topicId, newFile: file });
     }
   };
   topic.createOption.resourceId = subjectId;

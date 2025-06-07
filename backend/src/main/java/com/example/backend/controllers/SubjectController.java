@@ -5,7 +5,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.backend.DTOs.SubjectDTO;
-
+import com.example.backend.Services.StorageService;
 import com.example.backend.Services.SubjectService;
 
 import java.util.List;
@@ -30,6 +30,9 @@ public class SubjectController {
 
   @Autowired
   private SubjectService subjectService;
+
+  @Autowired
+  private StorageService storageService;
 
   @GetMapping("/{id}")
   public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id) {
@@ -99,6 +102,10 @@ public class SubjectController {
     SubjectDTO subject;
     try {
       subject = subjectService.deleteSubject(id);
+      storageService.deleteFilesOfSubject(subject.getId());
+      if(subject != null) {
+      
+      }
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

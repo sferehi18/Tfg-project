@@ -53,6 +53,9 @@ function RegisterForm(){
           <label htmlFor="password" className="form-label">
             Contraseña
           </label>
+
+        <input type="hidden" value="true" {...register("enabled")} />
+
           <input
             type="password"
             {...register("password", passwordValidations)}

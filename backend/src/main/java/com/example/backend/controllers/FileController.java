@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.backend.DTOs.FileDTO;
 import com.example.backend.Services.JwtService;
 import com.example.backend.Services.StorageService;
 import com.example.backend.models.FileUpload;
@@ -42,23 +45,24 @@ public class FileController {
     }
 
     @GetMapping("topics/{topic_id}/files/")
-    public ResponseEntity<List<FileUpload>> getTopicFilesInfo( @PathVariable Long topic_id){
+    public ResponseEntity<List<FileDTO>> getTopicFilesInfo( @PathVariable Long topic_id){
         
-    List<FileUpload> filesdata = storageService.getFilesByTopicId(topic_id);
+    List<FileDTO> filesdata = storageService.getFilesByTopicId(topic_id);
     if (filesdata.isEmpty()) {
         return ResponseEntity.noContent().build(); // Si no hay datos, devolver 204 No Content
     }
     return ResponseEntity.ok(filesdata); // Si hay datos, devolver 200 OK con el cuerpo
 
     }
-@GetMapping("/files/{id}/open")
-public ResponseEntity<Resource> openFile(@PathVariable Long id) {
+@GetMapping("/files/{subject_id}/{topic_id}/{id}/open")
+public ResponseEntity<Resource> openFile(@PathVariable Long subject_id,@PathVariable Long topic_id,@PathVariable Long id) {
+    // Este método abre un archivo en el navegador
     // Recuperar información del archivo desde la base de datos
 
 
     try {
         // Obtener la ruta del archivo desde el servicio de almacenamiento
-        Path filePath = storageService.getFilePath(id);
+        Path filePath = storageService.getFilePath(id, topic_id,subject_id);
         Resource resource = new UrlResource(filePath.toUri());
         String contentType = Files.probeContentType(filePath);
         MediaType mediaType = MediaType.parseMediaType(contentType);
@@ -83,23 +87,25 @@ public ResponseEntity<Resource> openFile(@PathVariable Long id) {
 
 
     @GetMapping("files/")
-    public ResponseEntity<List<FileUpload>> getAllFilesInfo(){
-        List<FileUpload> filesdata = storageService.getAllFilesInfo();
+    public ResponseEntity<List<FileDTO>> getAllFilesInfo(){
+        List<FileDTO> filesdata = storageService.getAllFilesInfo();
         if (filesdata.isEmpty()) {
             return ResponseEntity.noContent().build(); // Si no hay datos, devolver 204 No Content
         }
         return ResponseEntity.ok(filesdata); // Si hay datos, devolver 200 OK con el cuerpo
     }
 
- @PostMapping("topics/{topic_id}/files/upload")
+ @PostMapping("topics/{subject_id}/{topic_id}/files/upload")
 public ResponseEntity<?> uploadFile(
     @RequestParam("file") MultipartFile newFile,
+    @PathVariable Long subject_id,
     @PathVariable Long topic_id,
+    
     @CookieValue("token") String token // <-- así lo extraes desde la cookie
 ) {
     try {
         String username = jwtService.extractUsername(token);
-        FileUpload filedata = storageService.uploadFile(username, newFile, topic_id);
+        FileUpload filedata = storageService.uploadFile(username, newFile, topic_id,subject_id);
         return ResponseEntity.status(HttpStatus.CREATED).body(filedata);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -108,17 +114,17 @@ public ResponseEntity<?> uploadFile(
 }
 
 
-@DeleteMapping("files/{file_id}/delete")
-public ResponseEntity<?> deleteFile(@PathVariable Long file_id) {
+@DeleteMapping("files/{subject_id}/{topic_id}/{file_id}/delete")
+public ResponseEntity<?> deleteFile(@PathVariable Long subject_id,@PathVariable Long topic_id, @PathVariable Long file_id) {
     try {
-        storageService.deleteFile(file_id);
+        storageService.deleteFile(file_id, topic_id,subject_id);
         return ResponseEntity.status(HttpStatus.OK).body("Archivo eliminado correctamente.");
     } catch (Exception e) {
-        // Este bloque maneja cualquier otro tipo de error
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el archivo: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error al eliminar el archivo: " + e.getMessage());
     }
-
 }
+
 
 
 

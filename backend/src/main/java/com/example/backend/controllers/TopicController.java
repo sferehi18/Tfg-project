@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.DTOs.TopicDTO;
+import com.example.backend.Services.StorageService;
 import com.example.backend.Services.TopicService;
 @RestController
 
 public class TopicController {
       @Autowired
     private TopicService topicService;
+    @Autowired
+    private StorageService storageService;
     
 // Devuelve todos los temas de una asignatura
    @GetMapping("subjects/{subject_id}/topics/")
@@ -65,6 +68,7 @@ public ResponseEntity<List<TopicDTO>> getSubjectTopics(@PathVariable Long subjec
       TopicDTO Topic = null;
       try {
         Topic = topicService.deleteTopic(id);
+        storageService.deleteFilesOfTopic(Topic);
       } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Topic);
       }

@@ -422,6 +422,7 @@ const  getFiles = async (id) => {
     });
     return response.data;
   }
+  
 
   const  getAllFiles = async () => {
     const response = await axios.get(`${BASE_DOMAIN}/files/`,{
@@ -470,14 +471,14 @@ const  getFiles = async (id) => {
 };
 
 
-  const addFiles = async ({ id, newFile }) => {
-    console.log("Añadiendo nuevo archivo:", newFile, "al tema con ID:", id);
+  const addFiles = async ({ subject_id,topic_id, newFile }) => {
+   
     
     const formData = new FormData();
     formData.append("file", newFile); // "file" debe coincidir con @RequestParam("file") en tu backend
   
     const response = await axios.post(
-      `${BASE_DOMAIN}/topics/${id}/files/upload`,
+      `${BASE_DOMAIN}/topics/${subject_id}/${topic_id}/files/upload`,
       formData,
       { 
         
@@ -499,7 +500,7 @@ const  getFiles = async (id) => {
     });
       console.log("Archivo añadido correctamente");
     },
-    onError: () =>{
+    onError: (error) =>{
       handleShow({color:"danger",
       headerText:"Error al añadir archivo",
       bodyText:"No se ha podido añadir el archivo al tema"
@@ -508,13 +509,13 @@ const  getFiles = async (id) => {
     }
   })
 
-  const handleAddFile = ({id,newFile}) => {
-    fileAdd.mutate({id,newFile});
+  const handleAddFile = ({subject_id,topic_id,newFile}) => {
+    fileAdd.mutate({subject_id,topic_id,newFile});
   }
 // Función para abrir un archivo en una nueva pestaña del navegador
-  const handleOpenFile = (fileId) => {
+  const handleOpenFile = (fileId,topic_id,subject_id) => {
     // Realiza una solicitud GET para obtener el archivo como un blob (contenido binario)
-    axios.get(`${BASE_DOMAIN}/files/${fileId}/open`, {
+    axios.get(`${BASE_DOMAIN}/files/${subject_id}/${topic_id}/${fileId}/open`, {
      withCredentials:true,
       responseType: 'blob' // Especifica que la respuesta será un blob (archivo binario)
     })
@@ -532,8 +533,8 @@ const  getFiles = async (id) => {
       });
   }
 
-  const deleteFile = async (id) => {
-    const response = await axios.delete(`${BASE_DOMAIN}/files/${id}/delete`,{
+  const deleteFile = async ({id,topic_id,subject_id}) => {
+    const response = await axios.delete(`${BASE_DOMAIN}/files/${subject_id}/${topic_id}/${id}/delete`,{
       withCredentials: true
     });
     return response.data;
@@ -558,8 +559,8 @@ const  getFiles = async (id) => {
     }
   })
 
-  const handleDeleteFile = (id) =>{
-    fileDelete.mutate(id);
+  const handleDeleteFile = (id,topic_id,subject_id) =>{
+    fileDelete.mutate({id,topic_id,subject_id});
   }
   return {getFiles,getAllFiles,handleAddFile,handleDeleteFile,handleOpenFile,uploadFileDirectToSupabase};
 }

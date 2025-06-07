@@ -12,9 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FileDTO {
+    private Long id;
     private String name;
     private String contentType;
     private LocalDate created_at;
     private Long size;
+    private Long topic_id;
+    private Long subject_id;
     
 }

@@ -59,13 +59,13 @@ function formatFileSize(bytes) {
                 <td>
                   {/* Botón para eliminar el archivo */}
                   <div style={{ width: "fit-content", cursor:"pointer" }}  className="d-flex p-2 rounded-2 bg-danger bg-opacity-25 align-items-center bg-red-light">
-                    <SimpleIconButton icon={"bi bi-trash"} hover={false} color={"red"} onClick={() => handleDeleteFile(file.id)} />
+                    <SimpleIconButton icon={"bi bi-trash"} hover={false} color={"red"} onClick={() => handleDeleteFile(file.id,file.topic_id,file.subject_id)} />
                   </div>
                 </td>
                 <td>
                   {/* Botón para abrir el archivo en una nueva pestaña */}
                   <div style={{ width: "fit-content",cursor: "pointer"}} className="d-flex p-2 rounded-2 bg-primary bg-opacity-25 align-items-center bg-blue-light">
-                    <SimpleIconButton icon={"bi bi-eye"} hover={false} color={"black"} onClick={() => handleOpenFile(file.id)} />
+                    <SimpleIconButton icon={"bi bi-eye"} hover={false} color={"black"} onClick={() => handleOpenFile(file.id,file.topic_id,file.subject_id)} />
                   </div>
                 </td>
               </motion.tr>

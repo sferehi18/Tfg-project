@@ -105,6 +105,7 @@ public class SubjectService extends AuthMethods {
 
         Subject subject = findSubjectById(id); // Usamos el método auxiliar
         subjectRepository.delete(subject);
+        
         return toSubjectDTO(subject);
     }
 }

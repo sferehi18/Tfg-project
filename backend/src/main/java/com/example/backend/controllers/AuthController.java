@@ -84,8 +84,8 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
     public ResponseEntity<?> register(@RequestBody User user) {
          try {
         boolean newUser = userService.saveUser(user);
-        String token = jwtService.generateEmailToken(user.getId(), user.getUsername());
-        emailService.sendConfirmationEmail(user.getEmail(), "localhost:8080/auth/confirmRegistration?token=" + token);
+        // String token = jwtService.generateEmailToken(user.getId(), user.getUsername());
+        // emailService.sendConfirmationEmail(user.getEmail(), "localhost:8080/auth/confirmRegistration?token=" + token);
         return ResponseEntity.ok(newUser);
     } catch (Exception e) {
         e.printStackTrace(); // Imprime el error en consola
