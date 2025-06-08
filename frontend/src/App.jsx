@@ -28,6 +28,7 @@ import { HeaderProvider } from "./context/HeaderContext";
 import { ToastProvider } from "./context/ToastContext"; // asegúrate que el nombre del archivo esté bien: "ToastContext.jsx"
 import { ThemeProvider } from "./context/UseTheme";
 import UserContext, {UserProvider} from "./context/UserContext"; // Asegúrate de que el nombre del archivo sea correcto
+import { Navigate } from "react-router-dom";
 const queryClient = new QueryClient();
 
 function App() {
@@ -47,11 +48,13 @@ function App() {
 
        
       <Routes >
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
          <Route path="/login" element={<AuthLayout/>} >
           <Route index element={<AuthPage/>} />
         </Route>
     
-        <Route path="/" element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
+        <Route element={<ProtectedRoute ><Layout></Layout> </ProtectedRoute> }>
         
           <Route index path="subjects" element={<Subjects />} /> 
           <Route path="/calendar" element={<MyCalendar />} />
