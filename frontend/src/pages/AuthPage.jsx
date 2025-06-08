@@ -19,7 +19,7 @@ function AuthPage() {
   };
   const { expiredMsg } = useContext(TokenContext);
 
-  const alert = expiredMsg != "" ? "alert alert-danger" : "";
+  
 
   return (
     <div className=" d-flex bg-body flex-row align-items-center  vh-100 w-100  bg-white">
@@ -55,7 +55,7 @@ function AuthPage() {
       style={{width:"55%"}}
         className={`d-flex    flex-column align-items-center justify-content-center h-100 `}
       >
-        {form && <h1 className={alert + "text-sm"}>{expiredMsg}</h1>}
+        {form && expiredMsg && <h1 className={"alert alert-danger text-sm"}>{expiredMsg}</h1>}
         <div>
           <h2 className=" mb-4 ">{form ? "Iniciar Sesión" : "Registrarse"}</h2>
         </div>

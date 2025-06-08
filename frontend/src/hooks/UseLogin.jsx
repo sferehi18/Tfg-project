@@ -4,11 +4,12 @@ import { redirect, useNavigate } from "react-router-dom";
 import TokenContext from "../context/AuthContext";
 import UserContext from "../context/UserContext";
 import { useUsers } from "./UseResources";
-
+import ToastContext from "../context/ToastContext";
 export function useAuth() {
 const {token,setNewToken,setExpiredMsg,setAvatar} = useContext(TokenContext);
 const {getpfp} = useUsers();
 const {setUser} = useContext(UserContext);
+const {handleShow} = useContext(ToastContext);
 const navigate = useNavigate();
   const login = async (authUser) => {
     return axios
@@ -19,7 +20,7 @@ const navigate = useNavigate();
         // El token es directamente el `response.data`
         
        localStorage.setItem("userDetails",JSON.stringify(response.data));
-       
+       localStorage.setItem("selectedButton","Home")
         setUser(response.data);
          
         return response.status; 
@@ -30,15 +31,7 @@ const navigate = useNavigate();
       });
   };
 
- const redirectToLogin = () => {
-    // Redirige al usuario a la página de inicio de sesión
-    if(err.response?.status === 401 || err.response?.status === 403){
-      setExpiredMsg("Tu sesión ha expirado, por favor inicia sesión de nuevo");
-      navigate("/login");
-    }
-    
-   
-  }
+
 
   const createUser = async (user) =>{
     return axios.post("http://localhost:8080/auth/register",user).then((response)=>{
@@ -51,15 +44,21 @@ const navigate = useNavigate();
   }
 
   const logout = async () =>{
-    await axios.post("http://localhost:8080/auth/logout").then((response)=>{
+    await axios.post("http://localhost:8080/auth/logout",
+      {
+      },
+      {
+        withCredentials:true}
+    ).then((response)=>{
       if(response.status === 200){
+        console.log("ADIOS")
         localStorage.removeItem("isAuthenticated");
         setUser(null);
         localStorage.removeItem("userDetails");
         
          // Elimina el estado de autenticación del localStorage
     setExpiredMsg('');
-    localStorage.setItem("selectedButton","Home")
+    
     
       }
     })
@@ -94,5 +93,5 @@ const navigate = useNavigate();
         message: "Usuario o contraseña incorrectos",
       }
 
-  return { logout, validateUser, invalidUserOrPasswordError,createUser,redirectToLogin,login };
+  return { logout, validateUser, invalidUserOrPasswordError,createUser,login };
 }
