@@ -19,7 +19,7 @@ const navigate = useNavigate();
         // El token es directamente el `response.data`
         
        localStorage.setItem("userDetails",JSON.stringify(response.data));
-
+       
         setUser(response.data);
          
         return response.status; 
@@ -56,7 +56,7 @@ const navigate = useNavigate();
         localStorage.removeItem("isAuthenticated");
         setUser(null);
         localStorage.removeItem("userDetails");
-        setAvatar(null);
+        
          // Elimina el estado de autenticación del localStorage
     setExpiredMsg('');
     localStorage.setItem("selectedButton","Home")

@@ -14,6 +14,7 @@ import { QueryClient } from "@tanstack/react-query";
 import HeaderContext from "../context/HeaderContext"; // Importamos el contexto del encabezado
 import { get } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
+import NoContentPage from "./NoContentPage";
 
 const Subjects = () => {
   // Obtenemos el token y la función para actualizarlo desde el contexto de autenticación
@@ -50,6 +51,12 @@ const Subjects = () => {
     );
   }
 
+  if(!data){
+    return (<NoContentPage title={"Ninguna asignatura disponible"} message={"¡Crea alguna!"}></NoContentPage>);
+
+  }
+
+
   // Render principal de la página de asignaturas
   return (
     <div style={{ height: "100%" }}>
@@ -61,7 +68,7 @@ const Subjects = () => {
         style={{ height: "100%", overflowY: "auto" }}
       >
         <AnimatePresence>
-          {data &&
+          {
             data.map((subject) => (
               <SubjectCard
                 key={subject.id}

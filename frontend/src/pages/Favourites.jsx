@@ -36,7 +36,7 @@ function Favourites() {
   }
 
  
-  const favouriteSubjects = subjects.filter((subject) => subject.isFav == 1);
+  const favouriteSubjects = subjects ?  subjects.filter((subject) => subject.isFav == 1) : [];
    if (!favouriteSubjects|| favouriteSubjects.length === 0) {
     return (
      <NoContentPage title={"No hay ningun tema en marcado"} message={"¡ Marca alguno y aparcerá aquí !"}></NoContentPage>

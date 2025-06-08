@@ -9,7 +9,7 @@ import {useUsers} from "../hooks/UseResources"; // Asegúrate de que el nombre d
 import UserContext from "../context/UserContext";
 function LoginForm(){
       const {
-    setAuthenticated,
+    setAuthenticated,setAvatar
   } = useContext(TokenContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ function LoginForm(){
       
       
         navigate("/subjects"); // Redirige a la página principal
+        setAvatar(null);
       } else {
         setError("password", invalidUserOrPasswordError);
       }

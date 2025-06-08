@@ -47,7 +47,7 @@ function PfpContainer({ className }) {
         style={{width:"fit-content"}}
       >
         {
-          <img src={avatar || defaultpfp} alt="Perfil" className="rounded-5 " style={{width:"70px", height:"70px"}}  />
+          <img src={avatar != null?  avatar : defaultpfp} alt="Perfil" className="rounded-5 " style={{width:"70px", height:"70px"}}  />
           
     }
     <p className="p-2">{`@${user.name}${user.id}`}</p>
