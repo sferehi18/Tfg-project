@@ -3,6 +3,7 @@ import HeaderContext from '../context/HeaderContext';
 import ToogleButton from '../components/ToogleButton';
 import ThemeContext from '../context/UseTheme';
 import UserContext from '../context/UserContext';
+import PfpContainer from '../components/PfpContainer';
 
 function UserSettings() {
   const { setTitle, setPageType } = useContext(HeaderContext);
@@ -19,6 +20,9 @@ function UserSettings() {
   return (
     <div className="h-100">
       <form className='container mt-5'>
+        <div className='row ms-5'>
+          <PfpContainer></PfpContainer>
+          </div>
          <div className='row ms-5'>
         <label htmlFor="username"  className=' form-label'>Nombre de Usuario</label>
           <input readOnly type="text" name="username" value={user.name} className='form-control w-50' />

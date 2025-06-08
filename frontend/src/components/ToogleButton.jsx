@@ -8,7 +8,8 @@ function ToggleButton({enabledText,disabledText,setState,state}) {
   return (
    
       <Form.Check
-      className='no-outline toogleButton-color fs-3 text-white'
+      className='no-outline toogleButton-color fs-3 text-body'
+      
         type="switch"
         id="custom-switch"
         label={state ? enabledText : disabledText}

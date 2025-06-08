@@ -7,13 +7,15 @@ import com.example.backend.models.User;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.backend.DTOs.UserDTO;
 import com.example.backend.Repositories.UserRepository;
+import com.example.backend.exceptions.EmailException;
+import com.example.backend.exceptions.UsernameException;
 @Service
 public class UserService implements UserDetailsService  {
     @Autowired
@@ -32,7 +34,7 @@ public class UserService implements UserDetailsService  {
     }
 
     private UserDTO toUserDTO(User user) {
-        return new UserDTO(user.getUsername(), user.getEmail());
+        return new UserDTO(user.getId(),user.getUsername(), user.getEmail());
     }
 
     public User validateUser(String username, String rawPassword){
@@ -42,8 +44,13 @@ public class UserService implements UserDetailsService  {
     }
         return null;
     }
-    //TODO AÑADIR LOGICA VERFIICACION DE USUARIOS NOMBRES E EMAILS
+    
     public boolean saveUser(User user){
+        if(userRepository.existsByUsername(user.getUsername())){
+           throw new UsernameException("Este nombre de usuario ya está en uso", HttpStatus.CONFLICT);
+        }else if(userRepository.existsByEmail(user.getEmail())){
+            throw new EmailException("Este email ya fue registrado", HttpStatus.CONFLICT);
+        }
         User newUser = new User(user.getUsername(), user.getEmail(), encodePassword(user.getPassword()),user.getEnabled());
         userRepository.save(newUser);
         

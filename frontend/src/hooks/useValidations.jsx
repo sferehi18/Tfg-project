@@ -6,7 +6,7 @@ export function useFormValidations(){
     };
     const passwordValidations = {
         required:"Porfavor inserta una contraseña valida",
-          /*minLength: {
+          minLength: {
             value: 8,
             message: 'La contraseña debe tener al menos 8 caracteres'
           },
@@ -19,7 +19,7 @@ export function useFormValidations(){
               /\d/.test(value) || 'Debe contener al menos un número',
             hasSpecialChar: (value) =>
               /[!@#$%^&*(),.?":{}|<>]/.test(value) || 'Debe contener un carácter especial'
-          }*/
+          }
         };
 
    
@@ -69,7 +69,7 @@ export function useFormValidations(){
         required: 'El correo electrónico es obligatorio',
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Porfavor inserta un correo electrónico (Tucuenta@dominio.com)'
+            message: 'Porfavor inserta un correo electrónico válido'
           }
     }
 

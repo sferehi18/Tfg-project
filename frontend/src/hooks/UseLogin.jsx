@@ -3,9 +3,11 @@ import { useContext } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import TokenContext from "../context/AuthContext";
 import UserContext from "../context/UserContext";
+import { useUsers } from "./UseResources";
 
 export function useAuth() {
-const {token,setNewToken,setExpiredMsg} = useContext(TokenContext);
+const {token,setNewToken,setExpiredMsg,setAvatar} = useContext(TokenContext);
+const {getpfp} = useUsers();
 const {setUser} = useContext(UserContext);
 const navigate = useNavigate();
   const login = async (authUser) => {
@@ -15,10 +17,12 @@ const navigate = useNavigate();
       )
       .then((response) => {
         // El token es directamente el `response.data`
-
+        
        localStorage.setItem("userDetails",JSON.stringify(response.data));
+
         setUser(response.data);
-        return response.status; // Aquí no necesitamos acceder a `response.data.token`
+         
+        return response.status; 
       })
       .catch((error) => {
         console.error("Error al obtener el token:", error);
@@ -38,10 +42,11 @@ const navigate = useNavigate();
 
   const createUser = async (user) =>{
     return axios.post("http://localhost:8080/auth/register",user).then((response)=>{
-      return response.status;
+      return response;
     }
     ).catch((err) =>{
-      console.log(err);
+      console.error("Error al crear el usuario:", err.response);
+     return err.response;
     })
   }
 
@@ -51,7 +56,7 @@ const navigate = useNavigate();
         localStorage.removeItem("isAuthenticated");
         setUser(null);
         localStorage.removeItem("userDetails");
-        
+        setAvatar(null);
          // Elimina el estado de autenticación del localStorage
     setExpiredMsg('');
     localStorage.setItem("selectedButton","Home")
@@ -80,6 +85,8 @@ const navigate = useNavigate();
       });
 
   }
+
+  
   // Manejo de errores
   const invalidUserOrPasswordError =  {
     //Establece un tipo de error específico personalizado distinto de los ya existentes en useForm

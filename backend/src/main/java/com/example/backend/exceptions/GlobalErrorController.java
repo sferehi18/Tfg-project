@@ -40,4 +40,17 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
         problemDetail.setTitle("Unexpected Error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail);
     }
+
+    @ExceptionHandler(UsernameException.class)
+    public ResponseEntity<ProblemDetail> handleUserException(UsernameException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getMessage());
+        problemDetail.setTitle("username");
+        return ResponseEntity.status(ex.getStatus()).body(problemDetail);}
+
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<ProblemDetail> handleEmailException(EmailException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getMessage());
+        problemDetail.setTitle("email");
+        return ResponseEntity.status(ex.getStatus()).body(problemDetail);
+    }
 }

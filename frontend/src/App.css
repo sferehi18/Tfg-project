@@ -38,6 +38,20 @@ body{
   background-color: var(--color-primary);
 }
 
+.btn-auth{
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn-auth:hover{
+  background-color: var(--color-primary-light);
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
 
 .color-gold{
   color: #FFD700;

@@ -23,13 +23,13 @@ function AuthPage() {
 
   return (
     <div className=" d-flex bg-body flex-row align-items-center  vh-100 w-100  bg-white">
-      <div className="  w-50 h-100 bg-primary-gradient rounded-4 d-flex flex-column align-items-center justify-content-center">
+      <div style={{width:"45%"}} className="h-100 bg-primary-gradient rounded-4 d-flex flex-column align-items-center justify-content-center">
         <div>
           <motion.h1
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-body  mb-2 p-1"
+            className="text-white mb-2 p-1"
           >
             !Bienvenido!
           </motion.h1>
@@ -37,7 +37,7 @@ function AuthPage() {
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-body  mb-2 p-1 "
+            className="text-white  mb-2 p-1 "
           >
             Comienza tu experiencia
           </motion.h2>
@@ -45,14 +45,15 @@ function AuthPage() {
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 1 }}
-          className="text-body  p-1">
+          className="text-white  p-1">
             Gestiona tus asignaturas, temas, archivos y eventos
           </motion.h3>
         </div>
       </div>
 
       <div
-        className={`d-flex  w-50  flex-column align-items-center justify-content-center h-100 `}
+      style={{width:"55%"}}
+        className={`d-flex    flex-column align-items-center justify-content-center h-100 `}
       >
         {form && <h1 className={alert + "text-sm"}>{expiredMsg}</h1>}
         <div>

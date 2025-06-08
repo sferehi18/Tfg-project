@@ -566,18 +566,42 @@ const  getFiles = async (id) => {
 }
 
 export const useUsers = () => {
-  
-  const BASE_URL = `${BASE_DOMAIN}/user/`;
-   
-  const getUserDetails = async (token) =>{
- 
- return axios.get(`${BASE_URL}userDetails`,{
-      withCredentials: true
-    })
-    .then(response => {
-      return response.data;}
-    );
+
+  const BASE_URL = `${BASE_DOMAIN}/users/`;
+  const uploadpfp = async (file) => {
+    const formData = new FormData();
+    formData.append("avatar", file); // "file" debe coincidir con @RequestParam("file") en tu backend
     
-  }
-  return { getUserDetails };
+    const response = await axios.post(
+      `${BASE_URL}upload/avatar`,
+      formData,
+      { 
+        withCredentials: true ,headers: { 'Content-Type': 'multipart/form-data' }// Asegúrate de enviar las cookies de sesión si es necesario
+      }
+    );
+  
+      // Crea un objeto Blob a partir de los datos binarios recibidos
+    const imgUploaded = new Blob([response.data], { type: response.headers['content-type'] });
+    // Crea una URL temporal para el archivo Blob
+    const imgURL = URL.createObjectURL(imgUploaded);
+    
+    return imgURL; // Retorna la URL del perfil
+  };
+
+  const getpfp = async () => {
+    const response = await axios.get(`${BASE_URL}avatar`, {
+      withCredentials: true,
+      responseType: 'blob' // Especifica que la respuesta será un blob (archivo binario)
+    });
+    
+    // Crea un objeto Blob a partir de los datos binarios recibidos
+    const file = new Blob([response.data], { type: response.headers['content-type'] });
+    // Crea una URL temporal para el archivo Blob
+    const fileURL = URL.createObjectURL(file);
+    
+    return fileURL; // Retorna la URL del perfil
+  };
+   
+ 
+  return { uploadpfp,getpfp };
 }

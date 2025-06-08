@@ -18,7 +18,7 @@ function RegisterForm(){
     expiredMsg,
   } = useContext(TokenContext);
   const navigator = useNavigate(); // Inicializamos el hook useNavigate
-  let ok = "";
+  let ok = false;
   const {
     register,
     handleSubmit,
@@ -26,11 +26,20 @@ function RegisterForm(){
     setError,
   } = useForm();
   const onSubmit = async (data) =>{
-    
-    const status = await createUser(data);
-    if(status == "200"){
+    const trimmedData = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [key, value.trim()]));
+    const response = await createUser(data);
+    if(response.status == "200"){
       ok = true;
-      console.log(status);
+      console.log(response.status);
+    }else{
+      ok = false;
+      console.log(response.data.title);
+      setError(response?.data?.title, {
+        type: "manual",
+        message:response?.data?.detail || "Error al crear el usuario",
+        
+      });
     }
   };
    return (
@@ -78,7 +87,7 @@ function RegisterForm(){
           
           {ok && <p className="text-succes">Usuario registrado correctamente</p>}
           
-          <button type="submit" className="btn bg-primar text-white mt-3">
+          <button type="submit" className="btn-auth bg-primar text-white mt-3">
             Registrarse
           </button>
         </div>

@@ -75,7 +75,7 @@ function LoginForm(){
             <p className=" text-danger">{errors.password.message}</p>
           )}
           
-          <button type="submit" className="btn bg-primar text-white mt-3">
+          <button type="submit" className="btn-auth bg-primar text-white mt-3">
             Iniciar Sesión
           </button>
         </div>

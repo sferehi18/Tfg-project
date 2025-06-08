@@ -9,14 +9,19 @@ import { use } from "react";
 const TokenContext = createContext();
 export function TokenProvider({ children }) {
 
-
+const {getpfp} = useUsers();
 const [expiredMsg,setExpiredMsg] = useState('');
 const [isAuthenticated, setAuthenticated] = useState(() => {
   const saved = localStorage.getItem('isAuthenticated');
   return saved ? JSON.parse(saved) : false;
 });
+const [avatar, setAvatar] = useState();
 
+useEffect( () =>{
 
+  getpfp().then((url) => setAvatar(url));
+
+},[avatar])
 
 
 // Cada vez que se recarga la pagina se asegura
@@ -26,7 +31,7 @@ const [isAuthenticated, setAuthenticated] = useState(() => {
     
 
     return (
-      <TokenContext.Provider value={{ expiredMsg,setExpiredMsg, isAuthenticated,setAuthenticated }}>
+      <TokenContext.Provider value={{ expiredMsg,setExpiredMsg, isAuthenticated,setAuthenticated,avatar,setAvatar }}>
         {children}
       </TokenContext.Provider>
     );}

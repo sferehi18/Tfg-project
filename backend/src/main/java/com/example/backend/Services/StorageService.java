@@ -20,10 +20,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 // Define esta clase como un servicio de Spring
 @Service
@@ -144,7 +146,7 @@ public class StorageService extends AuthMethods { // Hereda métodos de autentic
 
     public void deleteFilesOfTopic(TopicDTO topic) {
     Long userId = getAuthenticatedUserId();
-    Path folderPath = Paths.get("src/main/java/com/example/backend/uploads/" + userId + "/" + topic.getId());
+    Path folderPath = Paths.get("src/main/java/com/example/backend/uploads/" + userId + "/" + topic.getSubject_id() + "/" + topic.getId());
 
     try {
         if (Files.exists(folderPath)) {
@@ -164,6 +166,63 @@ public class StorageService extends AuthMethods { // Hereda métodos de autentic
     }
 }
 
+public void uploadPfp(MultipartFile multipartFile) {
+    Long userId = getAuthenticatedUserId();
+    Path userFolder = Paths.get("src/main/java/com/example/backend/uploads/", userId.toString(), "profile");
+    Path filePath = userFolder.resolve(multipartFile.getOriginalFilename());
+
+    try {
+        if (!Files.exists(userFolder)) {
+            Files.createDirectories(userFolder);
+        }
+
+        Files.list(userFolder)
+            .filter(Files::isRegularFile)
+            .forEach(path -> {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    throw new RuntimeException("Error al borrar archivo previo: " + path.toString(), e);
+                }
+            });
+
+        if (multipartFile.getContentType() == null || !multipartFile.getContentType().startsWith("image/")) {
+            throw new RuntimeException("El archivo debe ser una imagen");
+        }
+
+        Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+    } catch (IOException e) {
+        throw new RuntimeException("Error al subir la imagen de perfil", e);
+    }
+}
+
+public byte[] getPfpBytes() {
+    Long userId = getAuthenticatedUserId();
+    Path folderPath = Paths.get("src/main/java/com/example/backend/uploads/", userId.toString(), "profile");
+
+    try {
+        if (!Files.exists(folderPath) || !Files.isDirectory(folderPath)) {
+            throw new RuntimeException("No existe la carpeta de perfil del usuario.");
+        }
+
+        Optional<Path> imagePathOptional = Files.list(folderPath)
+                .filter(Files::isRegularFile)
+                .findFirst();
+
+        if (imagePathOptional.isPresent()) {
+            return Files.readAllBytes(imagePathOptional.get());
+        } else {
+            throw new RuntimeException("No se encontró ningún archivo de imagen para el usuario.");
+        }
+    } catch (IOException e) {
+        throw new RuntimeException("Error al leer la imagen de perfil", e);
+    }
+}
+
+
+
+    // Elimina todos los archivos de un tema específico del usuario
 public void deleteFilesOfSubject(Long subject_id) {
     Long userId = getAuthenticatedUserId();
     Path folderPath = Paths.get("src/main/java/com/example/backend/uploads/" + userId + "/" + subject_id);
